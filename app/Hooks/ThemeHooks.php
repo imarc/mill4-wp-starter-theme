@@ -15,9 +15,6 @@ class ThemeHooks implements HooksInterface
 
     public function initialize(): void
     {
-        var_dump($this->site);
-        exit();
-
         add_action('after_setup_theme', array( $this, 'theme_supports' ));
         add_action('init', array( $this, 'register_post_types' ));
         add_action('init', array( $this, 'register_taxonomies' ));

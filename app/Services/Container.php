@@ -11,7 +11,6 @@ class Container
 
     public function __construct()
     {
-        self::getInstance();
     }
 
     public static function getInstance(): BaseContainer
