@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Providers\AssetServiceProvider;
 use League\Container\Container as BaseContainer;
 use League\Container\ReflectionContainer;
 
@@ -18,6 +19,7 @@ class Container
         if (self::$instance === null) {
             self::$instance = new BaseContainer();
             self::$instance->delegate(new ReflectionContainer());
+            self::$instance->addServiceProvider(new AssetServiceProvider());
         }
 
         return self::$instance;

@@ -2,7 +2,9 @@
 
 namespace App\Hooks;
 
-class SecurityHooks
+use App\Hooks\Contracts\HooksInterface;
+
+class SecurityHooks implements HooksInterface
 {
     public function initialize(): void
     {

@@ -2,9 +2,10 @@
 
 namespace App\Hooks;
 
+use App\Hooks\Contracts\HooksInterface;
 use App\PostTypes;
 
-class PostTypeHooks
+class PostTypeHooks implements HooksInterface
 {
     public function __construct(private PostTypes\Registrar $postTypes)
     {

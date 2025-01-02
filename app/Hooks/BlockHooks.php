@@ -3,8 +3,9 @@
 namespace App\Hooks;
 
 use App\Blocks;
+use App\Hooks\Contracts\HooksInterface;
 
-class BlockHooks
+class BlockHooks implements HooksInterface
 {
     public function initialize(): void
     {

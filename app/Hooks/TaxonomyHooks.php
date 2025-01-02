@@ -2,9 +2,10 @@
 
 namespace App\Hooks;
 
+use App\Hooks\Contracts\HooksInterface;
 use App\Taxonomies;
 
-class TaxonomyHooks
+class TaxonomyHooks implements HooksInterface
 {
     public function __construct(private Taxonomies\Registrar $taxonomies)
     {
