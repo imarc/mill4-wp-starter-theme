@@ -15,6 +15,7 @@ In addition to the Twig templating that Timber provides, **Mill 4** includes the
 Custom routes are registered in `app/routes.php`. You can use either a closure or an invokable controller to handle the route.
 
 ```php
+<?php
 
 use App\Http\Controllers\SubmitContactFormAction;
 
