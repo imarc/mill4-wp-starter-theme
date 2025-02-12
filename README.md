@@ -26,6 +26,8 @@ $router->post('/contact/submit', SubmitContactFormAction::class);
 
 ```
 
+*Note: The logic for custom routes depends on WordPress's native rewrite rules, which are cached. If you add, edit, or remove routes, you may need to flush the rewrite rules. You can do this by visiting the **Permalinks Settings** page in the WordPress admin and clicking the "Save Changes" button.*
+
 ## Registering Custom Post Types
 
 To register a custom post type in your theme, follow these steps:

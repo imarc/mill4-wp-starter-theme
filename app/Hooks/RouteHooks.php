@@ -20,6 +20,7 @@ class RouteHooks
             foreach ($routes as $method => $paths) {
                 foreach ($paths as $path => $callback) {
                     $regex = preg_replace('/^\//', '', $path);
+                    $regex = str_replace('/', '\/', $regex);
                     add_rewrite_rule("^$regex/?$", "index.php?custom_route=$path", 'top');
                 }
             }
