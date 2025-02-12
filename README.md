@@ -12,7 +12,7 @@ In addition to the Twig templating that Timber provides, **Mill 4** includes the
 
 ## Registering Custom Routes
 
-Custom routes are registered in `app/routes.php`. You can use either a closure or an invokable controller to handle the route.
+Custom routes are registered in `app/routes.php`. You can use either a closure or an invokable controller class to handle the route.
 
 ```php
 <?php
