@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\MyService;
+
 class FooController extends Controller
 {
-    public function __invoke()
+    public function __invoke(MyService $service)
     {
-        $this->render('foo.twig', ['message' => 'Hello from FooController!']);
-
+        // $this->render('foo.twig', ['message' => 'Hello from FooController!']);
+        $service->doSomething();
         exit();
     }
 }

@@ -41,15 +41,8 @@ class RouteHooks
     {
         $custom_route = get_query_var('custom_route');
         if ($custom_route) {
-
             $request_method = $_SERVER['REQUEST_METHOD'];
-
-            $routes = $this->router->getRoutes();
-
-            if (isset($routes[$request_method][$custom_route])) {
-                call_user_func($routes[$request_method][$custom_route]);
-                exit;
-            }
+            $this->router->handleRequest($request_method, $custom_route);
         }
     }
 }
