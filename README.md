@@ -359,3 +359,56 @@ To register a Gutenberg block in your theme, follow these steps:
         </div>
     {% endblock %}  
     ```
+
+## Commands
+
+Mill 4 includes a basic command system for running custom commands. To create a new command, follow these steps:
+
+1. **Create a Command Class**:
+   Create a new class for your command. This class should extend the `Command` class provided by the theme. For example:
+
+   ```php
+    // app/Commands/FooCommand.php
+
+    namespace App\Commands;
+
+    class FooCommand extends Command
+    {
+        protected string $name = 'foo';
+
+        protected string $shortDescription = 'Prints a message to the console';
+
+        public function __invoke($args, $assoc_args)
+        {
+            $this->line('Hello from FooCommand!');
+        }
+    }
+    ```
+
+2. **Register the Command**:
+   Update the `registerCommands()` method in the `CommandHooks` class to include your new command:
+
+   ```php
+    // app/Hooks/CommandHooks.php
+
+    public function registerCommands(): void
+    {
+        $commands = [
+            Commands\FooCommand::class,
+        ];
+
+        ...
+    }
+    ```
+
+Now your command should be available to run using WordPress' `wp` command.
+
+Mill 4's base Command class provides a few helpful methods:
+
+* `line($message)`: Prints a message to the console.
+* `success($message)`: Prints a success message to the console.
+* `error($message)`: Prints an error message to the console.
+* `warning($message)`: Prints a warning message to the console.
+* `confirm($question, $assoc_args)`: Asks the user to confirm an action.
+
+These commands align with those available in [WP-CLI's API](https://make.wordpress.org/cli/handbook/references/internal-api/).
