@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Providers\AssetServiceProvider;
+use App\Providers\HttpServiceProvider;
 use App\Providers\RouteServiceProvider;
 use League\Container\Container as BaseContainer;
 use League\Container\ReflectionContainer;
@@ -21,6 +22,7 @@ class Container
             self::$instance = new BaseContainer();
             self::$instance->delegate(new ReflectionContainer());
             self::$instance->addServiceProvider(new AssetServiceProvider());
+            self::$instance->addServiceProvider(new HttpServiceProvider());
             self::$instance->addServiceProvider(new RouteServiceProvider());
         }
 

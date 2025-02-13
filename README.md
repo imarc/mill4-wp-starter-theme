@@ -51,6 +51,21 @@ $router->get('/foo', function (MyService $service) {
 
 The router will also resolve dependencies for controller actions.
 
+### Request Object
+
+Mill 4 includes [Symfony's HttpFoundation](https://symfony.com/doc/current/components/http_foundation.html) component, which, among other things, provides a handy `Request` object. You can access this object in your route actions by declaring a parameter of type `Request` in the action signature. For example:
+
+```php
+
+// app/routes.php
+
+use Symfony\Component\HttpFoundation\Request;
+
+$router->get('/foo', function (Request $request) {
+    print_r($request->query->all());
+});
+
+```
 
 ## Registering Custom Post Types
 

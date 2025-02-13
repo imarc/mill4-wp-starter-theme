@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\MyService;
+use Symfony\Component\HttpFoundation\Request;
 
 class FooController extends Controller
 {
-    public function __invoke(MyService $service)
+    public function __invoke(Request $request)
     {
         $this->render('foo.twig', ['message' => 'Hello from FooController!']);
     }
