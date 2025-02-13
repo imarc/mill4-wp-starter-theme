@@ -2,18 +2,19 @@
 
 namespace App\Services;
 
+use League\Container\Container as BaseContainer;
 use ReflectionFunction;
 use ReflectionMethod;
 
 class Router
 {
-    private static $instance = null;
-    private $routes = [];
-    private $container; // Service container
+    private static ?Router $instance = null;
+    private array $routes = [];
+    private BaseContainer $container;
 
     private function __construct()
     {
-        $this->container = Container::getInstance(); // Assuming you have a service container
+        $this->container = Container::getInstance();
     }
 
     public static function getInstance(): Router
@@ -24,44 +25,42 @@ class Router
         return self::$instance;
     }
 
-    public function get($path, $action)
+    public function get($path, $action): void
     {
         $this->routes['GET'][$path] = $action;
     }
 
-    public function post($path, $action)
+    public function post($path, $action): void
     {
         $this->routes['POST'][$path] = $action;
     }
 
-    public function put($path, $action)
+    public function put($path, $action): void
     {
-        $this->routes['PUT'][$path] = $this->resolveAction($action);
+        $this->routes['PUT'][$path] = $action;
     }
 
-    public function delete($path, $action)
+    public function delete($path, $action): void
     {
-        $this->routes['DELETE'][$path] = $this->resolveAction($action);
+        $this->routes['DELETE'][$path] = $action;
     }
 
-    public function patch($path, $action)
+    public function patch($path, $action): void
     {
-        $this->routes['PATCH'][$path] = $this->resolveAction($action);
+        $this->routes['PATCH'][$path] = $action;
     }
 
-    public function handleRequest($request_method, $custom_route)
+    public function handleRequest(string $method, string $route): void
     {
-        if (isset($this->routes[$request_method][$custom_route])) {
-            $action = $this->routes[$request_method][$custom_route];
-
-            // Resolve dependencies and call the action
+        if (isset($this->routes[$method][$route])) {
+            $action = $this->routes[$method][$route];
             $resolvedAction = $this->resolveAction($action);
             call_user_func($resolvedAction);
             exit; // Prevent further processing
         }
     }
 
-    private function resolveAction($action)
+    private function resolveAction($action): callable
     {
         // If the action is a callable...
         if (is_callable($action)) {
@@ -69,13 +68,13 @@ class Router
         }
 
         // If the action is a controller class name, let's hope
-        // that it has an __invoke method
+        // that it has an __invoke method!
         if (class_exists($action)) {
             return $this->resolveClassMethod($action, '__invoke');
         }
 
         // If the action is a class method...
-        if (preg_match('/(.*)@(\w+)$/', $action, $matches)) {
+        if (preg_match('/^(.*)@(\w+)$/', $action, $matches)) {
             $class = $matches[1];
             $method = $matches[2];
 
@@ -85,7 +84,7 @@ class Router
         throw new \InvalidArgumentException("Action must be a callable or a valid controller class name.");
     }
 
-    private function resolveClassMethod($class, $method)
+    private function resolveClassMethod(string $class, string $method): callable
     {
         $controller = new $class();
 
@@ -100,7 +99,7 @@ class Router
         };
     }
 
-    private function resolveCallable($callable)
+    private function resolveCallable(callable $callable): callable
     {
         $reflection = new ReflectionFunction($callable);
 
@@ -120,7 +119,7 @@ class Router
         return $dependencies;
     }
 
-    public function getRoutes()
+    public function getRoutes(): array
     {
         return $this->routes;
     }
