@@ -12,10 +12,12 @@ In addition to the Twig templating that Timber provides, **Mill 4** includes the
 
 ## Registering Custom Routes
 
-Custom routes are registered in `app/routes.php`. You can use either a closure or an invokable controller class to handle the route.
+Custom routes are registered in `app/routes.php`. You can use either a closure, an invokable controller class, or a specific class method to handle the route.
 
 ```php
 <?php
+
+// app/routes.php
 
 use App\Http\Controllers\SubmitContactFormAction;
 
@@ -23,11 +25,32 @@ $router->get('/foo', function () {
     return 'Hello world!';
 });
 
+$router->post('/foo/submit', '\App\Http\Controllers\FooController@submit');
+
 $router->post('/contact/submit', SubmitContactFormAction::class);
 
 ```
 
 *Note: The logic for custom routes depends on WordPress's native rewrite rules, which are cached. If you add, edit, or remove routes, you may need to flush the rewrite rules. You can do this by visiting the **Permalinks Settings** page in the WordPress admin and clicking the "Save Changes" button.*
+
+### Dependency Injection
+
+Your route actions can accept dependencies as parameters. These dependencies will be automatically resolved from the service container. For example:
+
+```php
+
+// app/routes.php
+
+use App\Services\MyService;
+
+$router->get('/foo', function (MyService $service) {
+    $service->doSomething();
+});
+
+```
+
+The router will also resolve dependencies for controller actions.
+
 
 ## Registering Custom Post Types
 
@@ -38,6 +61,8 @@ To register a custom post type in your theme, follow these steps:
 
    ```php
    <?php
+
+   // app/PostTypes/Movie.php
 
    namespace App\PostTypes;
 
@@ -61,6 +86,9 @@ To register a custom post type in your theme, follow these steps:
    Update the `registerPostTypes()` method in the `PostTypeHooks` class to include your new post type:
 
    ```php
+
+    // app/Hooks/PostTypeHooks.php
+
     public function registerPostTypes(): void
     {
         $postTypes = [
@@ -79,6 +107,8 @@ To register a custom taxonomy in your theme, follow these steps:
 
    ```php
     <?php
+
+    // app/Taxonomies/Genre.php
 
     namespace App\Taxonomies;
 
@@ -102,6 +132,8 @@ To register a custom taxonomy in your theme, follow these steps:
    Update the `registerTaxonomies()` method in the `TaxonomyHooks` class to include your new taxonomy:
 
    ```php
+    // app/Hooks/TaxonomyHooks.php
+
     public function registerTaxonomies(): void
     {
         $taxonomies = [
@@ -109,5 +141,71 @@ To register a custom taxonomy in your theme, follow these steps:
         ];
 
         ...
+    }
+    ```
+
+## Registering Gutenberg Blocks
+
+To register a Gutenberg block in your theme, follow these steps:
+
+1. **Create a Gutenberg Block Class**:
+   Create a new class for your Gutenberg block. This class should extend the `Block` class provided by the theme. For example:
+
+   ```php
+    <?php
+
+    // app/Blocks/GenericCtaBlock.php
+
+    namespace App\Blocks;
+
+    class GenericCtaBlock extends Block
+    {
+        public const NAME = 'generic-cta-block';
+        public const TITLE = 'Generic CTA Block';
+        public const CATEGORY = 'section';
+        public const ICON = 'admin-comments';
+        public const POST_TYPES = [];
+        public const KEYWORDS = [];
+    }
+    ```
+
+2. **Register the Gutenberg Block**:
+   Update the `registerBlocks()` method in the `BlockHooks` class to include your new block:
+
+   ```php
+    // app/Hooks/BlockHooks.php
+
+    public function registerBlocks(): void
+    {
+        $registrar = new Blocks\Registrar();
+
+        $blocks = [
+            Blocks\GenericCtaBlock::class,
+        ];
+        ...
+    }
+    ```
+3. **Create a Gutenberg Block Template**:
+   Create a new twig template file for your block. This file should be named after the block name and placed in the `templates/blocks` directory. For example:
+
+   ```php
+    // views/blocks/generic-cta-block.twig
+
+    {% extends "base.twig" %}
+
+    {% block content %}
+        <div class="generic-cta-block">
+            <h2>{{ block.title }}</h2>
+        </div>
+    {% endblock %}
+    ```
+    *Note: Any ACF data associated with the block will automaticallybe included in a template variable called `block`. If you'd like to pass any additional context to the template, you may override the getAdditionalContext() method in your block class:*
+
+    ```php
+    //  app/Blocks/GenericCtaBlock.php
+
+    protected function getAdditionalContext(): array
+    {
+        return ['foo' => 'bar'];
     }
     ```

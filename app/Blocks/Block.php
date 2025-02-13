@@ -31,8 +31,14 @@ abstract class Block
 
         $context['is_preview'] = $isPreview;
         $context['block'] = get_fields();
+        $context = array_merge($context, $this->getAdditionalContext());
 
         Timber::render($this->getTemplatePath(), $context);
+    }
+
+    protected function getAdditionalContext(): array
+    {
+        return [];
     }
 
     private function getTemplatePath(): string
