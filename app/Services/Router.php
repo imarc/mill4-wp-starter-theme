@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use ReflectionFunction;
+use ReflectionMethod;
+
 class Router
 {
     private static $instance = null;
@@ -93,22 +96,19 @@ class Router
 
         return function () use ($controller, $method) {
             $reflection = new \ReflectionMethod($controller, $method);
-            $parameters = $reflection->getParameters();
-            $dependencies = [];
-
-            foreach ($parameters as $parameter) {
-                $dependency = $this->container->get($parameter->getType()->getName());
-                $dependencies[] = $dependency;
-            }
-
-            return $controller->$method(...$dependencies);
+            return $controller->$method(...$this->getDependenciesForReflection($reflection));
         };
     }
 
     private function resolveCallable($callable)
     {
-        // If the callable is a closure, resolve its dependencies
-        $reflection = new \ReflectionFunction($callable);
+        $reflection = new ReflectionFunction($callable);
+
+        return $callable(...$this->getDependenciesForReflection($reflection));
+    }
+
+    private function getDependenciesForReflection(ReflectionMethod|ReflectionFunction $reflection): array
+    {
         $parameters = $reflection->getParameters();
         $dependencies = [];
 
@@ -117,16 +117,7 @@ class Router
             $dependencies[] = $dependency;
         }
 
-        return function () use ($callable, $dependencies) {
-            return $callable(...$dependencies);
-        };
-    }
-
-    public function loadRoutes($callback)
-    {
-        if (is_callable($callback)) {
-            $callback($this);
-        }
+        return $dependencies;
     }
 
     public function getRoutes()

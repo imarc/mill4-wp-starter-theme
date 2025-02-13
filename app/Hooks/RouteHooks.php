@@ -2,9 +2,10 @@
 
 namespace App\Hooks;
 
+use App\Hooks\Contracts\HooksInterface;
 use App\Services\Router;
 
-class RouteHooks
+class RouteHooks implements HooksInterface
 {
     private $router;
 
