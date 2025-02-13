@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class FooController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
-        $this->render('foo.twig', ['message' => 'Hello from FooController!']);
+        return json_response(['message' => 'Hello from FooController!']);
     }
 }

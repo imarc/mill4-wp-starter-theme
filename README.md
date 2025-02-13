@@ -67,6 +67,72 @@ $router->get('/foo', function (Request $request) {
 
 ```
 
+### Responses
+
+Mill 4 includes helpers for returning a variety of responses.
+
+#### JSON Responses
+
+The `json_response()` function is a shortcut for returning a JSON response. It uses Symfony's `JsonResponse` class behind the scenes. It takes an array of data, an optional status code, and an array of headers. For example:
+
+```php
+
+// app/routes.php
+
+$router->get('/foo', function() {
+    return json_response(['message' => 'Hello from FooController!']);
+});
+
+```
+
+#### HTML Responses
+
+The `response()` function is a shortcut for returning an HTML response. It uses Symfony's `Response` class behind the scenes. It takes a string of content, an optional status code, and an array of headers. For example:
+
+```php
+
+// app/routes.php
+
+$router->get('/foo', function() {
+    return response('Hello from FooController!');
+});
+
+```
+
+#### Twig Template Responses
+
+Mill 4's base controller class includes a `render()` method that renders a Twig template and returns the rendered HTML. For example:
+
+```php
+
+// app/Http/Controllers/FooController.php
+
+use App\Http\Controllers\Controller;
+
+class FooController extends Controller
+{
+    public function __invoke(): void
+    {
+        $this->render('foo.twig', ['message' => 'Hello from FooController!']);
+    }
+}
+
+```
+
+```twig
+<!-- views/foo.twig -->
+
+{% extends "base.twig" %}
+
+{% block content %}
+    <h1>{{ message }}</h1>
+{% endblock %}
+```
+
+
+
+
+
 ## Registering Custom Post Types
 
 To register a custom post type in your theme, follow these steps:
