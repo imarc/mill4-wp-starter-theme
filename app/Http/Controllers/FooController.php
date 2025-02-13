@@ -8,8 +8,6 @@ class FooController extends Controller
 {
     public function __invoke(MyService $service)
     {
-        // $this->render('foo.twig', ['message' => 'Hello from FooController!']);
-        $service->doSomething();
-        exit();
+        $this->render('foo.twig', ['message' => 'Hello from FooController!']);
     }
 }

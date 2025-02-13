@@ -60,31 +60,49 @@ class Router
 
     private function resolveAction($action)
     {
+        // If the action is a callable...
         if (is_callable($action)) {
-            // If it's a callable, resolve dependencies
             return $this->resolveCallable($action);
         }
 
-        // Assuming action is a controller class name
+        // If the action is a controller class name, let's hope
+        // that it has an __invoke method
         if (class_exists($action)) {
-            // Create an instance of the controller
-            $controller = new $action(); // Instantiate the controller
-            return function () use ($controller) {
-                // Resolve dependencies for __invoke method
-                $reflection = new \ReflectionMethod($controller, '__invoke');
-                $parameters = $reflection->getParameters();
-                $dependencies = [];
+            return $this->resolveClassMethod($action, '__invoke');
+        }
 
-                foreach ($parameters as $parameter) {
-                    $dependency = $this->container->get($parameter->getType()->getName());
-                    $dependencies[] = $dependency;
-                }
+        // If the action is a class method...
+        if (preg_match('/(.*)@(\w+)$/', $action, $matches)) {
+            $class = $matches[1];
+            $method = $matches[2];
 
-                return $controller->__invoke(...$dependencies); // Call __invoke with dependencies
-            };
+            return $this->resolveClassMethod($class, $method);
         }
 
         throw new \InvalidArgumentException("Action must be a callable or a valid controller class name.");
+    }
+
+    private function resolveClassMethod($class, $method)
+    {
+        $controller = new $class();
+
+        // let's ensure the method exists
+        if (! method_exists($controller, $method)) {
+            throw new \InvalidArgumentException("Method $method does not exist in controller $class.");
+        }
+
+        return function () use ($controller, $method) {
+            $reflection = new \ReflectionMethod($controller, $method);
+            $parameters = $reflection->getParameters();
+            $dependencies = [];
+
+            foreach ($parameters as $parameter) {
+                $dependency = $this->container->get($parameter->getType()->getName());
+                $dependencies[] = $dependency;
+            }
+
+            return $controller->$method(...$dependencies);
+        };
     }
 
     private function resolveCallable($callable)
