@@ -10,6 +10,64 @@ In addition to the Twig templating that Timber provides, **Mill 4** includes the
 * An object-oriented interface for registering custom post types, taxonomies, and Gutenberg blocks.
 * A basic front-end build process for compiling Sass and JavaScript using Vite.
 
+## Installation
+
+Best way to go about installing this thing is probably to just download the zip file and drop it into your `wp-content/themes` directory. Then you'll want to rename the folder to your own slug and edit the details in the `style.css` file.
+
+Next, `cd` to the theme folder and run the following:
+
+```bash
+% composer install
+% npm install
+% npm run build
+```
+
+This will install the dependencies and compile the assets.
+
+Finally, you'll want to activate the theme in the WordPress admin.
+
+## Hooks!
+
+Mill 4 includes a basic hooks system for registering actions and filters. While it's not strictly necessary to use it (there's nothing stopping you from registering your own actions and filters in the theme's `functions.php` file), it's a handy way to organize your code.
+
+Take a look at the `app/Hooks` directory to see the included hooks classes. To create your own Hooks class, create a new class that implements `App\Hooks\Contracts\HooksInterface` and register it in the `app/bootstrap.php` file. Here's an example:
+
+```php
+// app/Hooks/MyHooks.php
+
+namespace App\Hooks;
+
+use App\Hooks\Contracts\HooksInterface;
+
+class MyHooks implements HooksInterface
+{
+    public function initialize(): void
+    {
+        add_action('init', [$this, 'registerActions']);
+    }
+    
+    public function registerActions(): void
+    {
+        // ... register your actions here
+    }
+}
+```
+
+Then, you'll want to register the hooks in the `app/bootstrap.php` file.
+
+```php
+<?php
+
+// app/bootstrap.php
+
+use App\Hooks;
+use App\Services\Container;
+
+$container = new Container();
+$hooks = $container->get(Hooks\Registrar::class);
+$hooks->register(Hooks\MyHooks::class);
+```
+
 ## Registering Custom Routes
 
 Custom routes are registered in `app/routes.php`. You can use either a closure, an invokable controller class, or a specific class method to handle the route.
