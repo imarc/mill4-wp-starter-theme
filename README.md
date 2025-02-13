@@ -208,4 +208,15 @@ To register a Gutenberg block in your theme, follow these steps:
     {
         return ['foo' => 'bar'];
     }
+
+    // views/blocks/generic-cta-block.twig
+
+    {% extends "base.twig" %}
+
+    {% block content %}
+        <div class="generic-cta-block">
+            <h2>{{ block.title }}</h2>
+            <p>{{ foo }}</p> <!-- This is the foo context variable -->
+        </div>
+    {% endblock %}  
     ```
