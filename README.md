@@ -186,7 +186,7 @@ To register a Gutenberg block in your theme, follow these steps:
     }
     ```
 3. **Create a Gutenberg Block Template**:
-   Create a new twig template file for your block. This file should be named after the block name and placed in the `templates/blocks` directory. For example:
+   Create a new twig template file for your block. This file should be named after the block name and placed in the `views/blocks` directory. For example:
 
    ```php
     // views/blocks/generic-cta-block.twig
@@ -199,7 +199,7 @@ To register a Gutenberg block in your theme, follow these steps:
         </div>
     {% endblock %}
     ```
-    *Note: Any ACF data associated with the block will automaticallybe included in a template variable called `block`. If you'd like to pass any additional context to the template, you may override the getAdditionalContext() method in your block class:*
+    *Note: Any ACF data associated with the block will automatically be included in a template variable called `block`. If you'd like to pass any additional context to the template, you may override the getAdditionalContext() method in your block class:*
 
     ```php
     //  app/Blocks/GenericCtaBlock.php
