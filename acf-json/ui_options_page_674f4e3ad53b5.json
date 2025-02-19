@@ -1,0 +1,23 @@
+{
+    "key": "ui_options_page_674f4e3ad53b5",
+    "title": "Security",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Security",
+    "menu_slug": "security",
+    "parent_slug": "options-general.php",
+    "advanced_configuration": 1,
+    "icon_url": "",
+    "menu_title": "",
+    "position": "",
+    "redirect": false,
+    "description": "",
+    "menu_icon": [],
+    "update_button": "Update",
+    "updated_message": "Options Updated",
+    "capability": "manage_options",
+    "data_storage": "options",
+    "post_id": "",
+    "autoload": 0,
+    "modified": 1739931876
+}
