@@ -1,4 +1,4 @@
-<div class="hero hero--center">
+<div class="hero">
     <div class="hero__content">
         <h1 class="hero__title">{{ block.title }}</h1>
         <div class="hero__text richText">
@@ -12,4 +12,11 @@
         </div>
         {% endif %}
     </div>
+    {% if block.image %}
+        <div class="hero__image">
+            <picture class="media__image">
+                <img src="{{ block.image.url }}" alt="{{ block.image.alt }}">
+            </picture>
+        </div>
+    {% endif %}
 </div>
