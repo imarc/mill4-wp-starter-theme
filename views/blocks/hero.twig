@@ -1,0 +1,15 @@
+<div class="hero hero--center">
+    <div class="hero__content">
+        <h1 class="hero__title">{{ block.title }}</h1>
+        <div class="hero__text richText">
+            {{ block.text }}
+        </div>
+        {% if block.links %}
+        <div class="hero__actions actions">
+            {% for cta in block.links %}
+                <button class="hero__button button {{ cta.type == 'secondary' ?'-styleOutline' : null }}" href="{{ cta.link.url }}">{{ cta.link.title }}</button>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
