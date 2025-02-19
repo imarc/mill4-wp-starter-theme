@@ -229,7 +229,8 @@ To register a custom post type in your theme, follow these steps:
         public const POST_TYPES = [
             PostTypes\Movie::class,
         ];
-    }
+        
+        ...
     ```
 
 ## Registering Custom Taxonomies
