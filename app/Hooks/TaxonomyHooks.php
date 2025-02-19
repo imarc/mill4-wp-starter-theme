@@ -7,10 +7,9 @@ use App\Taxonomies;
 
 class TaxonomyHooks implements HooksInterface
 {
-    public function __construct(private Taxonomies\Registrar $taxonomies)
-    {
-
-    }
+    public const TAXONOMIES = [
+        Taxonomies\Genre::class,
+    ];
 
     public function initialize(): void
     {
@@ -19,12 +18,16 @@ class TaxonomyHooks implements HooksInterface
 
     public function registerTaxonomies(): void
     {
-        $taxonomies = [
-            Taxonomies\Genre::class,
-        ];
+        foreach (self::TAXONOMIES as $taxonomyClass) {
+            $taxonomy = new $taxonomyClass();
 
-        foreach ($taxonomies as $postType) {
-            $this->taxonomies->register($postType);
+            if (! method_exists($taxonomy, 'register')) {
+                throw new \RuntimeException(sprintf('Could not register class %s. register() does not exist', $taxonomyClass));
+            }
+
+            $taxonomy->register();
+
+            do_action('mill4_taxonomy_registered', $taxonomyClass);
         }
     }
 }

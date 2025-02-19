@@ -3,15 +3,13 @@
 namespace App\Hooks;
 
 use App\Commands\FooCommand;
-use App\Commands\Registrar;
 use App\Hooks\Contracts\HooksInterface;
 
 class CommandHooks implements HooksInterface
 {
-    public function __construct(private Registrar $commands)
-    {
-
-    }
+    public const COMMANDS = [
+        FooCommand::class,
+    ];
 
     public function initialize(): void
     {
@@ -20,12 +18,16 @@ class CommandHooks implements HooksInterface
 
     public function registerCommands(): void
     {
-        $commands = [
-            FooCommand::class,
-        ];
+        foreach (self::COMMANDS as $commandClass) {
+            $command = new $commandClass();
 
-        foreach ($commands as $command) {
-            $this->commands->register($command);
+            if (! method_exists($command, 'register')) {
+                throw new \RuntimeException(sprintf('Could not register class %s. register() does not exist', $commandClass));
+            }
+
+            $command->register();
+
+            do_action('mill4_command_registered', $commandClass);
         }
     }
 }

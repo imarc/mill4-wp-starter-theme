@@ -7,6 +7,11 @@ use App\Hooks\Contracts\HooksInterface;
 
 class BlockHooks implements HooksInterface
 {
+    public const BLOCKS = [
+        Blocks\GenericCtaBlock::class,
+        Blocks\Hero::class,
+    ];
+
     public function initialize(): void
     {
         add_action('init', [$this, 'registerBlocks']);
@@ -14,14 +19,15 @@ class BlockHooks implements HooksInterface
 
     public function registerBlocks()
     {
-        $registrar = new Blocks\Registrar();
+        foreach (self::BLOCKS as $blockClass) {
+            $block = new $blockClass();
 
-        $blocks = [
-            Blocks\GenericCtaBlock::class,
-        ];
+            if (! method_exists($block, 'register')) {
+                throw new \RuntimeException(sprintf('Could not register class %s. register() does not exist', $blockClass));
+            }
 
-        foreach ($blocks as $block) {
-            $registrar->register($block);
+            $block->register();
+            do_action('mill4_block_registered', $blockClass);
         }
     }
 }

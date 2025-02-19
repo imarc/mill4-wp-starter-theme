@@ -7,10 +7,9 @@ use App\PostTypes;
 
 class PostTypeHooks implements HooksInterface
 {
-    public function __construct(private PostTypes\Registrar $postTypes)
-    {
-
-    }
+    public const POST_TYPES = [
+        PostTypes\Movie::class,
+    ];
 
     public function initialize(): void
     {
@@ -19,12 +18,16 @@ class PostTypeHooks implements HooksInterface
 
     public function registerPostTypes(): void
     {
-        $postTypes = [
-            PostTypes\Movie::class,
-        ];
+        foreach (self::POST_TYPES as $postTypeClass) {
+            $postType = new $postTypeClass();
 
-        foreach ($postTypes as $postType) {
-            $this->postTypes->register($postType);
+            if (! method_exists($postType, 'register')) {
+                throw new \RuntimeException(sprintf('Could not register class %s. register() does not exist', $postTypeClass));
+            }
+
+            $postType->register();
+
+            do_action('mill4_post_type_registered', $postTypeClass);
         }
     }
 }
