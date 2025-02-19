@@ -1,0 +1,24 @@
+<div class="carouselHeroSection">
+    {% if block.slides %}
+        <div class="carouselHeroSection__slides">
+            {% for slide in block.slides %}
+                <div class="carouselHeroSection__slide">
+                    <h2 class="carouselHeroSection__title">{{ slide.title }}</h2>
+                    <div class="carouselHeroSection__text">{{ slide.text }}</div>
+                    {% if slide.links %}
+                        <div class="carouselHeroSection__actions">
+                            {% for cta in slide.links %}
+                                <button class="hero__button button {{ cta.type == 'secondary' ?'-styleOutline' : null }}" href="{{ cta.link.url }}">{{ cta.link.title }}</button>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if slide.image %}
+                        <div class="carouselHeroSection__image">
+                            <img src="{{ slide.image.url }}" alt="{{ slide.image.alt }}">
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

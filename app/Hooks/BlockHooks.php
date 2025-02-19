@@ -9,6 +9,7 @@ class BlockHooks implements HooksInterface
 {
     public const BLOCKS = [
         Blocks\CallToActionSection::class,
+        Blocks\CarouselHeroSection::class,
         Blocks\HeroSection::class,
     ];
 
