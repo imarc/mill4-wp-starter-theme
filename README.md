@@ -187,10 +187,6 @@ class FooController extends Controller
 {% endblock %}
 ```
 
-
-
-
-
 ## Registering Custom Post Types
 
 To register a custom post type in your theme, follow these steps:
@@ -222,19 +218,18 @@ To register a custom post type in your theme, follow these steps:
    ```
 
 2. **Register the Custom Post Type**:
-   Update the `registerPostTypes()` method in the `PostTypeHooks` class to include your new post type:
+   Update the `POST_TYPES` constant in the `PostTypeHooks` class to include your new post type:
 
    ```php
 
     // app/Hooks/PostTypeHooks.php
 
-    public function registerPostTypes(): void
+    class PostTypeHooks implements HooksInterface
     {
-        $postTypes = [
+        public const POST_TYPES = [
             PostTypes\Movie::class,
         ];
-
-        ...
+    }
     ```
 
 ## Registering Custom Taxonomies
@@ -268,19 +263,19 @@ To register a custom taxonomy in your theme, follow these steps:
     ```
 
 2. **Register the Custom Taxonomy**:
-   Update the `registerTaxonomies()` method in the `TaxonomyHooks` class to include your new taxonomy:
+   Update the `TAXONOMIES` constant in the `TaxonomyHooks` class to include your new taxonomy:
 
    ```php
     // app/Hooks/TaxonomyHooks.php
 
-    public function registerTaxonomies(): void
+    class TaxonomyHooks implements HooksInterface
     {
-        $taxonomies = [
+
+        public const TAXONOMIES = [
             Taxonomies\Genre::class,
         ];
 
         ...
-    }
     ```
 
 ## Registering Gutenberg Blocks
@@ -309,20 +304,18 @@ To register a Gutenberg block in your theme, follow these steps:
     ```
 
 2. **Register the Gutenberg Block**:
-   Update the `registerBlocks()` method in the `BlockHooks` class to include your new block:
+   Update the `BLOCKS` constant in the `BlockHooks` class to include your new block:
 
    ```php
     // app/Hooks/BlockHooks.php
 
-    public function registerBlocks(): void
+    class BlockHooks implements HooksInterface
     {
-        $registrar = new Blocks\Registrar();
-
-        $blocks = [
+        public const BLOCKS = [
             Blocks\GenericCtaBlock::class,
         ];
+
         ...
-    }
     ```
 3. **Create a Gutenberg Block Template**:
    Create a new twig template file for your block. This file should be named after the block name and placed in the `views/blocks` directory. For example:
@@ -338,7 +331,7 @@ To register a Gutenberg block in your theme, follow these steps:
         </div>
     {% endblock %}
     ```
-    *Note: Any ACF data associated with the block will automatically be included in a template variable called `block`. If you'd like to pass any additional context to the template, you may override the getAdditionalContext() method in your block class:*
+    Any ACF data associated with the block will automatically be included in a template variable called `block`. If you'd like to pass any additional context to the template, you may override the getAdditionalContext() method in your block class:
 
     ```php
     //  app/Blocks/GenericCtaBlock.php
@@ -386,19 +379,18 @@ Mill 4 includes a basic command system for running custom commands. To create a 
     ```
 
 2. **Register the Command**:
-   Update the `registerCommands()` method in the `CommandHooks` class to include your new command:
+   Update the `COMMANDS` constant in the `CommandHooks` class to include your new command:
 
    ```php
     // app/Hooks/CommandHooks.php
 
-    public function registerCommands(): void
+    class CommandHooks implements HooksInterface
     {
-        $commands = [
+        public const COMMANDS = [
             Commands\FooCommand::class,
         ];
 
         ...
-    }
     ```
 
 Now your command should be available to run using WordPress' `wp` command.
