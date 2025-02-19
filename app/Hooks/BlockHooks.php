@@ -8,8 +8,8 @@ use App\Hooks\Contracts\HooksInterface;
 class BlockHooks implements HooksInterface
 {
     public const BLOCKS = [
-        Blocks\GenericCtaBlock::class,
-        Blocks\Hero::class,
+        Blocks\CallToActionSection::class,
+        Blocks\HeroSection::class,
     ];
 
     public function initialize(): void

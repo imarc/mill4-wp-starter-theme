@@ -5,11 +5,11 @@
             {{ block.text }}
         </div>
         {% if block.links %}
-        <div class="hero__actions actions">
-            {% for cta in block.links %}
-                <button class="hero__button button {{ cta.type == 'secondary' ?'-styleOutline' : null }}" href="{{ cta.link.url }}">{{ cta.link.title }}</button>
-            {% endfor %}
-        </div>
+            <div class="hero__actions actions">
+                {% for cta in block.links %}
+                    <button class="hero__button button {{ cta.type == 'secondary' ?'-styleOutline' : null }}" href="{{ cta.link.url }}">{{ cta.link.title }}</button>
+                {% endfor %}
+            </div>
         {% endif %}
     </div>
     {% if block.image %}

@@ -1,6 +1,6 @@
 {
     "key": "group_6737827aa37db",
-    "title": "Block: Generic CTA",
+    "title": "Block: Call to Action Section",
     "fields": [
         {
             "key": "field_6737827ab2493",
@@ -45,11 +45,81 @@
             "delay": 0
         },
         {
-            "key": "field_673782a3b2495",
-            "label": "CTA",
-            "name": "cta",
+            "key": "field_67b655b75dc30",
+            "label": "Links",
+            "name": "links",
             "aria-label": "",
-            "type": "link",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "row",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Row",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_67b655cc5dc31",
+                    "label": "Type",
+                    "name": "type",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "primary": "Primary",
+                        "secondary": "Secondary"
+                    },
+                    "default_value": "primary",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "allow_in_bindings": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "parent_repeater": "field_67b655b75dc30"
+                },
+                {
+                    "key": "field_67b655ec5dc32",
+                    "label": "Link",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "allow_in_bindings": 0,
+                    "parent_repeater": "field_67b655b75dc30"
+                }
+            ]
+        },
+        {
+            "key": "field_67b6561870587",
+            "label": "Image",
+            "name": "image",
+            "aria-label": "",
+            "type": "image",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -59,7 +129,42 @@
                 "id": ""
             },
             "return_format": "array",
-            "allow_in_bindings": 0
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "allow_in_bindings": 0,
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_67b6562370588",
+            "label": "Background Image",
+            "name": "background_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "allow_in_bindings": 0,
+            "preview_size": "medium"
         }
     ],
     "location": [
@@ -67,7 +172,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf\/generic-cta-block"
+                "value": "acf\/call-to-action-section"
             }
         ]
     ],
@@ -80,5 +185,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1739931859
+    "modified": 1740002871
 }

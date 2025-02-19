@@ -2,10 +2,10 @@
 
 namespace App\Blocks;
 
-class Hero extends Block
+class HeroSection extends Block
 {
-    public const NAME = 'hero';
-    public const TITLE = 'Hero';
+    public const NAME = 'hero-section';
+    public const TITLE = 'Hero Section';
     public const CATEGORY = 'section';
     public const ICON = 'cover-image';
     public const POST_TYPES = [];

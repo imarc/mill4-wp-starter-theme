@@ -1,6 +1,6 @@
 {
     "key": "group_67b4affcbf705",
-    "title": "Block: Hero",
+    "title": "Block: Hero Section",
     "fields": [
         {
             "key": "field_67b4affdb2baf",
@@ -146,7 +146,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf\/hero"
+                "value": "acf\/hero-section"
             }
         ]
     ],
@@ -159,5 +159,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1740001893
+    "modified": 1740002532
 }
