@@ -11,6 +11,7 @@ class BlockHooks implements HooksInterface
         Blocks\CallToActionSection::class,
         Blocks\CarouselHeroSection::class,
         Blocks\HeroSection::class,
+        Blocks\LogoCloudSection::class,
         Blocks\TestimonialBlock::class,
         Blocks\TestimonialCarouselSection::class,
     ];
