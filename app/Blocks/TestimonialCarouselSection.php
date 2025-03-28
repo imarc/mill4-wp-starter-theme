@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Blocks;
+
+class TestimonialCarouselSection extends Block
+{
+    public const NAME = 'testimonial-carousel-section';
+    public const TITLE = 'Testimonial Carousel Section';
+    public const CATEGORY = 'section';
+    public const ICON = 'admin-comments';
+    public const POST_TYPES = [];
+}

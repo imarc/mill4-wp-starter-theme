@@ -1,6 +1,6 @@
 {
     "key": "group_67e6ac9656a81",
-    "title": "Block: Testimonial",
+    "title": "Block: Testimonial Block",
     "fields": [
         {
             "key": "field_67e6ac964c227",
@@ -135,7 +135,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf\/testimonial"
+                "value": "acf\/testimonial-block"
             }
         ]
     ],
@@ -148,5 +148,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1743170975
+    "modified": 1743173738
 }

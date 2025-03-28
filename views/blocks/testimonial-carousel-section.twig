@@ -1,0 +1,13 @@
+<div class="testimonialCarouselSection">
+    <div class="testimonialCarouselSection__container">
+        <div class="testimonialCarouselSection__title">
+            {{ block.title }}
+        </div>
+        <div class="testimonialCarouselSection__carousel">
+            {% for testimonial in block.testimonials %}
+                {% include 'blocks/testimonial-block.twig' with { block: testimonial } %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
