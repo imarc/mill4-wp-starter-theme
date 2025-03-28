@@ -1,0 +1,28 @@
+<div class="testimonial">
+    <div class="testimonial__quote">
+        {{ block.quote }}
+    </div>
+    {% if block.image %}
+        <div class="testimonial__image">
+            <img src="{{ block.image.url }}" alt="{{ block.image.alt }}">
+        </div>
+    {% endif %}
+    <div class="testimonial__authorName">
+        {{ block.author_name }}
+    </div>
+    {% if block.author_title %}
+        <div class="testimonial__authorTitle">
+            {{ block.author_title }}
+        </div>
+    {% endif %}
+    {% if block.author_company %}
+        <div class="testimonial__authorCompany">
+            {{ block.author_company }}
+        </div>
+    {% endif %}
+    {% if block.cta %}
+        <div class="testimonial__cta">
+            <a href="{{ block.cta.url }}" class="button">{{ block.cta.title }}</a>
+        </div>
+    {% endif %}
+</div>
