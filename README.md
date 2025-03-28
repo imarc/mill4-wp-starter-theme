@@ -405,3 +405,87 @@ Mill 4's base Command class provides a few helpful methods:
 * `confirm($question, $assoc_args)`: Asks the user to confirm an action.
 
 These commands align with those available in [WP-CLI's API](https://make.wordpress.org/cli/handbook/references/internal-api/).
+
+## Jobs
+
+Mill 4 includes a basic job system for running custom jobs. These jobs can be scheduled to run at a specific time or immediately, and can be configured to use the WordPress cron system.
+
+To create a new job, follow these steps:
+
+1. **Create a Job Class**:
+   Create a new class for your job. This class should extend the `Job` class provided by the theme. For example:
+
+   ```php
+    // app/Jobs/MyGreatJob.php
+
+    namespace App\Jobs;
+
+    class MyGreatJob extends Job
+    {
+        public function handle(): void
+        {
+            die('I did a thing!');
+        }
+    }
+    ```
+
+2. **Register the Job**:
+   Update the `JOBS` constant in the `JobHooks` class to include your new job:
+
+   ```php
+    // app/Hooks/JobHooks.php
+
+    class JobHooks implements HooksInterface
+    {
+        public const JOBS = [
+            Jobs\MyGreatJob::class,
+        ];
+    }
+    ```
+
+Now your job should be available to be dispatched.
+
+```php
+MyGreatJob::dispatch()
+    ->at('2025-03-29 12:00:00')
+    ->execute();
+```
+
+This will schedule the job to run at the specified time. By default, jobs are executed via the WordPress cron system. If you'd like to execute the job immediately and bypass the cron system, you can use pass `false` as the argument to the `execute()` method.
+
+```php
+MyGreatJob::dispatch()
+    ->execute(false);
+```
+
+As with other parts of Mill 4, Jobs support dependency injection, so feel free to add a `__construct()` method to your job class and inject any dependencies you need.
+
+```php
+// app/Jobs/MyGreatJob.php
+
+class MyGreatJob extends Job
+{
+    public function __construct(private Logger $logger)
+    {
+    }
+}
+```
+
+Finally, you can pass arguments to the job when it is dispatched.
+
+```php
+MyGreatJob::dispatch('bar')
+    ->now()
+    ->execute();
+```
+
+The arguments will be passed to the job's `handle()` method as parameters:
+
+```php  
+// app/Jobs/MyGreatJob.php
+
+    public function handle(?string $foo = null): void
+    {
+        die('MyGreatJob ' . $foo);
+    }
+```
