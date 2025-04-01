@@ -91,6 +91,8 @@ $router->post('/contact/submit', SubmitContactFormAction::class);
 
 *Note: The logic for custom routes depends on WordPress's native rewrite rules, which are cached. If you add, edit, or remove routes, you may need to flush the rewrite rules. You can do this by visiting the **Permalinks Settings** page in the WordPress admin and clicking the "Save Changes" button.*
 
+*There's a handy command in the theme to flush the rewrite rules, so you can just run `wp mill4 flush-rewrite-rules` to flush the rules when needed.*
+
 ### Dependency Injection
 
 Your route actions can accept dependencies as parameters. These dependencies will be automatically resolved from the service container. For example:
@@ -108,6 +110,40 @@ $router->get('/foo', function (MyService $service) {
 ```
 
 The router will also resolve dependencies for controller actions.
+
+### Route Parameters
+
+The router supports parameters! Just place parameter names in curly braces and the values will be passed to the route action as parameters. Here's how it works...
+
+```php
+
+// app/routes.php
+
+$router->get('/foo/{bar}', function ($bar) {
+    return $bar;
+});
+```
+
+You may mix parameters and dependencies in the same route action. Just ensure that the parameters are listed before any dependencies in the action signature. For example:
+
+```php
+
+// app/routes.php
+
+$router->get('/foo/{bar}', function (string $bar, MyService $service) {
+    $service->doSomething($bar);
+
+    return 'success!';
+});
+```
+
+The injection of parameters into route actions supports casting to the following types:
+
+* `int`
+* `string`
+* `bool`
+* `float`
+* `array`
 
 ### Request Object
 
@@ -359,7 +395,7 @@ To register a Gutenberg block in your theme, follow these steps:
 Mill 4 includes a basic command system for running custom commands. To create a new command, follow these steps:
 
 1. **Create a Command Class**:
-   Create a new class for your command. This class should extend the `Command` class provided by the theme. For example:
+   Create a new class for your command. This class should extend the `Command` class provided by the theme. Make sure you add a `__invoke()` method to your command class for standalone commands. For example:
 
    ```php
     // app/Commands/FooCommand.php
@@ -379,8 +415,41 @@ Mill 4 includes a basic command system for running custom commands. To create a 
     }
     ```
 
+    Alternatively, if you'd like namespaced commands, you can do this by creating a single command class without an `__invoke()` method. Then, each public method in the class will be treated as a subcommand. For example:
+
+    ```php
+    // app/Commands/FooCommand.php
+
+    class FooCommand extends Command
+    {
+        public function bar()
+        {
+            $this->line('Hello from FooCommand!');
+        }
+    }
+    ```
+
+    Now you can run `wp foo bar` to execute the `bar` method. Running simply `wp foo` will return a list of available subcommands.
+
+    If you'd like the subcommand's name to be different from the method name, you can set the `@subcommand` attribute on the method. For example:
+
+    ```php
+    // app/Commands/FooCommand.php
+
+    class FooCommand extends Command
+    {
+        /**
+         * @subcommand my-great-command
+         */
+        public function myGreatCommand()
+        {
+            $this->line('Hello from FooCommand!');
+        }
+    }
+    ```
+
 2. **Register the Command**:
-   Update the `COMMANDS` constant in the `CommandHooks` class to include your new command:
+   After you've created your command, update the `COMMANDS` constant in the `CommandHooks` class to include your new command:
 
    ```php
     // app/Hooks/CommandHooks.php

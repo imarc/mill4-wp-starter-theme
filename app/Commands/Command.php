@@ -4,29 +4,15 @@ namespace App\Commands;
 
 abstract class Command
 {
-    protected string $name;
+    public string $name;
 
-    protected string $shortDescription = '';
+    public string $shortDescription = '';
 
-    protected string $longDescription = '';
+    public string $longDescription = '';
 
-    protected array $synopsis = [];
+    public array $synopsis = [];
 
-    protected string $when = 'after_wp_load';
-
-    public function register(): void
-    {
-        if (! (defined('WP_CLI') && constant('WP_CLI'))) {
-            return;
-        }
-
-        \WP_CLI::add_command($this->name, $this, [
-            'shortdesc' => $this->shortDescription,
-            'longdesc' => $this->longDescription,
-            'synopsis' => $this->synopsis,
-            'when' => $this->when,
-        ]);
-    }
+    public string $when = 'after_wp_load';
 
     protected function line($message = '')
     {
@@ -57,6 +43,4 @@ abstract class Command
     {
         return \WP_CLI::confirm($question, $assoc_args);
     }
-
-    abstract public function __invoke($args, $assoc_args);
 }

@@ -34,6 +34,9 @@ class RouteHooks implements HooksInterface
             $vars[] = 'custom_route';
             return $vars;
         });
+
+        // Flush rewrite rules when theme is activated
+        add_action('after_switch_theme', [$this, 'flushRewriteRules']);
     }
 
     public function initialize(): void
@@ -65,5 +68,10 @@ class RouteHooks implements HooksInterface
         } catch (\Exception $e) {
             error_log('Route handling error: ' . $e->getMessage());
         }
+    }
+
+    public function flushRewriteRules(): void
+    {
+        flush_rewrite_rules();
     }
 }

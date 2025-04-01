@@ -2,13 +2,13 @@
 
 namespace App\Hooks;
 
-use App\Commands\FooCommand;
+use App\Commands\Mill4Command;
 use App\Hooks\Contracts\HooksInterface;
 
 class CommandHooks implements HooksInterface
 {
     public const COMMANDS = [
-        FooCommand::class,
+        Mill4Command::class,
     ];
 
     public function initialize(): void
@@ -21,11 +21,15 @@ class CommandHooks implements HooksInterface
         foreach (self::COMMANDS as $commandClass) {
             $command = new $commandClass();
 
-            if (! method_exists($command, 'register')) {
-                throw new \RuntimeException(sprintf('Could not register class %s. register() does not exist', $commandClass));
+            if (! (defined('WP_CLI') && constant('WP_CLI'))) {
+                return;
             }
 
-            $command->register();
+            \WP_CLI::add_command($command->name, $command, [
+                'shortdesc' => $command->shortDescription,
+                'longdesc' => $command->longDescription,
+                'when' => $command->when,
+            ]);
 
             do_action('mill4_command_registered', $commandClass);
         }
