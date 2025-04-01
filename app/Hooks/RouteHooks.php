@@ -25,6 +25,7 @@ class RouteHooks implements HooksInterface
                     $regex = ltrim($regex, '/');
                     $regex = str_replace('/', '\/', $regex);
                     // Just pass a flag to indicate this is a custom route
+                    // handleCustomRoutes() will take it from there.
                     add_rewrite_rule("^$regex/?$", "index.php?custom_route=1", 'top');
                 }
             }

@@ -214,7 +214,7 @@ class FooController extends Controller
 ```
 
 ```twig
-<!-- views/foo.twig -->
+<!-- templates/foo.twig -->
 
 {% extends "base.twig" %}
 
@@ -378,7 +378,7 @@ To register a Gutenberg block in your theme, follow these steps:
         return ['foo' => 'bar'];
     }
 
-    // views/blocks/generic-cta-block.twig
+    // templates/blocks/generic-cta-block.twig
 
     {% extends "base.twig" %}
 
