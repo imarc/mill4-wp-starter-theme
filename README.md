@@ -68,7 +68,7 @@ $hooks = $container->get(Hooks\Registrar::class);
 $hooks->register(Hooks\MyHooks::class);
 ```
 
-## Registering Custom Routes
+## Custom Routes
 
 Custom routes are registered in `app/routes.php`. You can use either a closure, an invokable controller class, or a specific class method to handle the route.
 
@@ -223,7 +223,7 @@ class FooController extends Controller
 {% endblock %}
 ```
 
-## Registering Custom Post Types
+## Custom Post Types
 
 To register a custom post type in your theme, follow these steps:
 
@@ -269,7 +269,7 @@ To register a custom post type in your theme, follow these steps:
         ...
     ```
 
-## Registering Custom Taxonomies
+## Custom Taxonomies
 
 To register a custom taxonomy in your theme, follow these steps:
 
@@ -315,7 +315,7 @@ To register a custom taxonomy in your theme, follow these steps:
         ...
     ```
 
-## Registering Gutenberg Blocks
+## Gutenberg Blocks
 
 To register a Gutenberg block in your theme, follow these steps:
 
