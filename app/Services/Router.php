@@ -27,37 +27,81 @@ class Router
 
     public function get($path, $action): void
     {
-        $this->routes['GET'][$path] = $action;
+        $this->routes['GET'][$this->normalizePath($path)] = $action;
     }
 
     public function post($path, $action): void
     {
-        $this->routes['POST'][$path] = $action;
+        $this->routes['POST'][$this->normalizePath($path)] = $action;
     }
 
     public function put($path, $action): void
     {
-        $this->routes['PUT'][$path] = $action;
+        $this->routes['PUT'][$this->normalizePath($path)] = $action;
     }
 
     public function delete($path, $action): void
     {
-        $this->routes['DELETE'][$path] = $action;
+        $this->routes['DELETE'][$this->normalizePath($path)] = $action;
     }
 
     public function patch($path, $action): void
     {
-        $this->routes['PATCH'][$path] = $action;
+        $this->routes['PATCH'][$this->normalizePath($path)] = $action;
+    }
+
+    private function normalizePath(string $path): string
+    {
+        // Remove trailing slash unless it's the root path
+        return $path === '/' ? $path : rtrim($path, '/');
     }
 
     public function handleRequest(string $method, string $route): void
     {
-        if (isset($this->routes[$method][$route])) {
-            $action = $this->routes[$method][$route];
-            $resolvedAction = $this->resolveAction($action);
-            call_user_func($resolvedAction);
-            exit; // Prevent further processing
+        $route = $this->normalizePath($route);
+
+        foreach ($this->routes[$method] ?? [] as $pattern => $action) {
+            // First try exact match for non-parameterized routes
+            if ($pattern === $route) {
+                $resolvedAction = $this->resolveAction($action);
+                call_user_func($resolvedAction, []);
+                exit;
+            }
+
+            // Then try parameterized routes
+            $params = $this->extractParameters($pattern, $route);
+            if ($params !== false) {
+                $resolvedAction = $this->resolveAction($action);
+                call_user_func($resolvedAction, $params);
+                exit;
+            }
         }
+    }
+
+    private function extractParameters(string $pattern, string $route): array|false
+    {
+        // Extract parameter names from the pattern
+        preg_match_all('/\{([^}]+)\}/', $pattern, $paramNames);
+        $paramNames = $paramNames[1];
+
+        // If no parameters in pattern, return false
+        if (empty($paramNames)) {
+            return false;
+        }
+
+        // Convert route pattern to regex
+        $regex = preg_replace('/\{([^}]+)\}/', '([^/]+)', $pattern);
+        $regex = str_replace('/', '\/', $regex);
+        $regex = '/^' . $regex . '\/?$/'; // Make trailing slash optional
+
+        if (preg_match($regex, $route, $matches)) {
+            // Remove the full match
+            array_shift($matches);
+            // Combine parameter names with their values
+            return array_combine($paramNames, $matches);
+        }
+
+        return false;
     }
 
     private function resolveAction($action): callable
@@ -93,30 +137,78 @@ class Router
             throw new \InvalidArgumentException("Method $method does not exist in controller $class.");
         }
 
-        return function () use ($controller, $method) {
+        return function ($routeParams) use ($controller, $method, $class) {
             $reflection = new \ReflectionMethod($controller, $method);
-            return $controller->$method(...$this->getDependenciesForReflection($reflection));
+            $args = $this->resolveParameters($reflection->getParameters(), $routeParams, $class . '::' . $method);
+            return $controller->$method(...$args);
         };
     }
 
     private function resolveCallable(callable $callable): callable
     {
         $reflection = new ReflectionFunction($callable);
-
-        return $callable(...$this->getDependenciesForReflection($reflection));
+        return function ($routeParams) use ($callable, $reflection) {
+            $args = $this->resolveParameters($reflection->getParameters(), $routeParams, 'closure');
+            return $callable(...$args);
+        };
     }
 
-    private function getDependenciesForReflection(ReflectionMethod|ReflectionFunction $reflection): array
+    private function resolveParameters(array $parameters, array $routeParams, string $context): array
     {
-        $parameters = $reflection->getParameters();
-        $dependencies = [];
+        $args = [];
 
-        foreach ($parameters as $parameter) {
-            $dependency = $this->container->get($parameter->getType()->getName());
-            $dependencies[] = $dependency;
+        foreach ($parameters as $index => $parameter) {
+            $type = $parameter->getType();
+            $paramName = $parameter->getName();
+
+            // If we have a matching route parameter, use it
+            if (isset($routeParams[$paramName])) {
+                $value = $routeParams[$paramName];
+
+                // If there's no type hint, pass as string
+                if (!$type) {
+                    $args[$index] = $value;
+                    continue;
+                }
+
+                $typeName = $type->getName();
+
+                // Cast the string value to the appropriate type if needed
+                switch ($typeName) {
+                    case 'int':
+                        $value = (int) $value;
+                        break;
+                    case 'float':
+                        $value = (float) $value;
+                        break;
+                    case 'bool':
+                        $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                        break;
+                    case 'array':
+                        $value = explode(',', $value);
+                        break;
+                }
+
+                $args[$index] = $value;
+                continue;
+            }
+
+            // For non-primitive types, try to resolve from container
+            if ($type) {
+                try {
+                    $args[$index] = $this->container->get($type->getName());
+                } catch (\League\Container\Exception\NotFoundException $e) {
+                    throw new \RuntimeException(
+                        "Could not resolve dependency of type {$type->getName()} for parameter \${$paramName} in {$context}"
+                    );
+                }
+            }
         }
 
-        return $dependencies;
+        // Sort by index to ensure correct order
+        ksort($args);
+
+        return $args;
     }
 
     public function getRoutes(): array

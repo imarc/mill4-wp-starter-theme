@@ -20,9 +20,12 @@ class RouteHooks implements HooksInterface
 
             foreach ($routes as $method => $paths) {
                 foreach ($paths as $path => $callback) {
-                    $regex = preg_replace('/^\//', '', $path);
+                    // Convert route pattern to regex for WordPress rewrite rules
+                    $regex = preg_replace('/\{([^}]+)\}/', '([^/]+)', $path);
+                    $regex = ltrim($regex, '/');
                     $regex = str_replace('/', '\/', $regex);
-                    add_rewrite_rule("^$regex/?$", "index.php?custom_route=$path", 'top');
+                    // Just pass a flag to indicate this is a custom route
+                    add_rewrite_rule("^$regex/?$", "index.php?custom_route=1", 'top');
                 }
             }
         });
@@ -41,9 +44,26 @@ class RouteHooks implements HooksInterface
     public function handleCustomRoutes()
     {
         $custom_route = get_query_var('custom_route');
-        if ($custom_route) {
-            $request_method = $_SERVER['REQUEST_METHOD'];
-            $this->router->handleRequest($request_method, $custom_route);
+        if (!$custom_route) {
+            return;
+        }
+
+        $request_method = $_SERVER['REQUEST_METHOD'];
+        $request_uri = $_SERVER['REQUEST_URI'] ?? '';
+
+        // Parse the URL path, ensuring we get a clean path
+        $path = parse_url($request_uri, PHP_URL_PATH);
+        if ($path === null) {
+            return;
+        }
+
+        // Ensure the path starts with a forward slash
+        $path = '/' . ltrim($path, '/');
+
+        try {
+            $this->router->handleRequest($request_method, $path);
+        } catch (\Exception $e) {
+            error_log('Route handling error: ' . $e->getMessage());
         }
     }
 }
