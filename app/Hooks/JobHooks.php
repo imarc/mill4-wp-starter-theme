@@ -4,7 +4,6 @@ namespace App\Hooks;
 
 use App\Hooks\Contracts\HooksInterface;
 use App\Jobs;
-use App\Jobs\MyGreatJob;
 use App\Services\Container;
 
 class JobHooks implements HooksInterface
@@ -30,9 +29,5 @@ class JobHooks implements HooksInterface
             add_action($job->getName(), [$job, 'handle'], 10, 3);
             do_action('mill4_job_registered', $jobClass);
         }
-
-        MyGreatJob::dispatch('bar')
-            ->at('2025-03-29 12:00:00')
-            ->execute();
     }
 }
