@@ -1,5 +1,4 @@
 /.hot
-/composer.lock
 /vendor/
 /wordpress/
 /node_modules/
