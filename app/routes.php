@@ -10,3 +10,5 @@ $router->get('/foo', Controllers\FooController::class);
 $router->get('/bar', function (MyService $service) {
     $service->doSomething();
 });
+
+$router->get('/api/csrf-token', Controllers\API\CsrfTokenAction::class);
