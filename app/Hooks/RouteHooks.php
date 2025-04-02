@@ -2,11 +2,14 @@
 
 namespace App\Hooks;
 
+use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 use App\Services\Router;
 
 class RouteHooks implements HooksInterface
 {
+    use RegistersHooks;
+
     private $router;
 
     public function __construct(Router $router)
@@ -15,7 +18,7 @@ class RouteHooks implements HooksInterface
 
         require __DIR__ . '/../routes.php';
 
-        add_action('init', function () {
+        $this->addAction('init', function () {
             $routes = $this->router->getRoutes();
 
             foreach ($routes as $method => $paths) {
@@ -31,18 +34,18 @@ class RouteHooks implements HooksInterface
             }
         });
 
-        add_filter('query_vars', function ($vars) {
+        $this->addFilter('query_vars', function ($vars) {
             $vars[] = 'custom_route';
             return $vars;
         });
 
         // Flush rewrite rules when theme is activated
-        add_action('after_switch_theme', [$this, 'flushRewriteRules']);
+        $this->addAction('after_switch_theme', [$this, 'flushRewriteRules']);
     }
 
     public function initialize(): void
     {
-        add_action('template_redirect', [$this, 'handleCustomRoutes']);
+        $this->addAction('template_redirect', [$this, 'handleCustomRoutes']);
     }
 
     public function handleCustomRoutes()

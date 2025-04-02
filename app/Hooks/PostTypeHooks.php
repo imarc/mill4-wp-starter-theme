@@ -2,18 +2,21 @@
 
 namespace App\Hooks;
 
+use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 use App\PostTypes;
 
 class PostTypeHooks implements HooksInterface
 {
+    use RegistersHooks;
+
     public const POST_TYPES = [
         PostTypes\Movie::class,
     ];
 
     public function initialize(): void
     {
-        add_action('init', [$this, 'registerPostTypes']);
+        $this->addAction('init', [$this, 'registerPostTypes']);
     }
 
     public function registerPostTypes(): void

@@ -2,13 +2,16 @@
 
 namespace App\Hooks;
 
+use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 
 class SecurityHooks implements HooksInterface
 {
+    use RegistersHooks;
+
     public function initialize(): void
     {
-        add_action('send_headers', [$this, 'response_headers'], 10, 0);
+        $this->addAction('send_headers', [$this, 'response_headers'], 10, 0);
     }
 
     public function response_headers()

@@ -3,10 +3,13 @@
 namespace App\Hooks;
 
 use App\Blocks;
+use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 
 class BlockHooks implements HooksInterface
 {
+    use RegistersHooks;
+
     public const BLOCKS = [
         Blocks\CallToActionSection::class,
         Blocks\CarouselHeroSection::class,
@@ -18,7 +21,7 @@ class BlockHooks implements HooksInterface
 
     public function initialize(): void
     {
-        add_action('init', [$this, 'registerBlocks']);
+        $this->addAction('init', [$this, 'registerBlocks']);
     }
 
     public function registerBlocks()

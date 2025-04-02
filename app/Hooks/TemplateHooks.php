@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Hooks;
+
+use App\Hooks\Concerns\RegistersHooks;
+use App\Hooks\Contracts\HooksInterface;
+use Twig;
+use Timber\Site;
+use Timber\Timber;
+
+class TemplateHooks implements HooksInterface
+{
+    use RegistersHooks;
+
+    public function __construct(protected Site $site)
+    {
+    }
+
+    public function initialize(): void
+    {
+        $this->addFilter('timber/context', array( $this, 'addToContext' ));
+        $this->addFilter('timber/twig', array( $this, 'addToTwig' ));
+        $this->addFilter('timber/twig/environment/options', [ $this, 'updateTwigEnvironmentOptions' ]);
+    }
+
+    /**
+     * This is where you add some context
+     *
+     * @param string $context context['this'] Being the Twig's {{ this }}.
+     */
+    public function addToContext($context)
+    {
+        $context['menu']  = Timber::get_menu();
+        $context['site']  = $this->site;
+
+        return $context;
+    }
+
+    /**
+     * This would return 'foo bar!'.
+     *
+     * @param string $text being 'foo', then returned 'foo bar!'.
+     */
+    public function myfoo($text)
+    {
+        $text .= ' bar!';
+        return $text;
+    }
+
+    /**
+     * This is where you can add your own functions to twig.
+     *
+     * @param Twig\Environment $twig get extension.
+     */
+    public function addToTwig($twig)
+    {
+        /**
+         * Required when you want to use Twig’s template_from_string.
+         * @link https://twig.symfony.com/doc/3.x/functions/template_from_string.html
+         */
+        // $twig->addExtension( new Twig\Extension\StringLoaderExtension() );
+
+        $twig->addFilter(new Twig\TwigFilter('myfoo', [ $this, 'myfoo' ]));
+
+        return $twig;
+    }
+
+    /**
+     * Updates Twig environment options.
+     *
+     * @link https://twig.symfony.com/doc/2.x/api.html#environment-options
+     *
+     * \@param array $options An array of environment options.
+     *
+     * @return array
+     */
+    public function updateTwigEnvironmentOptions($options)
+    {
+        // $options['autoescape'] = true;
+
+        return $options;
+    }
+}

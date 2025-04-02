@@ -2,18 +2,21 @@
 
 namespace App\Hooks;
 
+use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 use App\Taxonomies;
 
 class TaxonomyHooks implements HooksInterface
 {
+    use RegistersHooks;
+
     public const TAXONOMIES = [
         Taxonomies\Genre::class,
     ];
 
     public function initialize(): void
     {
-        add_action('init', [$this, 'registerTaxonomies']);
+        $this->addAction('init', [$this, 'registerTaxonomies']);
     }
 
     public function registerTaxonomies(): void

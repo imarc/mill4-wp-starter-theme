@@ -2,40 +2,19 @@
 
 namespace App\Hooks;
 
+use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
-use Timber\Site;
-use Twig;
-use Timber\Timber;
 
 class ThemeHooks implements HooksInterface
 {
-    public function __construct(protected Site $site)
-    {
-    }
+    use RegistersHooks;
 
     public function initialize(): void
     {
-        add_action('after_setup_theme', array( $this, 'theme_supports' ));
-
-        add_filter('timber/context', array( $this, 'add_to_context' ));
-        add_filter('timber/twig', array( $this, 'add_to_twig' ));
-        add_filter('timber/twig/environment/options', [ $this, 'update_twig_environment_options' ]);
+        $this->addAction('after_setup_theme', [$this, 'themeSupports']);
     }
 
-    /**
-     * This is where you add some context
-     *
-     * @param string $context context['this'] Being the Twig's {{ this }}.
-     */
-    public function add_to_context($context)
-    {
-        $context['menu']  = Timber::get_menu();
-        $context['site']  = $this->site;
-
-        return $context;
-    }
-
-    public function theme_supports()
+    public function themeSupports()
     {
         // Add default posts and comments RSS feed links to head.
         add_theme_support('automatic-feed-links');
@@ -88,50 +67,5 @@ class ThemeHooks implements HooksInterface
         );
 
         add_theme_support('menus');
-    }
-
-    /**
-     * his would return 'foo bar!'.
-     *
-     * @param string $text being 'foo', then returned 'foo bar!'.
-     */
-    public function myfoo($text)
-    {
-        $text .= ' bar!';
-        return $text;
-    }
-
-    /**
-     * This is where you can add your own functions to twig.
-     *
-     * @param Twig\Environment $twig get extension.
-     */
-    public function add_to_twig($twig)
-    {
-        /**
-         * Required when you want to use Twig’s template_from_string.
-         * @link https://twig.symfony.com/doc/3.x/functions/template_from_string.html
-         */
-        // $twig->addExtension( new Twig\Extension\StringLoaderExtension() );
-
-        $twig->addFilter(new Twig\TwigFilter('myfoo', [ $this, 'myfoo' ]));
-
-        return $twig;
-    }
-
-    /**
-     * Updates Twig environment options.
-     *
-     * @link https://twig.symfony.com/doc/2.x/api.html#environment-options
-     *
-     * \@param array $options An array of environment options.
-     *
-     * @return array
-     */
-    public function update_twig_environment_options($options)
-    {
-        // $options['autoescape'] = true;
-
-        return $options;
     }
 }

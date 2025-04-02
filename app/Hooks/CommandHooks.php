@@ -3,17 +3,20 @@
 namespace App\Hooks;
 
 use App\Commands\Mill4Command;
+use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 
 class CommandHooks implements HooksInterface
 {
+    use RegistersHooks;
+
     public const COMMANDS = [
         Mill4Command::class,
     ];
 
     public function initialize(): void
     {
-        add_action('init', [$this, 'registerCommands']);
+        $this->addAction('init', [$this, 'registerCommands']);
     }
 
     public function registerCommands(): void
