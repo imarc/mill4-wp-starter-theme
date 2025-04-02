@@ -18,7 +18,8 @@
   "require": {
     "timber/timber": "2.x-dev",
     "league/container": "^4.2",
-    "symfony/http-foundation": "^7.2"
+    "symfony/http-foundation": "^7.2",
+    "vlucas/phpdotenv": "^5.6"
   },
   "require-dev": {
     "automattic/wordbless": "^0.4.2",

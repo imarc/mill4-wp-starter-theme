@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CsrfTokenAction extends Controller
 {
-    public function __invoke()
+    public function __invoke(): JsonResponse
     {
         return json_response([
-            'csrf_token' => wp_create_nonce('ajax_nonce'),
+            'csrf_token' => csrf_token(),
         ]);
     }
 }

@@ -2,19 +2,24 @@
 
 namespace App\Services;
 
+use App\Http\Middleware\VerifyCsrfToken;
 use League\Container\Container as BaseContainer;
 use ReflectionFunction;
 use ReflectionMethod;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Router
 {
     private static ?Router $instance = null;
     private array $routes = [];
     private BaseContainer $container;
+    private Request $request;
 
     private function __construct()
     {
         $this->container = Container::getInstance();
+        $this->request = $this->container->get(Request::class);
     }
 
     public static function getInstance(): Router
@@ -61,21 +66,43 @@ class Router
         $route = $this->normalizePath($route);
 
         foreach ($this->routes[$method] ?? [] as $pattern => $action) {
-            // First try exact match for non-parameterized routes
-            if ($pattern === $route) {
-                $resolvedAction = $this->resolveAction($action);
-                call_user_func($resolvedAction, []);
-                exit;
-            }
+            if ($pattern === $route || ($params = $this->extractParameters($pattern, $route)) !== false) {
+                if (!isset($params)) {
+                    $params = [];
+                }
 
-            // Then try parameterized routes
-            $params = $this->extractParameters($pattern, $route);
-            if ($params !== false) {
                 $resolvedAction = $this->resolveAction($action);
-                call_user_func($resolvedAction, $params);
+                $middlewareChain = $this->buildMiddlewarePipeline($resolvedAction);
+                $response = $middlewareChain($this->request, $params);
+                $response->send();
                 exit;
             }
         }
+    }
+
+    private function buildMiddlewarePipeline(callable $action): callable
+    {
+        $middleware = [
+            $this->container->get(VerifyCsrfToken::class),
+        ];
+
+        return array_reduce(
+            array_reverse($middleware),
+            function ($next, $middleware) {
+                return function (Request $request, array $params) use ($middleware, $next) {
+                    return $middleware->handle($request, fn ($req) => $next($req, $params));
+                };
+            },
+            function (Request $request, array $params) use ($action): Response {
+                $result = call_user_func($action, $params, $request);
+
+                if (!$result instanceof Response) {
+                    return new Response((string) $result);
+                }
+
+                return $result;
+            }
+        );
     }
 
     private function extractParameters(string $pattern, string $route): array|false

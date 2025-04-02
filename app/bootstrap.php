@@ -6,6 +6,7 @@ use App\Services\Container;
 $container = new Container();
 
 $hooks = $container->get(Hooks\Registrar::class);
+$hooks->register(Hooks\SessionHooks::class);
 $hooks->register(Hooks\ThemeHooks::class);
 $hooks->register(Hooks\SecurityHooks::class);
 $hooks->register(Hooks\AssetHooks::class);
