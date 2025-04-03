@@ -3,9 +3,93 @@
     "title": "Options: Security",
     "fields": [
         {
+            "key": "field_67ee8987f2c8f",
+            "label": "Disable REST API access",
+            "name": "security_disable_rest_access",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_67ee8b55f6921",
+            "label": "Disable XML-RPC",
+            "name": "security_disable_xml_rpc",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_67ee8ee8e838d",
+            "label": "Disable Emoji Scripts",
+            "name": "security_disable_emoji_scripts",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_67ee90d1f3946",
+            "label": "Disable Auto Embeds (oEmbed)",
+            "name": "security_disable_oembeds",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Prevents WordPress from automatically turning URLs into embedded content (e.g., YouTube videos, tweets). Also removes related REST routes and scripts.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
             "key": "field_674f4e7c64b01",
             "label": "Content Security Policy",
-            "name": "csp",
+            "name": "security_csp",
             "aria-label": "",
             "type": "group",
             "instructions": "",
@@ -309,5 +393,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1739931868
+    "modified": 1743688170
 }

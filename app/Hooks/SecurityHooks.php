@@ -4,6 +4,7 @@ namespace App\Hooks;
 
 use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
+use WP_Error;
 
 class SecurityHooks implements HooksInterface
 {
@@ -11,16 +12,152 @@ class SecurityHooks implements HooksInterface
 
     public function initialize(): void
     {
-        $this->addAction('send_headers', [$this, 'response_headers'], 10, 0);
+        $this->addAction('send_headers', [$this, 'setResponseHeaders'], 10, 0);
+        $this->setSecurityFilters();
+        $this->setAdminNotices();
     }
 
-    public function response_headers()
+    private function setAdminNotices(): void
     {
-        // Referer Policy
-        header('Referer-Policy: strict-origin-when-cross-origin');
+        $this->addAction('admin_notices', function () {
+            if (
+                current_user_can('administrator') &&
+                ! defined('DISALLOW_FILE_EDIT')
+            ) {
+                echo '<div class="notice notice-warning is-dismissible">';
+                echo '<p><strong>Security Notice:</strong> The <code>DISALLOW_FILE_EDIT</code> constant is not defined in <code>wp-config.php</code>. For better security, add <code>define(\'DISALLOW_FILE_EDIT\', true);</code> to disable file editing via the WP admin.</p>';
+                echo '</div>';
+            }
+
+            if (
+                current_user_can('administrator') &&
+                defined('DISALLOW_FILE_EDIT') &&
+                constant('DISALLOW_FILE_EDIT') === false
+            ) {
+                echo '<div class="notice notice-warning is-dismissible">';
+                echo '<p><strong>Security Notice:</strong> The <code>DISALLOW_FILE_EDIT</code> constant is defined in <code>wp-config.php</code> but is set to <code>false</code>. For better security, set <code>define(\'DISALLOW_FILE_EDIT\', true);</code> to disable file editing via the WP admin.</p>';
+                echo '</div>';
+            }
+        });
+    }
+
+    private function setSecurityFilters(): void
+    {
+        $this->addAction('init', function () {
+
+            if (! function_exists('get_field')) {
+                return;
+            }
+
+            $disableRest = get_field('security_disable_rest_access', 'option');
+
+            if ($disableRest) {
+                $this->addFilter('rest_authentication_errors', function ($result) {
+                    if (! empty($result)) {
+                        return $result;
+                    }
+
+                    if (is_user_logged_in()) {
+                        return true;
+                    }
+
+                    $disableWpEmbeds = (bool) get_field('security_disable_oembeds', 'option');
+                    $requestUri = $_SERVER['REQUEST_URI'] ?? '';
+
+                    if (! $disableWpEmbeds && strpos($requestUri, '/wp-json/oembed/') !== false) {
+                        return true;
+                    }
+
+                    return new WP_Error(
+                        'rest_forbidden',
+                        __('REST API access is restricted.', 'your-textdomain'),
+                        [ 'status' => 403 ]
+                    );
+                });
+            }
+
+            $disableXmlRpc = get_field('security_disable_xmlrpc', 'option');
+
+            if ($disableXmlRpc) {
+                $this->addFilter('xmlrpc_enabled', '__return_false');
+            }
+
+            $disableEmojiScripts = get_field('security_disable_emoji_scripts', 'option');
+
+            if ($disableEmojiScripts) {
+                $this->disableEmojiScripts();
+            }
+
+            $disableWpEmbeds = get_field('security_disable_oembeds', 'option');
+
+            if ($disableWpEmbeds) {
+                $this->disableWpEmbeds();
+            }
+        });
+    }
+
+    private function disableWpEmbeds(): void
+    {
+        // Remove REST API endpoint
+        $this->removeAction('rest_api_init', 'wp_oembed_register_route');
+
+        // Turn off oEmbed auto discovery
+        $this->addFilter('embed_oembed_discover', '__return_false');
+
+        // Remove oEmbed discovery links from head
+        $this->removeAction('wp_head', 'wp_oembed_add_discovery_links');
+
+        // Remove oEmbed-specific JavaScript from front-end and back-end
+        $this->removeAction('wp_head', 'wp_oembed_add_host_js');
+
+        // Remove oEmbed filters
+        $this->removeFilter('the_content', [ $GLOBALS['wp_embed'], 'autoembed' ], 8);
+
+        // Disable embeds in TinyMCE
+        $this->addFilter('tiny_mce_plugins', function ($plugins) {
+            return is_array($plugins) ? array_diff($plugins, [ 'wpembed' ]) : [];
+        });
+
+        // Remove the wp-embed.js script
+        $this->addAction('wp_footer', function () {
+            wp_deregister_script('wp-embed');
+        }, 1);
+    }
+
+    private function disableEmojiScripts(): void
+    {
+        // Front-end
+        $this->removeAction('wp_head', 'print_emoji_detection_script', 7);
+        $this->removeAction('wp_print_styles', 'print_emoji_styles');
+
+        // Admin
+        $this->removeAction('admin_print_scripts', 'print_emoji_detection_script');
+        $this->removeAction('admin_print_styles', 'print_emoji_styles');
+
+        // RSS
+        $this->removeFilter('the_content_feed', 'wp_staticize_emoji');
+        $this->removeFilter('comment_text_rss', 'wp_staticize_emoji');
+        $this->removeFilter('wp_mail', 'wp_staticize_emoji_for_email');
+
+        // TinyMCE
+        $this->addFilter('tiny_mce_plugins', function ($plugins) {
+            return is_array($plugins) ? array_diff($plugins, [ 'wpemoji' ]) : [];
+        });
+
+        $this->addFilter('emoji_svg_url', '__return_false');
+    }
+
+    public function setResponseHeaders()
+    {
+        // Referrer Policy
+        header('Referrer-Policy: strict-origin-when-cross-origin');
 
         // X-Content-Type-Options
         header('X-Content-Type-Options: nosniff');
+
+        header('X-Frame-Options: SAMEORIGIN');
+
+        header('Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()');
 
         // Cache-Control
         if (! is_user_logged_in()) {
@@ -29,11 +166,13 @@ class SecurityHooks implements HooksInterface
         }
 
         // Content-Security-Policy
-        header('Content-Security-Policy: ' . $this->generate_csp());
+        if ($csp = $this->generateCsp()) {
+            header('Content-Security-Policy: ' . $csp);
+        }
     }
 
 
-    private function generate_csp(): string
+    private function generateCsp(): string
     {
         if (! function_exists('get_field')) {
             return '';
@@ -52,7 +191,7 @@ class SecurityHooks implements HooksInterface
             'frame-ancestors',
         ];
 
-        $cspConfig = array_filter(get_field('csp', 'option') ?: []);
+        $cspConfig = array_filter(get_field('security_csp', 'option') ?: []);
 
         $cspDirectives = [];
         foreach ($directives as $directive) {
