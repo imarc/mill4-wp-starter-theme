@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Http\Middleware\VerifyCsrfToken;
 use League\Container\Container as BaseContainer;
 use ReflectionFunction;
 use ReflectionMethod;
@@ -15,6 +14,8 @@ class Router
     private array $routes = [];
     private BaseContainer $container;
     private Request $request;
+    private array $defaultMiddleware = [];
+    private ?string $currentPath = null;
 
     private function __construct()
     {
@@ -30,29 +31,62 @@ class Router
         return self::$instance;
     }
 
-    public function get($path, $action): void
+    public function get($path, $action): static
     {
-        $this->routes['GET'][$this->normalizePath($path)] = $action;
+        $path = $this->normalizePath($path);
+        $this->routes['GET'][$path]['action'] = $action;
+        $this->currentPath = $path;
+
+        return $this;
     }
 
-    public function post($path, $action): void
+    public function post($path, $action): static
     {
-        $this->routes['POST'][$this->normalizePath($path)] = $action;
+        $path = $this->normalizePath($path);
+        $this->routes['POST'][$path]['action'] = $action;
+        $this->currentPath = $path;
+
+        return $this;
     }
 
-    public function put($path, $action): void
+    public function put($path, $action): static
     {
-        $this->routes['PUT'][$this->normalizePath($path)] = $action;
+        $path = $this->normalizePath($path);
+        $this->routes['PUT'][$path]['action'] = $action;
+        $this->currentPath = $path;
+
+        return $this;
     }
 
-    public function delete($path, $action): void
+    public function delete($path, $action): static
     {
-        $this->routes['DELETE'][$this->normalizePath($path)] = $action;
+        $path = $this->normalizePath($path);
+        $this->routes['DELETE'][$path]['action'] = $action;
+        $this->currentPath = $path;
+
+        return $this;
     }
 
-    public function patch($path, $action): void
+    public function patch($path, $action): static
     {
-        $this->routes['PATCH'][$this->normalizePath($path)] = $action;
+        $path = $this->normalizePath($path);
+        $this->routes['PATCH'][$path]['action'] = $action;
+        $this->currentPath = $path;
+
+        return $this;
+    }
+
+    public function middleware(array|string $middleware): void
+    {
+        if (is_string($middleware)) {
+            $middleware = [$middleware];
+        }
+
+        if ($this->currentPath) {
+            $this->routes[$this->request->getMethod()][$this->currentPath]['middleware'] = $middleware;
+        }
+
+        $this->currentPath = null;
     }
 
     private function normalizePath(string $path): string
@@ -61,18 +95,32 @@ class Router
         return $path === '/' ? $path : rtrim($path, '/');
     }
 
+    public function setDefaultMiddleware(array|string $middleware): static
+    {
+        if (is_string($middleware)) {
+            $middleware = [$middleware];
+        }
+
+        $this->defaultMiddleware = $middleware;
+
+        return $this;
+    }
+
     public function handleRequest(string $method, string $route): void
     {
         $route = $this->normalizePath($route);
 
-        foreach ($this->routes[$method] ?? [] as $pattern => $action) {
+        foreach ($this->routes[$method] ?? [] as $pattern => $config) {
+            $action = $config['action'];
+            $middleware = $config['middleware'] ?? [];
+
             if ($pattern === $route || ($params = $this->extractParameters($pattern, $route)) !== false) {
                 if (!isset($params)) {
                     $params = [];
                 }
 
                 $resolvedAction = $this->resolveAction($action);
-                $middlewareChain = $this->buildMiddlewarePipeline($resolvedAction);
+                $middlewareChain = $this->buildMiddlewarePipeline($resolvedAction, $middleware);
                 $response = $middlewareChain($this->request, $params);
                 $response->send();
                 exit;
@@ -80,16 +128,16 @@ class Router
         }
     }
 
-    private function buildMiddlewarePipeline(callable $action): callable
+    private function buildMiddlewarePipeline(callable $action, array $middleware): callable
     {
-        $middleware = [
-            $this->container->get(VerifyCsrfToken::class),
-        ];
+        $middleware = array_merge($this->defaultMiddleware, $middleware);
 
         return array_reduce(
             array_reverse($middleware),
             function ($next, $middleware) {
                 return function (Request $request, array $params) use ($middleware, $next) {
+                    $middleware = $this->container->get($middleware);
+
                     return $middleware->handle($request, fn ($req) => $next($req, $params));
                 };
             },

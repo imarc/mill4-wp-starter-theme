@@ -10,6 +10,17 @@ In addition to the Twig templating that Timber provides, **Mill 4** includes the
 * An object-oriented interface for registering custom post types, taxonomies, and Gutenberg blocks.
 * A basic front-end build process for compiling Sass and JavaScript using Vite.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Hooks!](#hooks)
+- [Custom Routes](#custom-routes)
+- [Custom Post Types](#custom-post-types)
+- [Custom Taxonomies](#custom-taxonomies)
+- [Gutenberg Blocks](#gutenberg-blocks)
+- [Commands](#commands)
+- [Jobs](#jobs)
+
 ## Installation
 
 Best way to go about installing this thing is probably to just download the zip file and drop it into your `wp-content/themes` directory. Then you'll want to rename the folder to your own slug and edit the details in the `style.css` file.
@@ -144,6 +155,54 @@ The injection of parameters into route actions supports casting to the following
 * `bool`
 * `float`
 * `array`
+
+### Middleware
+
+Mill 4 includes a basic middleware system for injecting custom logic into the request lifecycle of custom routes. Middleware classes must implement the `MiddlewareInterface`. For example:
+
+```php
+// app/Middleware/VerifyCsrfToken.php
+<?php
+
+namespace App\Middleware; 
+
+use App\Services\Router\MiddlewareInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class VerifyCsrfToken implements MiddlewareInterface
+{
+    public function handle(Request $request, callable $next): Response
+    {
+        // custom logic...
+
+        return $next($request);
+    }
+}
+```
+
+Then you can attach the middleware to a route by passing single middleware class or an array of middleware classes to the `middleware()` method.
+
+```php
+// app/routes.php
+...
+
+use App\Middleware\VerifyCsrfToken;
+use App\Http\Actions\SubmitContactFormAction;
+
+$router->post('/foo', SubmitContactFormAction::class)
+    ->middleware(VerifyCsrfToken::class);
+```
+
+You can also define the default middleware for the router by calling the `setDefaultMiddleware()` method.
+
+```php
+// app/routes.php
+...
+
+$router->setDefaultMiddleware([VerifyCsrfToken::class]);
+$router->post('/foo', SubmitContactFormAction::class)
+```
 
 ### Request Object
 
