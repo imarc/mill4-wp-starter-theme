@@ -16,6 +16,15 @@ class ThemeHooks implements HooksInterface
 
     public function themeSupports()
     {
+        $this->addBasicThemeSupports();
+        $this->addPostThumbnailSupport();
+        $this->addHtml5Support();
+        $this->addPostFormatSupport();
+        $this->addMenuSupport();
+    }
+
+    private function addBasicThemeSupports(): void
+    {
         // Add default posts and comments RSS feed links to head.
         add_theme_support('automatic-feed-links');
 
@@ -26,14 +35,20 @@ class ThemeHooks implements HooksInterface
          * provide it for us.
          */
         add_theme_support('title-tag');
+    }
 
+    private function addPostThumbnailSupport(): void
+    {
         /*
          * Enable support for Post Thumbnails on posts and pages.
          *
          * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
          */
         add_theme_support('post-thumbnails');
+    }
 
+    private function addHtml5Support(): void
+    {
         /*
          * Switch default core markup for search form, comment form, and comments
          * to output valid HTML5.
@@ -47,7 +62,10 @@ class ThemeHooks implements HooksInterface
                 'caption',
             )
         );
+    }
 
+    private function addPostFormatSupport(): void
+    {
         /*
          * Enable support for Post Formats.
          *
@@ -65,7 +83,34 @@ class ThemeHooks implements HooksInterface
                 'audio',
             )
         );
+    }
 
+    private function addMenuSupport(): void
+    {
         add_theme_support('menus');
+
+        // Register navigation menus
+        register_nav_menus([
+            'primary' => __('Primary Navigation', 'mill4'),
+            'footer' => __('Footer Navigation', 'mill4'),
+        ]);
+
+        // Create and assign menus
+        $this->ensureMenuExists('Primary Navigation', 'primary');
+        $this->ensureMenuExists('Footer Navigation', 'footer');
+    }
+
+    private function ensureMenuExists(string $menuName, string $location): void
+    {
+        $menuExists = wp_get_nav_menu_object($menuName);
+
+        if (!$menuExists) {
+            $menuId = wp_create_nav_menu($menuName);
+
+            // Set the menu location
+            $locations = get_theme_mod('nav_menu_locations');
+            $locations[$location] = $menuId;
+            set_theme_mod('nav_menu_locations', $locations);
+        }
     }
 }
