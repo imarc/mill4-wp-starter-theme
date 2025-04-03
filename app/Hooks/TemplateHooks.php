@@ -30,7 +30,7 @@ class TemplateHooks implements HooksInterface
      */
     public function addToContext($context)
     {
-        $context['menu']  = Timber::get_menu();
+        $context['primary_navigation']  = Timber::get_menu('primary-navigation');
         $context['site']  = $this->site;
 
         return $context;
