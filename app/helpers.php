@@ -64,5 +64,13 @@ function env(string $key, $default = null)
         return false;
     }
 
+    if (is_numeric($value)) {
+        if (str_contains($value, '.')) {
+            return (float) $value;
+        }
+
+        return (int) $value;
+    }
+
     return $value;
 }
