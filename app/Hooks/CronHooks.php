@@ -18,6 +18,8 @@ class CronHooks implements HooksInterface
 
     public function registerCronJobs(): void
     {
+        // $this->scheduleJob(MyGreatJob::class, 'hourly', null, ['bar']);
+
         // $this->schedule('mill4_my_job', 'hourly', function () {
         //     echo 'Hello, world!';
         // });
@@ -29,13 +31,26 @@ class CronHooks implements HooksInterface
     protected function schedule($hook, $recurrence, callable $callback, ?int $timestamp = null)
     {
         $timestamp = $timestamp ?: time();
+        $cronEvent = $hook . '_' . $recurrence;
+        $this->validateRecurrence($recurrence);
 
-        if (! wp_next_scheduled($hook)) {
+        if (! wp_next_scheduled($cronEvent)) {
             $this->validateRecurrence($recurrence);
-            wp_schedule_event($timestamp, $recurrence, $hook);
+            wp_schedule_event($timestamp, $recurrence, $cronEvent);
         }
 
-        add_action($hook, $callback);
+        $this->addAction($cronEvent, $callback);
+    }
+
+    protected function scheduleJob(string $jobClass, string $recurrence, ?int $timestamp = null, array $args = [])
+    {
+        $name = (new $jobClass())->getName();
+
+        $this->schedule($name, $recurrence, function () use ($jobClass, $args) {
+            $jobClass::dispatch(...$args)
+                ->now()
+                ->execute(false);
+        }, $timestamp);
     }
 
     private function getSchedules(): array
@@ -48,6 +63,8 @@ class CronHooks implements HooksInterface
     private function validateRecurrence($recurrence)
     {
         $schedules = $this->getSchedules();
+        print_r($schedules);
+        exit();
 
         if (! isset($schedules[$recurrence])) {
             error_log('CronHooks: Invalid recurrence: ' . $recurrence);

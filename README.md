@@ -20,6 +20,7 @@ In addition to the Twig templating that Timber provides, **Mill 4** includes the
 - [Gutenberg Blocks](#gutenberg-blocks)
 - [Commands](#commands)
 - [Jobs](#jobs)
+- [Recurring Events](#scheduling-recurring-events-via-wp-cron)
 
 ## Installation
 
@@ -67,8 +68,6 @@ class MyHooks implements HooksInterface
 Then, you'll want to register the hooks in the `app/bootstrap.php` file.
 
 ```php
-<?php
-
 // app/bootstrap.php
 
 use App\Hooks;
@@ -85,7 +84,6 @@ Custom routes are registered in `app/routes.php`. You can use either a closure, 
 
 ```php
 <?php
-
 // app/routes.php
 
 use App\Http\Controllers\SubmitContactFormAction;
@@ -97,7 +95,6 @@ $router->get('/foo', function () {
 $router->post('/foo/submit', '\App\Http\Controllers\FooController@submit');
 
 $router->post('/contact/submit', SubmitContactFormAction::class);
-
 ```
 
 *Note: The logic for custom routes depends on WordPress's native rewrite rules, which are cached. If you add, edit, or remove routes, you may need to flush the rewrite rules. You can do this by visiting the **Permalinks Settings** page in the WordPress admin and clicking the "Save Changes" button.*
@@ -109,7 +106,6 @@ $router->post('/contact/submit', SubmitContactFormAction::class);
 Your route actions can accept dependencies as parameters. These dependencies will be automatically resolved from the service container. For example:
 
 ```php
-
 // app/routes.php
 
 use App\Services\MyService;
@@ -117,7 +113,6 @@ use App\Services\MyService;
 $router->get('/foo', function (MyService $service) {
     $service->doSomething();
 });
-
 ```
 
 The router will also resolve dependencies for controller actions.
@@ -127,7 +122,6 @@ The router will also resolve dependencies for controller actions.
 The router supports parameters! Just place parameter names in curly braces and the values will be passed to the route action as parameters. Here's how it works...
 
 ```php
-
 // app/routes.php
 
 $router->get('/foo/{bar}', function ($bar) {
@@ -138,7 +132,6 @@ $router->get('/foo/{bar}', function ($bar) {
 You may mix parameters and dependencies in the same route action. Just ensure that the parameters are listed before any dependencies in the action signature. For example:
 
 ```php
-
 // app/routes.php
 
 $router->get('/foo/{bar}', function (string $bar, MyService $service) {
@@ -162,7 +155,6 @@ Mill 4 includes a basic middleware system for injecting custom logic into the re
 
 ```php
 // app/Middleware/VerifyCsrfToken.php
-<?php
 
 namespace App\Middleware; 
 
@@ -209,7 +201,6 @@ $router->post('/foo', SubmitContactFormAction::class)
 Mill 4 includes [Symfony's HttpFoundation](https://symfony.com/doc/current/components/http_foundation.html) component, which, among other things, provides a handy `Request` object. You can access this object in your route actions by declaring a parameter of type `Request` in the action signature. For example:
 
 ```php
-
 // app/routes.php
 
 use Symfony\Component\HttpFoundation\Request;
@@ -229,7 +220,6 @@ Mill 4 includes helpers for returning a variety of responses.
 The `json_response()` function is a shortcut for returning a JSON response. It uses Symfony's `JsonResponse` class behind the scenes. It takes an array of data, an optional status code, and an array of headers. For example:
 
 ```php
-
 // app/routes.php
 
 $router->get('/foo', function() {
@@ -243,7 +233,6 @@ $router->get('/foo', function() {
 The `response()` function is a shortcut for returning an HTML response. It uses Symfony's `Response` class behind the scenes. It takes a string of content, an optional status code, and an array of headers. For example:
 
 ```php
-
 // app/routes.php
 
 $router->get('/foo', function() {
@@ -257,7 +246,6 @@ $router->get('/foo', function() {
 Mill 4's base controller class includes a `render()` method that renders a Twig template and returns the rendered HTML. For example:
 
 ```php
-
 // app/Http/Controllers/FooController.php
 
 use App\Http\Controllers\Controller;
@@ -316,7 +304,6 @@ To register a custom post type in your theme, follow these steps:
    Update the `POST_TYPES` constant in the `PostTypeHooks` class to include your new post type:
 
    ```php
-
     // app/Hooks/PostTypeHooks.php
 
     class PostTypeHooks implements HooksInterface
@@ -616,4 +603,44 @@ The arguments will be passed to the job's `handle()` method as parameters:
     {
         die('MyGreatJob ' . $foo);
     }
+```
+
+## Scheduling Recurring Events via WP-Cron
+
+Mill 4 includes functionality for easily scheduling recurring events via WP-Cron. The scheduling of event is handled in the `registerCronJobs()` method of the `CronHooks` class:
+
+```php
+// app/Hooks/CronHooks.php
+
+class CronHooks implements HooksInterface
+{
+    public function registerCronJobs(): void
+    {
+        $this->schedule('my_great_event', 'hourly', function () {
+            echo 'Success!';
+        });
+    }
+}
+```
+The `schedule()` method accepts three arguments:
+
+1. The name of the event.
+2. The recurrence of the event (hourly, twicedaily, daily, weekly)
+3. A callback function.
+4. An optional timestamp to schedule the first occurrence of the event at a specific time.
+
+Alternatively, if your event's logic is already encapsulated in a job class, you can schedule the job instead:
+
+```php
+// app/Hooks/CronHooks.php
+
+use App\Jobs\MyGreatJob;
+
+class CronHooks implements HooksInterface
+{
+    public function registerCronJobs(): void
+    {
+        $this->scheduleJob(MyGreatJob::class, 'daily');
+    }
+}
 ```
