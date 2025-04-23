@@ -439,7 +439,7 @@ To register a Gutenberg block in your theme, follow these steps:
 
 ## View Composers
 
-Mill 4 includes a basic view composer system for adding custom context data to your views. To create a new view composer, follow these steps:
+Mill 4 includes a basic view composer system for adding custom context data to your Twig templates. To create a new view composer, follow these steps:
 
  1. **Create a View Composer Class**:
 Create a new class for your view composer. This class should extend the `ViewComposer` class provided by the theme. For example:
