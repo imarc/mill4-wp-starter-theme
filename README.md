@@ -18,6 +18,7 @@ In addition to the Twig templating that Timber provides, **Mill 4** includes the
 - [Custom Post Types](#custom-post-types)
 - [Custom Taxonomies](#custom-taxonomies)
 - [Gutenberg Blocks](#gutenberg-blocks)
+- [View Composers](#view-composers)
 - [Commands](#commands)
 - [Jobs](#jobs)
 - [Recurring Events](#scheduling-recurring-events-via-wp-cron)
@@ -435,6 +436,52 @@ To register a Gutenberg block in your theme, follow these steps:
         </div>
     {% endblock %}  
     ```
+
+## View Composers
+
+Mill 4 includes a basic view composer system for adding custom context data to your views. To create a new view composer, follow these steps:
+
+ 1. **Create a View Composer Class**:
+Create a new class for your view composer. This class should extend the `ViewComposer` class provided by the theme. For example:
+
+    ```php
+    <?php
+
+    // app/ViewComposers/FooComposer.php
+
+    namespace App\ViewComposers;
+
+    class FooComposer extends ViewComposer
+    {
+        // The views that the composer should be applied to.
+        public array $views = [
+            'index.twig',
+        ];
+
+        // The context data to add to the view.
+        public function with(array $data): array
+        {
+            $data['foo'] = 'bar';
+
+            return $data;
+        }
+    }
+    ```
+
+ 2. **Register the View Composer**:
+   Update the `VIEW_COMPOSERS` constant in the `TemplateHooks` class to include your new view composer:
+
+    ```php
+    // app/Hooks/TemplateHooks.php
+
+    public const VIEW_COMPOSERS = [
+        ViewComposers\FooComposer::class,
+    ];
+
+    ...
+    ```
+
+    Now your view composer will be applied to the specified views.
 
 ## Commands
 
