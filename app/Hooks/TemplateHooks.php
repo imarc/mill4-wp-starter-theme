@@ -4,6 +4,9 @@ namespace App\Hooks;
 
 use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
+use App\Services\Container;
+use App\ViewComposers\ViewComposerRegistry;
+use App\ViewComposers;
 use Twig;
 use Timber\Site;
 use Timber\Timber;
@@ -12,8 +15,15 @@ class TemplateHooks implements HooksInterface
 {
     use RegistersHooks;
 
-    public function __construct(protected Site $site)
-    {
+    public const VIEW_COMPOSERS = [
+        ViewComposers\ExampleComposer::class,
+    ];
+
+    public function __construct(
+        protected Site $site,
+        private Container $container,
+        private ViewComposerRegistry $viewComposerRegistry
+    ) {
     }
 
     public function initialize(): void
@@ -21,6 +31,7 @@ class TemplateHooks implements HooksInterface
         $this->addFilter('timber/context', array( $this, 'addToContext' ));
         $this->addFilter('timber/twig', array( $this, 'addToTwig' ));
         $this->addFilter('timber/twig/environment/options', [ $this, 'updateTwigEnvironmentOptions' ]);
+        $this->addAction('init', [$this, 'registerViewComposers']);
     }
 
     /**
@@ -56,7 +67,7 @@ class TemplateHooks implements HooksInterface
     public function addToTwig($twig)
     {
         /**
-         * Required when you want to use Twig’s template_from_string.
+         * Required when you want to use Twig's template_from_string.
          * @link https://twig.symfony.com/doc/3.x/functions/template_from_string.html
          */
         // $twig->addExtension( new Twig\Extension\StringLoaderExtension() );
@@ -80,5 +91,16 @@ class TemplateHooks implements HooksInterface
         // $options['autoescape'] = true;
 
         return $options;
+    }
+
+    public function registerViewComposers(): void
+    {
+        foreach (self::VIEW_COMPOSERS as $viewComposer) {
+            $this->viewComposerRegistry->registerComposer($viewComposer);
+        }
+
+        if ($this->viewComposerRegistry->hasComposers()) {
+            $this->addFilter('timber/render/data', [$this->viewComposerRegistry, 'filterDataForComposers'], 10, 2);
+        }
     }
 }
