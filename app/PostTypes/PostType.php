@@ -2,6 +2,8 @@
 
 namespace App\PostTypes;
 
+use WP_Query;
+
 abstract class PostType
 {
     public const SLUG = '';
@@ -90,5 +92,13 @@ abstract class PostType
     public function register(): void
     {
         register_post_type(static::SLUG, $this->getArgs());
+    }
+
+    public static function query(array $args = []): WP_Query
+    {
+        return new WP_Query(array_merge([
+            'post_type' => static::SLUG,
+            'posts_per_page' => -1,
+        ], $args));
     }
 }
