@@ -1,1 +1,14 @@
-Copyright {{"now"|date('Y')}}
+<footer class="o-footer">
+    <div class="o-footer__container">
+        <div class="o-footer__copyright">
+            Copyright {{"now"|date('Y')}}
+        </div>
+        {% if footer_navigation %}
+            <nav class="o-footer__nav">
+                {% for item in footer_navigation.get_items %}
+                    <a href="{{ item.link }}" class="o-footer__nav-item">{{ item.title }}</a>
+                {% endfor %}
+            </nav>
+        {% endif %}
+    </div>
+</footer>

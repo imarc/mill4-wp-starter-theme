@@ -1,4 +1,5 @@
 @use 'sass:meta';
+@use 'base/variables' as *;
 
 // Set cascade layer order =========================================
 @layer base, utils, components;

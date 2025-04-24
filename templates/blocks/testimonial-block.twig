@@ -1,28 +1,28 @@
-<div class="testimonial">
-    <div class="testimonial__quote">
+<div class="o-testimonial">
+    <div class="o-testimonial__quote">
         {{ block.quote }}
     </div>
     {% if block.image %}
-        <div class="testimonial__image">
+        <div class="o-testimonial__image">
             <img src="{{ block.image.url }}" alt="{{ block.image.alt }}">
         </div>
     {% endif %}
-    <div class="testimonial__authorName">
+    <div class="o-testimonial__author-name">
         {{ block.author_name }}
     </div>
     {% if block.author_title %}
-        <div class="testimonial__authorTitle">
+        <div class="o-testimonial__author-title">
             {{ block.author_title }}
         </div>
     {% endif %}
     {% if block.author_company %}
-        <div class="testimonial__authorCompany">
+        <div class="o-testimonial__author-company">
             {{ block.author_company }}
         </div>
     {% endif %}
     {% if block.cta %}
-        <div class="testimonial__cta">
-            <a href="{{ block.cta.url }}" class="button">{{ block.cta.title }}</a>
+        <div class="o-testimonial__cta">
+            <a href="{{ block.cta.url }}" class="a-button">{{ block.cta.title }}</a>
         </div>
     {% endif %}
 </div>

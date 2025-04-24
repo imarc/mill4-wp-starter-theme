@@ -1,24 +1,23 @@
 {% if menu %}
-    <nav class="navigation">
-        <ul class="navigation__list">
-            {% for item in menu.get_items %}
-                <li class="navigation__item" v-directionals>
-                    {% set has_children = item.children %}
-                    {% if has_children %}
-                        <bp-openable class="navigation__button" label="{{ item.title }}" :close-on-blur="false">
-                            <div class="navigation__dropdown">
-                                <ul>
-                                    {% for child in item.children %}
-                                        {% include "partials/navigation/item.twig" with {'item': child} %}
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </bp-openable>
-                    {% else %}
-                        {% include "partials/navigation/item.twig" with {'item': item} %}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    </nav>
+    <ul class="o-header__nav-list">
+        {% for item in menu.get_items %}
+            <li class="o-header__nav-item-wrapper">
+                {% set has_children = item.children %}
+                {% if has_children %}
+                    <div class="o-header__nav-dropdown">
+                        <a href="{{ item.link }}" class="o-header__nav-item">{{ item.title }}</a>
+                        <ul class="o-header__nav-dropdown-list">
+                            {% for child in item.children %}
+                                <li class="o-header__nav-dropdown-item">
+                                    <a href="{{ child.link }}" class="o-header__nav-item">{{ child.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{{ item.link }}" class="o-header__nav-item">{{ item.title }}</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 {% endif %}
