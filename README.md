@@ -18,7 +18,7 @@ Let's get into it.
 ## Table of Contents
 
 - [Installation](#installation)
-- [Hooks!](#hooks)
+- [Hooks](#hooks)
 - [Custom Routes](#custom-routes)
 - [Custom Post Types](#custom-post-types)
 - [Custom Taxonomies](#custom-taxonomies)
@@ -45,7 +45,7 @@ This will install the dependencies and compile the assets.
 
 Finally, you'll want to activate the theme in the WordPress admin.
 
-## Hooks!
+## Hooks
 
 Mill 4 includes a basic hooks system for registering actions and filters. While it's not strictly necessary to use it (there's nothing stopping you from registering your own actions and filters in the theme's `functions.php` file), it's a handy way to organize your code.
 
