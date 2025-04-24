@@ -16,11 +16,11 @@ class Genre extends Taxonomy
         Movie::SLUG,
     ];
 
-    protected bool $registersTopLevelMenuItem = true;
+    protected bool $registersTopLevelMenuItem = false;
 
-    protected ?string $menuItemName = 'Genres';
+    // protected ?string $menuItemName = 'Genres';
 
-    protected ?string $menuItemIcon = 'dashicons-admin-generic';
+    // protected ?string $menuItemIcon = 'dashicons-admin-generic';
 
-    protected ?int $menuItemPosition = 6;
+    // protected ?int $menuItemPosition = 6;
 }
