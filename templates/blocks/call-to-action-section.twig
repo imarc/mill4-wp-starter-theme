@@ -1,20 +1,22 @@
-<div class="callToActionSection">
-    <h1>{{ block.title }}</h1>
-    <div>{{ block.content }}</div>
-    {% if block.links %}
-        <div class="callToActionSection__actions">
-            {% for cta in block.links %}
-                <button class="hero__button button {{ cta.type == 'secondary' ?'-styleOutline' : null }}" href="{{ cta.link.url }}">{{ cta.link.title }}</button>
-            {% endfor %}
-        </div>
-    {% endif %}
+<div class="o-cta-section">
+    <div class="o-cta-section__content">
+        <h1>{{ block.title }}</h1>
+        <div class="o-cta-section__text">{{ block.content }}</div>
+        {% if block.links %}
+            <div class="o-cta-section__actions">
+                {% for cta in block.links %}
+                    <button class="a-button {{ cta.type == 'secondary' ? '-styleOutline' : '' }}" href="{{ cta.link.url }}">{{ cta.link.title }}</button>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
     {% if block.image %}
-        <div class="callToActionSection__image">
+        <div class="o-cta-section__image">
             <img src="{{ block.image.url }}" alt="{{ block.image.alt }}">
         </div>
     {% endif %}
     {% if block.background_image %}
-        <div class="callToActionSection__backgroundImage">
+        <div class="o-cta-section__background-image">
             <img src="{{ block.background_image.url }}" alt="{{ block.background_image.alt }}">
         </div>
     {% endif %}
