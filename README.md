@@ -22,6 +22,7 @@ In addition to the Twig templating that Timber provides, **Mill 4** includes the
 - [Commands](#commands)
 - [Jobs](#jobs)
 - [Recurring Events](#scheduling-recurring-events-via-wp-cron)
+- [Admin Pages](#admin-pages)
 
 ## Installation
 
@@ -691,3 +692,62 @@ class CronHooks implements HooksInterface
     }
 }
 ```
+
+## Admin Pages
+
+Mill 4 includes a basic system for creating custom admin pages. To create a new admin page, follow these steps:
+
+1. **Create a Admin Page Class**:
+   Create a new class for your admin page. This class should extend the `AdminPage` class provided by the theme. There are quite a few properties that you can set on the class to customize the page's location, appearance and behavior. For example:
+
+   ```php
+    // app/AdminPages/LogViewerPage.php
+
+    namespace App\AdminPages;
+
+    class LogViewerPage extends AdminPage
+    {
+        protected string $slug = 'logs';
+
+        protected string $title = 'Log Viewer';
+
+        protected string $capability = 'manage_options';
+
+        protected int $menuPosition = 10;
+
+        protected string $icon = 'dashicons-admin-tools';
+
+        protected ?string $template = 'admin/log-viewer.twig';
+
+        protected string $parentSlug = 'options-general.php';
+
+        protected function withContext(): array
+        {
+            return [
+                'logs' => 'foo',
+            ];
+        }
+    }
+    ```
+
+    If parent slug is set, the admin page will be added as a submenu page to the parent page you specify (and the $icon property will be ignored).
+
+    The `withContext()` method is used to pass any context data you'd like to pass to the template. 
+
+2. **Register the Admin Page**:
+   Update the `ADMIN_PAGES` constant in the `AdminPageHooks` class to include your new admin page:
+
+   ```php
+    // app/Hooks/AdminPageHooks.php
+
+    use App\AdminPages;
+
+    class AdminPageHooks implements HooksInterface
+    {
+        public const ADMIN_PAGES = [
+            AdminPages\LogViewerPage::class,
+        ];
+    }
+    ```
+
+    Now your admin page should be available in the WordPress admin.
