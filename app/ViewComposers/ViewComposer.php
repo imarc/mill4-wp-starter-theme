@@ -6,5 +6,5 @@ abstract class ViewComposer
 {
     public array $views = [];
 
-    abstract public function with(array $context): array;
+    abstract public function withContext(): array;
 }

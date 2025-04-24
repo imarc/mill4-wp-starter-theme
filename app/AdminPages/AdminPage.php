@@ -52,7 +52,7 @@ abstract class AdminPage
         }
     }
 
-    protected function getContext(): array
+    protected function withContext(): array
     {
         return [];
     }
@@ -61,7 +61,7 @@ abstract class AdminPage
     {
         $context = Timber::context();
         $context['title'] = $this->title;
-        $context = array_merge($context, $this->getContext());
+        $context = array_merge($context, $this->withContext());
 
         Timber::render($this->template, $context);
     }

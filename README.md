@@ -415,12 +415,12 @@ To register a Gutenberg block in your theme, follow these steps:
         </div>
     {% endblock %}
     ```
-    Any ACF data associated with the block will automatically be included in a template variable called `block`. If you'd like to pass any additional context to the template, you may override the getContext() method in your block class:
+    Any ACF data associated with the block will automatically be included in a template variable called `block`. If you'd like to pass any additional context to the template, you may override the withContext() method in your block class:
 
     ```php
     //  app/Blocks/GenericCtaBlock.php
 
-    protected function getContext(): array
+    protected function withContext(): array
     {
         return ['foo' => 'bar'];
     }
@@ -459,7 +459,7 @@ Create a new class for your view composer. This class should extend the `ViewCom
         ];
 
         // The context data to add to the view.
-        public function with(array $data): array
+        public function withContext(): array
         {
             $data['foo'] = 'bar';
 

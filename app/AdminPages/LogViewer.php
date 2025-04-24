@@ -18,7 +18,7 @@ class LogViewer extends AdminPage
 
     protected string $parentSlug = 'options-general.php';
 
-    protected function getContext(): array
+    protected function withContext(): array
     {
         return [
             'logs' => 'foo',

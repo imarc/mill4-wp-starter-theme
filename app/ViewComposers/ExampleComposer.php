@@ -5,16 +5,13 @@ namespace App\ViewComposers;
 class ExampleComposer extends ViewComposer
 {
     public array $views = [
-        'index.twig',
+        'blocks/hero-section.twig',
     ];
 
-    public function with(array $data): array
+    public function withContext(): array
     {
         // Add your custom context data here
-        $data['example_data'] = [
-            'message' => 'This data was added by the ExampleComposer',
-            'timestamp' => time(),
-        ];
+        $data['phone_number'] = '123-123-1234';
 
         return $data;
     }

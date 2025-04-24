@@ -48,7 +48,7 @@ class ViewComposerRegistry
         foreach ($this->composers as $view => $composerClass) {
             if ($view === $template) {
                 $composer = $this->container->get($composerClass);
-                $data = [...$data, ...$composer->with($data)];
+                $data = [...$data, ...$composer->withContext()];
             }
         }
 
