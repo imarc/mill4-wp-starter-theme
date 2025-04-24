@@ -6,6 +6,7 @@ In addition to the Twig templating that Timber provides, **Mill 4** includes the
 
 * PHP League's [container](https://container.thephpleague.com/) package for dependency injection.
 * Symfony's [HttpFoundation](https://symfony.com/doc/current/components/http_foundation.html) package for convenient request and response handling.
+* [DotEnv](https://github.com/vlucas/phpdotenv) for loading environment variables.
 * A router for handling custom GET/POST/PUT/DELETE routes.
 * An object-oriented hooks system for registering actions and filters.
 * An object-oriented interfaces for registering custom post types, taxonomies, Gutenberg blocks, admin pages and more!
@@ -19,6 +20,7 @@ Let's get into it.
 
 - [Installation](#installation)
 - [Hooks](#hooks)
+- [Configuration](#configuration)
 - [Custom Routes](#custom-routes)
 - [Custom Post Types](#custom-post-types)
 - [Custom Taxonomies](#custom-taxonomies)
@@ -96,6 +98,30 @@ $container = new Container();
 $hooks = $container->get(Hooks\Registrar::class);
 $hooks->register(Hooks\MyHooks::class);
 ```
+
+## Configuration
+
+Mill 4 includes a basic system for loading configuration settings. The settings are stored in the `app/config.php` file, and you can access them anywhere in your theme using the `config()` helper function. `config()` accepts a dot-notation path to the setting you'd like to access, and a default value if the setting is not found. For example:
+
+```php
+// app/config.php
+
+return [
+    'sessions' => [
+        'enabled' => env('SESSIONS_ENABLED', false),
+    ],
+];
+
+// elsewhere in your theme...
+
+echo config('sessions.enabled');
+// false
+
+echo config('sessions.foo', 'bar');
+// "bar"
+```
+
+The `env()` helper function is used to access environment variables, either set in your theme's `.env` file or through the `$_ENV` superglobal. And like `config()`, it also accepts a default value if the variable is not found. A good rule of thumb is to exclusively access environment variables through the `config()` helper function.
 
 ## Custom Routes
 
