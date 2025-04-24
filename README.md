@@ -51,21 +51,33 @@ Take a look at the `app/Hooks` directory to see the included hooks classes. To c
 
 namespace App\Hooks;
 
+use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 
 class MyHooks implements HooksInterface
 {
+    use RegistersHooks;
+
     public function initialize(): void
     {
-        add_action('init', [$this, 'registerActions']);
+        $this->addAction('init', [$this, 'doSomething']);
     }
     
-    public function registerActions(): void
+    public function doSomething(): void
     {
-        // ... register your actions here
+        // ... your logic here
     }
 }
 ```
+
+The `RegistersHooks` trait provides a few helpful methods for registering actions and filters:
+
+* `addAction($hook, $callback, $priority = 10, $acceptedArgs = 1)`: Registers an action.
+* `addFilter($hook, $callback, $priority = 10, $acceptedArgs = 1)`: Registers a filter.
+* `removeAction($hook, $callback, $priority = 10)`: Removes an action.
+* `removeFilter($hook, $callback, $priority = 10)`: Removes a filter.
+
+There's nothing stopping you from using WP's native `add_action()` and `add_filter()` functions, but using the trait's methods could come in handy down the line.
 
 Then, you'll want to register the hooks in the `app/bootstrap.php` file.
 

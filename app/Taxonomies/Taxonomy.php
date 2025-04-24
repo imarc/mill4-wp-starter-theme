@@ -2,8 +2,12 @@
 
 namespace App\Taxonomies;
 
+use App\Hooks\Concerns\RegistersHooks;
+
 class Taxonomy
 {
+    use RegistersHooks;
+
     public const SLUG = '';
 
     public string $singularLabel;
@@ -117,7 +121,7 @@ class Taxonomy
 
     public function registerTopLevelMenuItem(): void
     {
-        add_filter('admin_menu', [$this, 'addMenuItem'], 10, 2);
+        $this->addFilter('admin_menu', [$this, 'addMenuItem'], 10, 2);
     }
 
     public function addMenuItem()
@@ -132,7 +136,7 @@ class Taxonomy
             $this->menuItemPosition,
         );
 
-        add_action('parent_file', function ($parent_file) {
+        $this->addAction('parent_file', function ($parent_file) {
             global $current_screen;
             if ($current_screen->taxonomy === static::SLUG) {
                 return 'edit-tags.php?taxonomy='.static::SLUG;
