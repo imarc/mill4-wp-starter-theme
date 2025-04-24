@@ -4,11 +4,16 @@
 
 In addition to the Twig templating that Timber provides, **Mill 4** includes the following features:
 
-* A simple router for handling custom GET/POST/PUT/DELETE routes.
-* An object-oriented Hooks system for registering actions and filters.
-* A basic service container for dependency injection.
-* An object-oriented interface for registering custom post types, taxonomies, and Gutenberg blocks.
+* PHP League's [container](https://container.thephpleague.com/) package for dependency injection.
+* Symfony's [HttpFoundation](https://symfony.com/doc/current/components/http_foundation.html) package for convenient request and response handling.
+* A router for handling custom GET/POST/PUT/DELETE routes.
+* An object-oriented hooks system for registering actions and filters.
+* An object-oriented interfaces for registering custom post types, taxonomies, Gutenberg blocks, admin pages and more!
+* A system for creating jobs and scheduling them and other recurring events via WP-Cron.
+* View composers for adding custom context data to your Twig templates.
 * A basic front-end build process for compiling Sass and JavaScript using Vite.
+
+Let's get into it.
 
 ## Table of Contents
 
