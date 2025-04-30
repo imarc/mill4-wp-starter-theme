@@ -843,9 +843,9 @@ The cache's default TTL is 24 hours, and can be changed by setting `CACHE_TTL` i
 
 Mill 4 also includes a helper function for each of the cache methods, so you can use them in your theme without having to inject the cache service.
 
- * `cache_remember($key, $value, $ttl = 60)`: Remember a value in the cache. Once again, `$value` can be a callable, in which case the result of the callback will be cached.
+ * `cache_remember($key, $value, $ttl = null)`: Remember a value in the cache. Once again, `$value` can be a callable, in which case the result of the callback will be cached.
  * `cache_forget($key)`: Forget a value in the cache.
  * `cache_flush()`: Flush the cache.
  * `cache_get($key)`: Get a value from the cache.
- * `cache_set($key, $value, $ttl = 60)`: Set a value in the cache.
+ * `cache_set($key, $value, $ttl = null)`: Set a value in the cache.
     

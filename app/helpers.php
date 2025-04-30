@@ -153,10 +153,10 @@ function cache(): Cache
  *
  * @param string $key The key to remember the value for.
  * @param mixed $value The value to cache.
- * @param int $ttl The time to live for the cache.
+ * @param int|null $ttl The time to live for the cache.
  * @return mixed The value from the cache.
  */
-function cache_remember(string $key, mixed $value, int $ttl = 60): mixed
+function cache_remember(string $key, mixed $value, ?int $ttl = null): mixed
 {
     return cache()->remember($key, $value, $ttl);
 }
@@ -195,9 +195,9 @@ function cache_get(string $key): mixed
  *
  * @param string $key The key to set the value for.
  * @param mixed $value The value to set.
- * @param int $ttl The time to live for the cache.
+ * @param int|null $ttl The time to live for the cache.
  */
-function cache_set(string $key, mixed $value, int $ttl = 60): void
+function cache_set(string $key, mixed $value, ?int $ttl = null): void
 {
     cache()->set($key, $value, $ttl);
 }
