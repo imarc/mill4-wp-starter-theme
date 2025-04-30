@@ -11,4 +11,8 @@ return [
         'samesite' => env('SESSIONS_SAMESITE', 'Lax'),
         'lifetime' => env('SESSIONS_LIFETIME', 0),
     ],
+
+    'cache' => [
+        'ttl' => env('CACHE_TTL', 60 * 60 * 24),
+    ]
 ];

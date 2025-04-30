@@ -4,7 +4,10 @@ namespace App\Services;
 
 class Cache
 {
-    private static $defaultTtl = 60 * 60 * 24;
+    public static function getDefaultTtl(): int
+    {
+        return config('cache.ttl', 60 * 60 * 24);
+    }
 
     /**
      * Get a value from the cache.
@@ -27,7 +30,7 @@ class Cache
      */
     public function set(string $key, $value, ?int $ttl = null): bool
     {
-        return wp_cache_set($key, $value, '', $ttl ?: self::$defaultTtl);
+        return wp_cache_set($key, $value, '', $ttl ?: self::getDefaultTtl());
     }
 
     /**
@@ -40,6 +43,8 @@ class Cache
      */
     public function remember(string $key, mixed $value, ?int $ttl = null)
     {
+        error_log('default ttl: ' . self::getDefaultTtl());
+
         $cachedValue = $this->get($key);
 
         if ($cachedValue) {

@@ -831,11 +831,13 @@ class MyController extends Controller
 
 }
 ```
- * The `remember()` method is used to cache the result of a function. The first argument is the  cache key, the second is the value to cache, and the third is the TTL (time to live) in  seconds. If the value is already cached, it will be returned immediately. This value can be a callable, in which case the result of the callback will be cached.
- * The `forget()` method is used to delete a value from the cache.
- * The `flush()` method is used to delete all values from the cache.
- * The `get()` method is used to get a value from the cache.
- * The `set()` method is used to set a value in the cache.
+ * `remember($key, $value, $ttl = null)`: Remember a value in the cache. The first argument is the  cache key, the second is the value to cache, and the third is the TTL (time to live) in  seconds. If the value is already cached, it will be returned immediately. This value can be a callable, in which case the result of the callback will be cached.
+ * `forget($key)`: Forget a value from the cache.
+ * `flush()`: Flush the cache.
+ * `get($key)`: Get a value from the cache.
+ * `set($key, $value, $ttl = null)`: Set a value in the cache.
+
+The cache's default TTL is 24 hours, and can be changed by setting `CACHE_TTL` in your `.env` file. The value is represented in seconds.
 
 **NOTE:** It's worth noting that since we're using `wp_cache_get()` and `wp_cache_set()` under the hood, *the cache will only be available to the current request by default*. It's highly recommended that you install a plugin like [Redis Object Cache](https://wordpress.org/plugins/redis-cache/) or [Memcached Object Cache](https://wordpress.org/plugins/memcached/). Once either of those are installed, the cached data will persist across requests.
 
