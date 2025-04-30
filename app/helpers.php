@@ -1,5 +1,7 @@
 <?php
 
+use App\Services\Cache;
+use App\Services\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -134,4 +136,68 @@ function function_timer(string $name, callable $callback)
     error_log(sprintf('%s took %s seconds to execute', $name, $end - $start));
 
     return $result;
+}
+
+/**
+ * Get the cache service.
+ *
+ * @return Cache The cache service.
+ */
+function cache(): Cache
+{
+    return Container::getInstance()->get(Cache::class);
+}
+
+/**
+ * Remember a value in the cache.
+ *
+ * @param string $key The key to remember the value for.
+ * @param mixed $value The value to cache.
+ * @param int $ttl The time to live for the cache.
+ * @return mixed The value from the cache.
+ */
+function cache_remember(string $key, mixed $value, int $ttl = 60): mixed
+{
+    return cache()->remember($key, $value, $ttl);
+}
+
+/**
+ * Forget a value in the cache.
+ *
+ * @param string $key The key to forget.
+ */
+function cache_forget(string $key): void
+{
+    cache()->forget($key);
+}
+
+/**
+ * Flush the cache.
+ */
+function cache_flush(): void
+{
+    cache()->flush();
+}
+
+/**
+ * Get a value from the cache.
+ *
+ * @param string $key The key to get the value for.
+ * @return mixed The value from the cache.
+ */
+function cache_get(string $key): mixed
+{
+    return cache()->get($key);
+}
+
+/**
+ * Set a value in the cache.
+ *
+ * @param string $key The key to set the value for.
+ * @param mixed $value The value to set.
+ * @param int $ttl The time to live for the cache.
+ */
+function cache_set(string $key, mixed $value, int $ttl = 60): void
+{
+    cache()->set($key, $value, $ttl);
 }

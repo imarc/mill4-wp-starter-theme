@@ -1,6 +1,6 @@
 # Mill 4 Starter Theme
 
-**Mill 4** is a WordPress starter theme adapted from the [Timber Starter Theme](https://timber.github.io/docs/v2/installation/installation/#use-the-starter-theme), which provides a no-frills starting point for building a WordPress theme with Timber.
+**Mill 4** is a WordPress starter theme built on top of the [Timber starter theme](https://timber.github.io/docs/v2/installation/installation/#use-the-starter-theme), which provides a no-frills starting point for building a WordPress theme with Timber.
 
 In addition to the Twig templating that Timber provides, **Mill 4** includes the following features:
 
@@ -794,3 +794,55 @@ Mill 4 includes a basic system for creating custom admin pages. To create a new 
     ```
 
     Now your admin page should be available in the WordPress admin.
+
+
+## Cache
+
+Mill 4 includes a developer-friendly caching service that acts as a wrapper around WordPress's native caching functions. Like everything else in Mill 4, the cache is designed to be used as a service, so you can inject it into your classes using dependency injection.
+
+```php
+<?php
+// app/Http/Controllers/MyController.php
+
+use App\Services\Cache;
+
+class MyController extends Controller
+{
+    public function __invoke(Cache $cache): void
+    {
+        $cache->remember('featured-posts', function () {
+            return get_posts([
+                'post_type' => 'post',
+                'posts_per_page' => 10,
+                'orderby' => 'date',
+                'order' => 'DESC',
+                'post_status' => 'publish',
+                'meta_query' => [
+                    [
+                        'key' => 'featured',
+                        'value' => '1',
+                        'compare' => '=',
+                    ],
+                ],
+            ]);
+        }, 60);
+    }
+
+}
+```
+ * The `remember()` method is used to cache the result of a function. The first argument is the  cache key, the second is the value to cache, and the third is the TTL (time to live) in  seconds. If the value is already cached, it will be returned immediately. This value can be a callable, in which case the result of the callback will be cached.
+ * The `forget()` method is used to delete a value from the cache.
+ * The `flush()` method is used to delete all values from the cache.
+ * The `get()` method is used to get a value from the cache.
+ * The `set()` method is used to set a value in the cache.
+
+**NOTE:** It's worth noting that since we're using `wp_cache_get()` and `wp_cache_set()` under the hood, *the cache will only be available to the current request by default*. It's highly recommended that you install a plugin like [Redis Object Cache](https://wordpress.org/plugins/redis-cache/) or [Memcached Object Cache](https://wordpress.org/plugins/memcached/). Once either of those are installed, the cached data will persist across requests.
+
+Mill 4 also includes a helper function for each of the cache methods, so you can use them in your theme without having to inject the cache service.
+
+ * `cache_remember($key, $value, $ttl = 60)`: Remember a value in the cache. Once again, `$value` can be a callable, in which case the result of the callback will be cached.
+ * `cache_forget($key)`: Forget a value in the cache.
+ * `cache_flush()`: Flush the cache.
+ * `cache_get($key)`: Get a value from the cache.
+ * `cache_set($key, $value, $ttl = 60)`: Set a value in the cache.
+    
