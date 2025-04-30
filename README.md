@@ -30,6 +30,7 @@ Let's get into it.
 - [Jobs](#jobs)
 - [Recurring Events](#scheduling-recurring-events-via-wp-cron)
 - [Admin Pages](#admin-pages)
+- [Cache](#cache)
 
 ## Installation
 
