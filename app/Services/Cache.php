@@ -43,8 +43,6 @@ class Cache
      */
     public function remember(string $key, mixed $value, ?int $ttl = null)
     {
-        error_log('default ttl: ' . self::getDefaultTtl());
-
         $cachedValue = $this->get($key);
 
         if ($cachedValue) {
