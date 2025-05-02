@@ -318,7 +318,7 @@ class FooController extends Controller
 
 ## Custom Post Types
 
-To register a custom post type in your theme, create a new class for your custom post type. This class should extend the `PostType` class provided by the theme and use the `RegistersPostType` attribute. For example:
+To register a custom post type in your theme, create a new class for your custom post type in the `app/PostTypes` directory. This class should extend the `PostType` class provided by the theme and use the `RegistersPostType` attribute. For example:
 
 ```php
 <?php
@@ -556,13 +556,17 @@ These commands align with those available in [WP-CLI's API](https://make.wordpre
 
 Mill 4 includes a basic job system for running custom jobs. These jobs can be scheduled to run at a specific time or immediately, and can be configured to use the WordPress cron system.
 
-To create a new job, create a new class for your job. This class should extend the `Job` class provided by the theme and use the `RegistersJob` attribute. For example:
+To create a new job, create a new class for your job in the `app/Jobs` directory. This class should extend the `Job` class provided by the theme and use the `RegistersJob` attribute. For example:
 
 ```php
+<?php
 // app/Jobs/MyGreatJob.php
 
 namespace App\Jobs;
 
+use App\Attributes\RegistersJob;
+
+#[RegistersJob]
 class MyGreatJob extends Job
 {
     public function handle(): void
@@ -592,6 +596,7 @@ MyGreatJob::dispatch()
 As with other parts of Mill 4, Jobs support dependency injection, so feel free to add a `__construct()` method to your job class and inject any dependencies you need.
 
 ```php
+<?php
 // app/Jobs/MyGreatJob.php
 
 namespace App\Jobs;
