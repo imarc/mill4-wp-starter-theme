@@ -2,8 +2,10 @@
 
 namespace App\Taxonomies;
 
+use App\Attributes\RegistersTaxonomy;
 use App\PostTypes\Movie;
 
+#[RegistersTaxonomy]
 class Genre extends Taxonomy
 {
     public const SLUG = 'genre';

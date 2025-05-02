@@ -2,17 +2,15 @@
 
 namespace App\Hooks;
 
+use App\Attributes\RegistersPostType;
 use App\Hooks\Concerns\RegistersHooks;
+use App\Hooks\Concerns\DiscoversClasses;
 use App\Hooks\Contracts\HooksInterface;
-use App\PostTypes;
 
 class PostTypeHooks implements HooksInterface
 {
+    use DiscoversClasses;
     use RegistersHooks;
-
-    public const POST_TYPES = [
-        PostTypes\Movie::class,
-    ];
 
     public function initialize(): void
     {
@@ -21,7 +19,9 @@ class PostTypeHooks implements HooksInterface
 
     public function registerPostTypes(): void
     {
-        foreach (self::POST_TYPES as $postTypeClass) {
+        $classes = $this->discoverClassesForAttribute(RegistersPostType::class, 'PostTypes');
+
+        foreach ($classes as $postTypeClass) {
             $postType = new $postTypeClass();
 
             if (! method_exists($postType, 'register')) {

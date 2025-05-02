@@ -2,18 +2,16 @@
 
 namespace App\Hooks;
 
+use App\Attributes\RegistersJob;
+use App\Hooks\Concerns\DiscoversClasses;
 use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
-use App\Jobs;
 use App\Services\Container;
 
 class JobHooks implements HooksInterface
 {
+    use DiscoversClasses;
     use RegistersHooks;
-
-    public const JOBS = [
-        Jobs\MyGreatJob::class
-    ];
 
     public function __construct(
         private Container $container
@@ -27,7 +25,9 @@ class JobHooks implements HooksInterface
 
     public function registerJobs()
     {
-        foreach (self::JOBS as $jobClass) {
+        $classes = $this->discoverClassesForAttribute(RegistersJob::class, 'Jobs');
+
+        foreach ($classes as $jobClass) {
             $job = $this->container->get($jobClass);
             $this->addAction($job->getName(), [$job, 'handle'], 10, 3);
             do_action('mill4_job_registered', $jobClass);

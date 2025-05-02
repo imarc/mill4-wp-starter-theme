@@ -2,6 +2,9 @@
 
 namespace App\ViewComposers;
 
+use App\Attributes\RegistersViewComposer;
+
+#[RegistersViewComposer]
 class ExampleComposer extends ViewComposer
 {
     public array $views = [

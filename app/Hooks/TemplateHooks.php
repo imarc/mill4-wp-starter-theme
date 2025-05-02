@@ -2,22 +2,20 @@
 
 namespace App\Hooks;
 
+use App\Attributes\RegistersViewComposer;
+use App\Hooks\Concerns\DiscoversClasses;
 use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 use App\Services\Container;
 use App\ViewComposers\ViewComposerRegistry;
-use App\ViewComposers;
 use Twig;
 use Timber\Site;
 use Timber\Timber;
 
 class TemplateHooks implements HooksInterface
 {
+    use DiscoversClasses;
     use RegistersHooks;
-
-    public const VIEW_COMPOSERS = [
-        ViewComposers\ExampleComposer::class,
-    ];
 
     public function __construct(
         protected Site $site,
@@ -95,7 +93,9 @@ class TemplateHooks implements HooksInterface
 
     public function registerViewComposers(): void
     {
-        foreach (self::VIEW_COMPOSERS as $viewComposer) {
+        $classes = $this->discoverClassesForAttribute(RegistersViewComposer::class, 'ViewComposers');
+
+        foreach ($classes as $viewComposer) {
             $this->viewComposerRegistry->registerComposer($viewComposer);
         }
 

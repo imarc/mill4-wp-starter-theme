@@ -7,6 +7,9 @@
 
 namespace App\PostTypes;
 
+use App\Attributes\RegistersPostType;
+
+#[RegistersPostType]
 class Movie extends PostType
 {
     public const SLUG = 'movie';

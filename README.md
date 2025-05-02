@@ -318,101 +318,71 @@ class FooController extends Controller
 
 ## Custom Post Types
 
-To register a custom post type in your theme, follow these steps:
+To register a custom post type in your theme, create a new class for your custom post type. This class should extend the `PostType` class provided by the theme and use the `RegistersPostType` attribute. For example:
 
-1. **Create a Custom Post Type Class**:
-   Create a new class for your custom post type. This class should extend the `PostType` class provided by the theme. For example:
+```php
+<?php
 
-   ```php
-   <?php
+// app/PostTypes/Movie.php
 
-   // app/PostTypes/Movie.php
+namespace App\PostTypes;
 
-   namespace App\PostTypes;
+use App\Attributes\RegistersPostType;
 
-   class Movie extends PostType
-   {
-        public const SLUG = 'movie';
+#[RegistersPostType]
+class Movie extends PostType
+{
+    public const SLUG = 'movie';
 
-        public string $singularLabel = 'Movie';
+    public string $singularLabel = 'Movie';
 
-        public string $pluralLabel = 'Movies';
+    public string $pluralLabel = 'Movies';
 
-        protected array $args = [
-            'public' => true,
-            'has_archive' => true,
-            'supports' => ['title', 'editor', 'thumbnail'],
-        ];
-   }
-   ```
-
-2. **Register the Custom Post Type**:
-   Update the `POST_TYPES` constant in the `PostTypeHooks` class to include your new post type:
-
-   ```php
-    // app/Hooks/PostTypeHooks.php
-
-    class PostTypeHooks implements HooksInterface
-    {
-        public const POST_TYPES = [
-            PostTypes\Movie::class,
-        ];
-        
-        ...
-    ```
+    protected array $args = [
+        'public' => true,
+        'has_archive' => true,
+        'supports' => ['title', 'editor', 'thumbnail'],
+    ];
+}
+```
 
 ## Custom Taxonomies
 
-To register a custom taxonomy in your theme, follow these steps:
+To register a custom taxonomy in your theme, create a new class for your custom taxonomy in the `app/Taxonomies` directory. Your class should extend the `Taxonomy` class provided by the theme and use the `RegistersTaxonomy` attribute. For example:
 
-1. **Create a Custom Taxonomy Class**:
-   Create a new class for your custom taxonomy. This class should extend the `Taxonomy` class provided by the theme. For example:
+```php
+<?php
 
-   ```php
-    <?php
+// app/Taxonomies/Genre.php
 
-    // app/Taxonomies/Genre.php
+namespace App\Taxonomies;
 
-    namespace App\Taxonomies;
+use App\Attributes\RegistersTaxonomy;
+use App\PostTypes\Movie;
 
-    use App\PostTypes\Movie;
+#[RegistersTaxonomy]
+class Genre extends Taxonomy
+{
+    public const SLUG = 'genre';
 
-    class Genre extends Taxonomy
-    {
-        public const SLUG = 'genre';
+    public string $pluralLabel = 'Genres';
 
-        public string $pluralLabel = 'Genres';
+    public string $singularLabel = 'Genre';
 
-        public string $singularLabel = 'Genre';
+    protected array $postTypes = [
+        Movie::SLUG,
+    ];
+}
+```
 
-        protected array $postTypes = [
-            Movie::SLUG,
-        ];
-    }
-    ```
-
-2. **Register the Custom Taxonomy**:
-   Update the `TAXONOMIES` constant in the `TaxonomyHooks` class to include your new taxonomy:
-
-   ```php
-    // app/Hooks/TaxonomyHooks.php
-
-    class TaxonomyHooks implements HooksInterface
-    {
-
-        public const TAXONOMIES = [
-            Taxonomies\Genre::class,
-        ];
-
-        ...
-    ```
+Adding the `RegistersTaxonomy` attribute to the class will automatically register the taxonomy with the theme (this happens in the `TaxonomyHooks` class).
 
 ## Gutenberg Blocks
 
 To register a Gutenberg block in your theme, follow these steps:
 
 1. **Create a Gutenberg Block Class**:
-   Create a new class for your Gutenberg block. This class should extend the `Block` class provided by the theme. For example:
+   Create a new class for your Gutenberg block. This class should extend the `Block` class provided by the theme. It should live in the `app/Blocks` directory and use the `RegistersBlock` attribute. For example:
 
    ```php
     <?php
@@ -474,122 +444,101 @@ To register a Gutenberg block in your theme, follow these steps:
 
 ## View Composers
 
-Mill 4 includes a basic view composer system for adding custom context data to your Twig templates. To create a new view composer, follow these steps:
+Mill 4 includes a basic view composer system for adding custom context data to your Twig templates. To create a new view composer, create a new class for it in the `app/ViewComposers` directory. Your class should extend the `ViewComposer` class provided by the theme and use the `RegistersViewComposer` PHP attribute. For example:
 
- 1. **Create a View Composer Class**:
-Create a new class for your view composer. This class should extend the `ViewComposer` class provided by the theme. For example:
+```php
+<?php
 
-    ```php
-    <?php
+// app/ViewComposers/FooComposer.php
 
-    // app/ViewComposers/FooComposer.php
+namespace App\ViewComposers;
 
-    namespace App\ViewComposers;
+use App\Attributes\RegistersViewComposer;
 
-    class FooComposer extends ViewComposer
-    {
-        // The views that the composer should be applied to.
-        public array $views = [
-            'index.twig',
-        ];
-
-        // The context data to add to the view.
-        public function withContext(): array
-        {
-            $data['foo'] = 'bar';
-
-            return $data;
-        }
-    }
-    ```
-
- 2. **Register the View Composer**:
-   Update the `VIEW_COMPOSERS` constant in the `TemplateHooks` class to include your new view composer:
-
-    ```php
-    // app/Hooks/TemplateHooks.php
-
-    public const VIEW_COMPOSERS = [
-        ViewComposers\FooComposer::class,
+#[RegistersViewComposer]
+class FooComposer extends ViewComposer
+{
+    // The views that the composer should be applied to.
+    public array $views = [
+        'index.twig',
     ];
 
-    ...
-    ```
+    // The context data to add to the view.
+    public function withContext(): array
+    {
+        $data['foo'] = 'bar';
 
-    Now your view composer will be applied to the specified views.
+        return $data;
+    }
+}
+```
+
+Adding the `RegistersViewComposer` attribute to the class will automatically register the view composer with the theme (this happens in the `TemplateHooks` class).
+
+Now your view composer will be applied to the specified views.
 
 ## Commands
 
-Mill 4 includes a basic command system for running custom commands. To create a new command, follow these steps:
+Mill 4 includes a basic command system for running custom commands.
 
-1. **Create a Command Class**:
-   Create a new class for your command. This class should extend the `Command` class provided by the theme. Make sure you add a `__invoke()` method to your command class for standalone commands. For example:
+To create a new command, create a new class for it. This class should extend the `Command` class provided by the theme. Make sure you add a `__invoke()` method to your command class for standalone commands. For example:
 
-   ```php
-    // app/Commands/FooCommand.php
+```php
+<?php
+// app/Commands/FooCommand.php
 
-    namespace App\Commands;
+namespace App\Commands;
 
-    class FooCommand extends Command
+use App\Attributes\RegistersCommand;
+
+#[RegistersCommand]
+class FooCommand extends Command
+{
+    protected string $name = 'foo';
+
+    protected string $shortDescription = 'Prints a message to the console';
+
+    public function __invoke($args, $assoc_args)
     {
-        protected string $name = 'foo';
-
-        protected string $shortDescription = 'Prints a message to the console';
-
-        public function __invoke($args, $assoc_args)
-        {
-            $this->line('Hello from FooCommand!');
-        }
+        $this->line('Hello from FooCommand!');
     }
-    ```
+}
+```
 
-    Alternatively, if you'd like namespaced commands, you can do this by creating a single command class without an `__invoke()` method. Then, each public method in the class will be treated as a subcommand. For example:
+The `RegistersCommand` attribute will automatically register the command with the theme (this happens in the `CommandHooks` class).
 
-    ```php
-    // app/Commands/FooCommand.php
+Alternatively, if you'd like namespaced commands, you can do this by creating a single command class without an `__invoke()` method. Then, each public method in the class will be treated as a subcommand. For example:
 
-    class FooCommand extends Command
+```php
+// app/Commands/FooCommand.php
+
+class FooCommand extends Command
+{
+    public function bar()
     {
-        public function bar()
-        {
-            $this->line('Hello from FooCommand!');
-        }
+        $this->line('Hello from FooCommand!');
     }
-    ```
+}
+```
 
-    Now you can run `wp foo bar` to execute the `bar` method. Running simply `wp foo` will return a list of available subcommands.
+Now you can run `wp foo bar` to execute the `bar` method. Running simply `wp foo` will return a list of available subcommands.
 
-    If you'd like the subcommand's name to be different from the method name, you can set the `@subcommand` attribute on the method. For example:
+If you'd like the subcommand's name to be different from the method name, you can set the `@subcommand` attribute on the method. For example:
 
-    ```php
-    // app/Commands/FooCommand.php
+```php
+// app/Commands/FooCommand.php
 
-    class FooCommand extends Command
+class FooCommand extends Command
+{
+    /**
+     * @subcommand my-great-command
+     */
+    public function myGreatCommand()
     {
-        /**
-         * @subcommand my-great-command
-         */
-        public function myGreatCommand()
-        {
-            $this->line('Hello from FooCommand!');
-        }
+        $this->line('Hello from FooCommand!');
     }
-    ```
-
-2. **Register the Command**:
-   After you've created your command, update the `COMMANDS` constant in the `CommandHooks` class to include your new command:
-
-   ```php
-    // app/Hooks/CommandHooks.php
-
-    class CommandHooks implements HooksInterface
-    {
-        public const COMMANDS = [
-            Commands\FooCommand::class,
-        ];
-
-        ...
-    ```
+}
+```
 
 Now your command should be available to run using WordPress' `wp` command.
 
@@ -607,38 +556,23 @@ These commands align with those available in [WP-CLI's API](https://make.wordpre
 
 Mill 4 includes a basic job system for running custom jobs. These jobs can be scheduled to run at a specific time or immediately, and can be configured to use the WordPress cron system.
 
-To create a new job, follow these steps:
+To create a new job, create a new class for your job. This class should extend the `Job` class provided by the theme and use the `RegistersJob` attribute. For example:
 
-1. **Create a Job Class**:
-   Create a new class for your job. This class should extend the `Job` class provided by the theme. For example:
+```php
+// app/Jobs/MyGreatJob.php
 
-   ```php
-    // app/Jobs/MyGreatJob.php
+namespace App\Jobs;
 
-    namespace App\Jobs;
-
-    class MyGreatJob extends Job
+class MyGreatJob extends Job
+{
+    public function handle(): void
     {
-        public function handle(): void
-        {
-            die('I did a thing!');
-        }
+        die('I did a thing!');
     }
-    ```
+}
+```
 
-2. **Register the Job**:
-   Update the `JOBS` constant in the `JobHooks` class to include your new job:
-
-   ```php
-    // app/Hooks/JobHooks.php
-
-    class JobHooks implements HooksInterface
-    {
-        public const JOBS = [
-            Jobs\MyGreatJob::class,
-        ];
-    }
-    ```
+Adding the `RegistersJob` attribute to the class will automatically register the job with the theme (this happens in the `JobHooks` class).
 
 Now your job should be available to be dispatched.
 
@@ -660,6 +594,12 @@ As with other parts of Mill 4, Jobs support dependency injection, so feel free t
 ```php
 // app/Jobs/MyGreatJob.php
 
+namespace App\Jobs;
+
+use App\Attributes\RegistersJob;
+use App\Services\Logger;
+
+#[RegistersJob]
 class MyGreatJob extends Job
 {
     public function __construct(private Logger $logger)
@@ -731,9 +671,12 @@ class CronHooks implements HooksInterface
 
 Mill 4 includes a basic system for creating custom admin pages.
 
-To create an admin page, create a new class for it. This class should extend the `AdminPage` class provided by the theme, and should live in the `app/AdminPages` directory. There are quite a few properties that you can set on the class to customize the page's location, appearance and behavior. For example:
+To create an admin page, create a new class for it in the `app/AdminPages` directory. Your class should extend the `AdminPage` class provided by the theme, and use the `RegistersAdminPage` attribute.
+
+There are quite a few properties that you can set on the class to customize the page's location, appearance and behavior. For example:
 
 ```php
+<?php
 // app/AdminPages/LogViewerPage.php
 
 namespace App\AdminPages;
@@ -766,11 +709,11 @@ class LogViewerPage extends AdminPage
 }
 ```
 
+Adding the `RegistersAdminPage` attribute to the class will automatically register the admin page with the theme (this happens in the `AdminPageHooks` class).
+
 If parent slug is set, the admin page will be added as a submenu page to the parent page you specify (and the $icon property will be ignored).
 
 The `withContext()` method is used to pass any context data you'd like to pass to the template. 
-
-Adding the `RegistersAdminPage` attribute to the class will automatically register the admin page with the theme (this happens in the `AdminPageHooks` class).
 
 Now your admin page should be available in the WordPress admin.
 

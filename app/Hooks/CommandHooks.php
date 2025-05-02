@@ -2,17 +2,16 @@
 
 namespace App\Hooks;
 
+use App\Attributes\RegistersCommand;
 use App\Commands\Mill4Command;
+use App\Hooks\Concerns\DiscoversClasses;
 use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 
 class CommandHooks implements HooksInterface
 {
+    use DiscoversClasses;
     use RegistersHooks;
-
-    public const COMMANDS = [
-        Mill4Command::class,
-    ];
 
     public function initialize(): void
     {
@@ -21,7 +20,9 @@ class CommandHooks implements HooksInterface
 
     public function registerCommands(): void
     {
-        foreach (self::COMMANDS as $commandClass) {
+        $classes = $this->discoverClassesForAttribute(RegistersCommand::class, 'Commands');
+
+        foreach ($classes as $commandClass) {
             $command = new $commandClass();
 
             if (! (defined('WP_CLI') && constant('WP_CLI'))) {

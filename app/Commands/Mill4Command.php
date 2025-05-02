@@ -2,6 +2,9 @@
 
 namespace App\Commands;
 
+use App\Attributes\RegistersCommand;
+
+#[RegistersCommand]
 class Mill4Command extends Command
 {
     public string $name = 'mill4';

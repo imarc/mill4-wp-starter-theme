@@ -4,7 +4,11 @@ namespace App\Taxonomies;
 
 use App\Hooks\Concerns\RegistersHooks;
 
-class Taxonomy
+/**
+ * This is an abstract class for creating taxonomies. Each taxonomy
+ * should extend this class and use the RegistersTaxonomy attribute.
+ */
+abstract class Taxonomy
 {
     use RegistersHooks;
 

@@ -2,17 +2,15 @@
 
 namespace App\Hooks;
 
+use App\Attributes\RegistersTaxonomy;
+use App\Hooks\Concerns\DiscoversClasses;
 use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
-use App\Taxonomies;
 
 class TaxonomyHooks implements HooksInterface
 {
+    use DiscoversClasses;
     use RegistersHooks;
-
-    public const TAXONOMIES = [
-        Taxonomies\Genre::class,
-    ];
 
     public function initialize(): void
     {
@@ -21,7 +19,9 @@ class TaxonomyHooks implements HooksInterface
 
     public function registerTaxonomies(): void
     {
-        foreach (self::TAXONOMIES as $taxonomyClass) {
+        $classes = $this->discoverClassesForAttribute(RegistersTaxonomy::class, 'Taxonomies');
+
+        foreach ($classes as $taxonomyClass) {
             $taxonomy = new $taxonomyClass();
 
             if (! method_exists($taxonomy, 'register')) {
