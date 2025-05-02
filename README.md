@@ -729,68 +729,50 @@ class CronHooks implements HooksInterface
 
 ## Admin Pages
 
-Mill 4 includes a basic system for creating custom admin pages. To create a new admin page, follow these steps:
+Mill 4 includes a basic system for creating custom admin pages.
 
-1. **Create a Admin Page Class**:
-   Create a new class for your admin page. This class should extend the `AdminPage` class provided by the theme. There are quite a few properties that you can set on the class to customize the page's location, appearance and behavior. For example:
+To create an admin page, create a new class for it. This class should extend the `AdminPage` class provided by the theme, and should live in the `app/AdminPages` directory. There are quite a few properties that you can set on the class to customize the page's location, appearance and behavior. For example:
 
-   ```php
-    // app/AdminPages/LogViewerPage.php
+```php
+// app/AdminPages/LogViewerPage.php
 
-    namespace App\AdminPages;
+namespace App\AdminPages;
 
-    use App\Attributes\RegistersAdminPage;
+use App\Attributes\RegistersAdminPage;
 
-    #[RegistersAdminPage]
-    class LogViewerPage extends AdminPage
+#[RegistersAdminPage]
+class LogViewerPage extends AdminPage
+{
+    protected string $slug = 'logs';
+
+    protected string $title = 'Log Viewer';
+
+    protected string $capability = 'manage_options';
+
+    protected int $menuPosition = 10;
+
+    protected string $icon = 'dashicons-admin-tools';
+
+    protected ?string $template = 'admin/log-viewer.twig';
+
+    protected string $parentSlug = 'options-general.php';
+
+    protected function withContext(): array
     {
-        protected string $slug = 'logs';
-
-        protected string $title = 'Log Viewer';
-
-        protected string $capability = 'manage_options';
-
-        protected int $menuPosition = 10;
-
-        protected string $icon = 'dashicons-admin-tools';
-
-        protected ?string $template = 'admin/log-viewer.twig';
-
-        protected string $parentSlug = 'options-general.php';
-
-        protected function withContext(): array
-        {
-            return [
-                'logs' => 'foo',
-            ];
-        }
-    }
-    ```
-
-    If parent slug is set, the admin page will be added as a submenu page to the parent page you specify (and the $icon property will be ignored).
-
-    The `withContext()` method is used to pass any context data you'd like to pass to the template. 
-
-    Adding the `RegistersAdminPage` attribute to the class will automatically register the admin page with the theme (this happens in the `AdminPageHooks` class).
-
-2. **Register the Admin Page**:
-   Update the `ADMIN_PAGES` constant in the `AdminPageHooks` class to include your new admin page:
-
-   ```php
-    // app/Hooks/AdminPageHooks.php
-
-    use App\AdminPages;
-
-    class AdminPageHooks implements HooksInterface
-    {
-        public const ADMIN_PAGES = [
-            AdminPages\LogViewerPage::class,
+        return [
+            'logs' => 'foo',
         ];
     }
-    ```
+}
+```
 
-    Now your admin page should be available in the WordPress admin.
+If parent slug is set, the admin page will be added as a submenu page to the parent page you specify (and the $icon property will be ignored).
 
+The `withContext()` method is used to pass any context data you'd like to pass to the template. 
+
+Adding the `RegistersAdminPage` attribute to the class will automatically register the admin page with the theme (this happens in the `AdminPageHooks` class).
+
+Now your admin page should be available in the WordPress admin.
 
 ## Cache
 
