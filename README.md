@@ -425,9 +425,11 @@ To register a Gutenberg block in your theme, follow these steps:
     ```php
     //  app/Blocks/GenericCtaBlock.php
 
-    protected function withContext(): array
+    public function withContext(): array
     {
-        return ['foo' => 'bar'];
+        return [
+            'foo' => 'bar',
+        ];
     }
 
     // templates/blocks/generic-cta-block.twig
@@ -466,9 +468,9 @@ class FooComposer extends ViewComposer
     // The context data to add to the view.
     public function withContext(): array
     {
-        $data['foo'] = 'bar';
-
-        return $data;
+        return [
+            'foo' => 'bar',
+        ];
     }
 }
 ```
@@ -705,7 +707,7 @@ class LogViewerPage extends AdminPage
 
     protected string $parentSlug = 'options-general.php';
 
-    protected function withContext(): array
+    public function withContext(): array
     {
         return [
             'logs' => 'foo',

@@ -36,7 +36,7 @@ abstract class Block
         Timber::render($this->getTemplatePath(), $context);
     }
 
-    protected function withContext(): array
+    public function withContext(): array
     {
         return [];
     }

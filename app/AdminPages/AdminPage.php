@@ -52,7 +52,7 @@ abstract class AdminPage
         }
     }
 
-    protected function withContext(): array
+    public function withContext(): array
     {
         return [];
     }
