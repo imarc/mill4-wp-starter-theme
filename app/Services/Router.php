@@ -23,6 +23,11 @@ class Router
         $this->request = $this->container->get(Request::class);
     }
 
+    /**
+     * Get the singleton instance of the router.
+     *
+     * @return Router
+     */
     public static function getInstance(): Router
     {
         if (self::$instance === null) {
@@ -31,6 +36,13 @@ class Router
         return self::$instance;
     }
 
+    /**
+     * Add a GET route.
+     *
+     * @param string $path The path to add the route to.
+     * @param mixed $action The action to add to the route.
+     * @return static
+     */
     public function get($path, $action): static
     {
         $path = $this->normalizePath($path);
@@ -40,6 +52,13 @@ class Router
         return $this;
     }
 
+    /**
+     * Add a POST route.
+     *
+     * @param string $path The path to add the route to.
+     * @param mixed $action The action to add to the route.
+     * @return static
+     */
     public function post($path, $action): static
     {
         $path = $this->normalizePath($path);
@@ -49,6 +68,13 @@ class Router
         return $this;
     }
 
+    /**
+     * Add a PUT route.
+     *
+     * @param string $path The path to add the route to.
+     * @param mixed $action The action to add to the route.
+     * @return static
+     */
     public function put($path, $action): static
     {
         $path = $this->normalizePath($path);
@@ -58,6 +84,13 @@ class Router
         return $this;
     }
 
+    /**
+     * Add a DELETE route.
+     *
+     * @param string $path The path to add the route to.
+     * @param mixed $action The action to add to the route.
+     * @return static
+     */
     public function delete($path, $action): static
     {
         $path = $this->normalizePath($path);
@@ -67,6 +100,13 @@ class Router
         return $this;
     }
 
+    /**
+     * Add a PATCH route.
+     *
+     * @param string $path The path to add the route to.
+     * @param mixed $action The action to add to the route.
+     * @return static
+     */
     public function patch($path, $action): static
     {
         $path = $this->normalizePath($path);
@@ -76,6 +116,11 @@ class Router
         return $this;
     }
 
+    /**
+     * Add middleware to the current route.
+     *
+     * @param array|string $middleware The middleware to add.
+     */
     public function middleware(array|string $middleware): void
     {
         if (is_string($middleware)) {
@@ -89,12 +134,24 @@ class Router
         $this->currentPath = null;
     }
 
+    /**
+     * Normalize the path.
+     *
+     * @param string $path The path to normalize.
+     * @return string The normalized path.
+     */
     private function normalizePath(string $path): string
     {
         // Remove trailing slash unless it's the root path
         return $path === '/' ? $path : rtrim($path, '/');
     }
 
+    /**
+     * Set the default middleware for the router.
+     *
+     * @param array|string $middleware The middleware to set.
+     * @return static
+     */
     public function setDefaultMiddleware(array|string $middleware): static
     {
         if (is_string($middleware)) {
@@ -106,6 +163,12 @@ class Router
         return $this;
     }
 
+    /**
+     * Handle a request.
+     *
+     * @param string $method The method of the request.
+     * @param string $route The route to handle.
+     */
     public function handleRequest(string $method, string $route): void
     {
         $route = $this->normalizePath($route);
@@ -128,6 +191,13 @@ class Router
         }
     }
 
+    /**
+     * Build a middleware pipeline.
+     *
+     * @param callable $action The action to build the pipeline for.
+     * @param array $middleware The middleware to add to the pipeline.
+     * @return callable The middleware pipeline.
+     */
     private function buildMiddlewarePipeline(callable $action, array $middleware): callable
     {
         $middleware = array_merge($this->defaultMiddleware, $middleware);
@@ -153,6 +223,13 @@ class Router
         );
     }
 
+    /**
+     * Extract parameters from the pattern.
+     *
+     * @param string $pattern The pattern to extract parameters from.
+     * @param string $route The route to extract parameters from.
+     * @return array|false The parameters.
+     */
     private function extractParameters(string $pattern, string $route): array|false
     {
         // Extract parameter names from the pattern
@@ -179,6 +256,12 @@ class Router
         return false;
     }
 
+    /**
+     * Resolve the action.
+     *
+     * @param mixed $action The action to resolve.
+     * @return callable The resolved action.
+     */
     private function resolveAction($action): callable
     {
         // If the action is a callable...
@@ -203,6 +286,13 @@ class Router
         throw new \InvalidArgumentException("Action must be a callable or a valid controller class name.");
     }
 
+    /**
+     * Resolve a class method.
+     *
+     * @param string $class The class to resolve the method for.
+     * @param string $method The method to resolve.
+     * @return callable The resolved method.
+     */
     private function resolveClassMethod(string $class, string $method): callable
     {
         $controller = new $class();
@@ -219,6 +309,12 @@ class Router
         };
     }
 
+    /**
+     * Resolve a callable.
+     *
+     * @param callable $callable The callable to resolve.
+     * @return callable The resolved callable.
+     */
     private function resolveCallable(callable $callable): callable
     {
         $reflection = new ReflectionFunction($callable);
@@ -228,6 +324,15 @@ class Router
         };
     }
 
+    /**
+     * Resolve parameters. This is how we're supporting dependency injection for
+     * route actions, whether they're closures or controllers.
+     *
+     * @param array $parameters The parameters to resolve.
+     * @param array $routeParams The route parameters.
+     * @param string $context The context of the parameters.
+     * @return array The resolved parameters.
+     */
     private function resolveParameters(array $parameters, array $routeParams, string $context): array
     {
         $args = [];
@@ -286,6 +391,11 @@ class Router
         return $args;
     }
 
+    /**
+     * Get the routes.
+     *
+     * @return array The routes.
+     */
     public function getRoutes(): array
     {
         return $this->routes;

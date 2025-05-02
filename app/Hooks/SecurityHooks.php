@@ -159,6 +159,8 @@ class SecurityHooks implements HooksInterface
 
         header('Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()');
 
+        header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+
         // Cache-Control
         if (! is_user_logged_in()) {
             // Public content - cache for 1 hour (3600 seconds)
