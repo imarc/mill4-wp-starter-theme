@@ -2,6 +2,9 @@
 
 namespace App\Blocks;
 
+use App\Attributes\RegistersBlock;
+
+#[RegistersBlock]
 class CallToActionSection extends Block
 {
     public const NAME = 'call-to-action-section';

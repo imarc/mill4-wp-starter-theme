@@ -2,6 +2,9 @@
 
 namespace App\Blocks;
 
+use App\Attributes\RegistersBlock;
+
+#[RegistersBlock]
 class LogoCloudSection extends Block
 {
     public const NAME = 'logo-cloud-section';

@@ -2,6 +2,9 @@
 
 namespace App\Blocks;
 
+use App\Attributes\RegistersBlock;
+
+#[RegistersBlock]
 class TestimonialBlock extends Block
 {
     public const NAME = 'testimonial-block';

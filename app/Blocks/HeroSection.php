@@ -2,6 +2,9 @@
 
 namespace App\Blocks;
 
+use App\Attributes\RegistersBlock;
+
+#[RegistersBlock]
 class HeroSection extends Block
 {
     public const NAME = 'hero-section';

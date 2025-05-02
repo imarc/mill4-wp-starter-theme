@@ -421,6 +421,9 @@ To register a Gutenberg block in your theme, follow these steps:
 
     namespace App\Blocks;
 
+    use App\Attributes\RegistersBlock;
+
+    #[RegistersBlock]
     class GenericCtaBlock extends Block
     {
         public const NAME = 'generic-cta-block';
@@ -431,22 +434,9 @@ To register a Gutenberg block in your theme, follow these steps:
         public const KEYWORDS = [];
     }
     ```
-
-2. **Register the Gutenberg Block**:
-   Update the `BLOCKS` constant in the `BlockHooks` class to include your new block:
-
-   ```php
-    // app/Hooks/BlockHooks.php
-
-    class BlockHooks implements HooksInterface
-    {
-        public const BLOCKS = [
-            Blocks\GenericCtaBlock::class,
-        ];
-
-        ...
-    ```
-3. **Create a Gutenberg Block Template**:
+    Adding the `RegistersBlock` attribute to the class will automatically register the block with the theme (this happens in the `BlockHooks` class).
+    
+2. **Create a Gutenberg Block Template**:
    Create a new twig template file for your block. This file should be named after the block name and placed in the `templates/blocks` directory. For example:
 
    ```php

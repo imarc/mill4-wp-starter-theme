@@ -2,6 +2,9 @@
 
 namespace App\Blocks;
 
+use App\Attributes\RegistersBlock;
+
+#[RegistersBlock]
 class CarouselHeroSection extends Block
 {
     public const NAME = 'carousel-hero-section';
