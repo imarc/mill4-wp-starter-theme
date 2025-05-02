@@ -435,7 +435,7 @@ To register a Gutenberg block in your theme, follow these steps:
     }
     ```
     Adding the `RegistersBlock` attribute to the class will automatically register the block with the theme (this happens in the `BlockHooks` class).
-    
+
 2. **Create a Gutenberg Block Template**:
    Create a new twig template file for your block. This file should be named after the block name and placed in the `templates/blocks` directory. For example:
 
@@ -739,6 +739,9 @@ Mill 4 includes a basic system for creating custom admin pages. To create a new 
 
     namespace App\AdminPages;
 
+    use App\Attributes\RegistersAdminPage;
+
+    #[RegistersAdminPage]
     class LogViewerPage extends AdminPage
     {
         protected string $slug = 'logs';
@@ -767,6 +770,8 @@ Mill 4 includes a basic system for creating custom admin pages. To create a new 
     If parent slug is set, the admin page will be added as a submenu page to the parent page you specify (and the $icon property will be ignored).
 
     The `withContext()` method is used to pass any context data you'd like to pass to the template. 
+
+    Adding the `RegistersAdminPage` attribute to the class will automatically register the admin page with the theme (this happens in the `AdminPageHooks` class).
 
 2. **Register the Admin Page**:
    Update the `ADMIN_PAGES` constant in the `AdminPageHooks` class to include your new admin page:

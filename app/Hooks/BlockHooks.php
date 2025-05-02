@@ -3,12 +3,13 @@
 namespace App\Hooks;
 
 use App\Attributes\RegistersBlock;
+use App\Hooks\Concerns\DiscoversClasses;
 use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
-use ReflectionClass;
 
 class BlockHooks implements HooksInterface
 {
+    use DiscoversClasses;
     use RegistersHooks;
 
     public function initialize(): void
@@ -18,7 +19,7 @@ class BlockHooks implements HooksInterface
 
     public function registerBlocks()
     {
-        $blockClasses = $this->discoverBlocks();
+        $blockClasses = $this->discoverClassesForAttribute(RegistersBlock::class, 'Blocks');
 
         foreach ($blockClasses as $blockClass) {
             $block = new $blockClass();
@@ -30,32 +31,5 @@ class BlockHooks implements HooksInterface
             $block->register();
             do_action('mill4_block_registered', $blockClass);
         }
-    }
-
-    private function discoverBlocks(): array
-    {
-        $blockClasses = [];
-        $namespace = 'App\\Blocks\\';
-        $directory = get_template_directory() . '/app/Blocks';
-
-        foreach (glob($directory . '/*.php') as $file) {
-            $className = $namespace . basename($file, '.php');
-
-            if (!class_exists($className)) {
-                continue;
-            }
-
-            $reflection = new ReflectionClass($className);
-
-            if ($reflection->isAbstract() || !$reflection->isSubclassOf('App\\Blocks\\Block')) {
-                continue;
-            }
-
-            if (!empty($reflection->getAttributes(RegistersBlock::class))) {
-                $blockClasses[] = $className;
-            }
-        }
-
-        return $blockClasses;
     }
 }

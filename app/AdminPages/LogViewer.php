@@ -2,6 +2,9 @@
 
 namespace App\AdminPages;
 
+use App\Attributes\RegistersAdminPage;
+
+#[RegistersAdminPage]
 class LogViewer extends AdminPage
 {
     protected string $slug = 'logs';
