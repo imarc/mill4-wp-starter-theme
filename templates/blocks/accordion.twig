@@ -1,0 +1,21 @@
+<div class="m-accordion">
+    <div class="m-accordion__container">
+        {% if block.title %}
+            <h1>{{ block.title }}</h1>
+        {% endif %}
+
+        {% if block.panels %}
+            {% for panel in block.panels %}
+                <div class="m-accordion__panel">
+                    <input type="checkbox" id="accordion-{{ loop.index }}" class="m-accordion__radio">
+                    <label for="accordion-{{ loop.index }}" class="m-accordion__heading">
+                        {{ panel.heading }}
+                    </label>
+                    <div class="m-accordion__content">
+                        {{ panel.content }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
