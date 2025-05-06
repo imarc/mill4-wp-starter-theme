@@ -13,6 +13,8 @@ abstract class Block
     public const POST_TYPES = [];
     public const KEYWORDS = [];
 
+    protected array $context = [];
+
     protected function getConfig(): array
     {
         return [];
@@ -27,13 +29,13 @@ abstract class Block
 
     public function render($block, $content = '', $isPreview = false, $postId = 0)
     {
-        $context = Timber::context();
+        $this->context = Timber::context();
 
-        $context['is_preview'] = $isPreview;
-        $context['block'] = get_fields();
-        $context = array_merge($context, $this->withContext());
+        $this->context['is_preview'] = $isPreview;
+        $this->context['block'] = get_fields();
+        $this->context = array_merge($this->context, $this->withContext());
 
-        Timber::render($this->getTemplatePath(), $context);
+        Timber::render($this->getTemplatePath(), $this->context);
     }
 
     public function withContext(): array

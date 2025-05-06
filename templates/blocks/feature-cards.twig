@@ -12,7 +12,7 @@
                         <h3 class="o-feature-cards__card-heading">{{ card.heading }}</h3>
                         <div class="o-feature-cards__card-description">{{ card.description }}</div>
                         {% if card.link %}
-                            <a href="{{ card.link.url }}" class="o-feature-cards__card-link">{{ card.link.title }}</a>
+                            <button href="{{ card.link.url }}" class="a-button">{{ card.link.title }}</button>
                         {% endif %}
                     </div>
                 </div>

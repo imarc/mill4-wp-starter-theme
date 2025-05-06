@@ -1,0 +1,31 @@
+{# layout can be "wide" or "2-column" #}
+{% set layout = block.layout %}
+{% set sections = layout == 'wide' ? [block.primary_content] : [block.primary_content, block.secondary_content] %}
+
+<div class="o-basic-section">
+    <div class="o-basic-section__content o-basic-section__content--{{ layout }}">
+        {% for section in sections %}
+            <div class="o-basic-section__section o-basic-section__section--{{ section.width }}">
+                {% if section.content_type == 'text' %}
+                    <div class="o-basic-section__text">
+                        <div class="o-basic-section__heading">
+                            {{ section.heading }}
+                        </div>
+                        <div class="o-basic-section__content">
+                            {{ section.content }}
+                        </div>
+                        {% if section.link %}
+                            <button href="{{ section.link.url }}" class="a-button">{{ section.link.title }}</button>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if section.content_type == 'image' %}
+                    <div class="o-basic-section__image">
+                        <img src="{{ section.image.url }}" alt="{{ section.image.alt }}">
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
