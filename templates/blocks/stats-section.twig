@@ -1,0 +1,24 @@
+<div class="o-stats-section">
+    <div class="o-stats-section__container">
+        <div class="o-stats-section__content">
+            {% if block.callout %}
+                <div class="o-stats-section__callout">
+                    {% if block.callout.content %}
+                        <div class="o-stats-section__callout-content">{{ block.callout.content }}</div>
+                    {% endif %}
+                    {% if block.callout.link %}
+                        <a href="{{ block.callout.link.url }}" class="a-button">{{ block.callout.link.title }}</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+            <div class="o-stats-section__stats">
+                {% for stat in block.stats %}
+                    <div class="o-stats-section__stat">
+                        <div class="o-stats-section__stat-value">{{ stat.value }}</div>
+                        <div class="o-stats-section__stat-description">{{ stat.description }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
