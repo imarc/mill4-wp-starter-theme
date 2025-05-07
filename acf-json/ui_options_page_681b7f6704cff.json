@@ -1,0 +1,23 @@
+{
+    "key": "ui_options_page_681b7f6704cff",
+    "title": "Mega Menu",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Mega Menu",
+    "menu_slug": "mega-menu",
+    "parent_slug": "themes.php",
+    "advanced_configuration": 1,
+    "icon_url": "",
+    "menu_title": "",
+    "position": "",
+    "redirect": false,
+    "description": "",
+    "menu_icon": [],
+    "update_button": "Update",
+    "updated_message": "Options Updated",
+    "capability": "manage_options",
+    "data_storage": "options",
+    "post_id": "",
+    "autoload": 0,
+    "modified": 1746632587
+}
