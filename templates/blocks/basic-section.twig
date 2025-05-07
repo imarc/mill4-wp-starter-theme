@@ -18,10 +18,13 @@
                             <a href="{{ section.link.url }}" class="a-button">{{ section.link.title }}</a>
                         {% endif %}
                     </div>
-                {% endif %}
-                {% if section.content_type == 'image' %}
+                {% elseif section.content_type == 'image' %}
                     <div class="o-basic-section__image">
                         <img src="{{ section.image.url }}" alt="{{ section.image.alt }}">
+                    </div>
+                {% elseif section.content_type == 'card' %}
+                    <div class="o-basic-section__card">
+                        {% include "partials/card.twig" with {'card': section.card} %}
                     </div>
                 {% endif %}
             </div>
