@@ -94,11 +94,13 @@ class ThemeHooks implements HooksInterface
         register_nav_menus([
             'primary' => __('Primary Navigation', 'mill4'),
             'footer' => __('Footer Navigation', 'mill4'),
+            'utility' => __('Utility Navigation', 'mill4'),
         ]);
 
         // Create and assign menus
         $this->ensureMenuExists('Primary Navigation', 'primary');
         $this->ensureMenuExists('Footer Navigation', 'footer');
+        $this->ensureMenuExists('Utility Navigation', 'utility');
     }
 
     private function ensureMenuExists(string $menuName, string $location): void

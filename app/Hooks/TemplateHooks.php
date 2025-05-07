@@ -41,6 +41,7 @@ class TemplateHooks implements HooksInterface
     {
         $context['primary_navigation']  = Timber::get_menu('primary-navigation');
         $context['footer_navigation']  = Timber::get_menu('footer-navigation');
+        $context['utility_navigation'] = Timber::get_menu('utility-navigation');
         $context['site']  = $this->site;
 
         return $context;
