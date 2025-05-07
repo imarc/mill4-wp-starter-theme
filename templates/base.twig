@@ -12,14 +12,18 @@
 		<header class="o-header">
 			{% block header %}
 				{% if utility_navigation %}
-					<nav class="o-header__utility-nav" role="navigation">
-						{% include "partials/navigation/menu.twig" with {'menu': utility_navigation} %}
+					<nav class="o-header__utility-nav" role="navigation"
+						{# {% include "partials/navigation/menu.twig" with {'menu': utility_navigation} %} #}
 					</nav>
 				{% endif %}
 				<div class="o-header__container">
 					<a href="{{site.url}}" class="o-header__logo" rel="home">{{site.name}}</a>
 					<nav class="o-header__nav" role="navigation">
-						{% include "partials/navigation/menu.twig" with {'menu': primary_navigation} %}
+						{% if mega_menu['enabled'] ?? false %}
+							{% include "partials/mega-menu/menu.twig" with {'menu': mega_menu} %}
+						{% else %}
+							{% include "partials/navigation/menu.twig" with {'menu': primary_navigation} %}
+						{% endif %}
 					</nav>
 				</div>
 			{% endblock %}

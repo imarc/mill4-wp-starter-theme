@@ -1,0 +1,18 @@
+<div class="o-mega-menu">
+    {% for item in menu.items %}
+        <div class="o-mega-menu__item">
+            {% if item.type == 'link' %}
+                <a href="{{ item.link.url }}" class="o-mega-menu__link">{{ item.link.title }}</a>
+            {% elseif item.type == 'menu' %}
+                <a href="#" class="o-mega-menu__link">{{ item.label }}</a>
+                <div class="o-mega-menu__sub-menu">
+                    {% for column in item.columns %}
+                        <div class="o-mega-menu__column o-mega-menu__column--{{ column.column.type }}">
+                            {% include 'partials/mega-menu/columns/' ~ column.column.type ~ '.twig' with {'column': column.column} %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
