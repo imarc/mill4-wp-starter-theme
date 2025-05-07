@@ -8,7 +8,7 @@
                     {% if slide.links %}
                         <div class="carouselHeroSection__actions">
                             {% for cta in slide.links %}
-                                <button class="hero__button button {{ cta.type == 'secondary' ?'-styleOutline' : null }}" href="{{ cta.link.url }}">{{ cta.link.title }}</button>
+                                <a class="hero__button a-button {{ cta.type == 'secondary' ?'-styleOutline' : null }}" href="{{ cta.link.url }}">{{ cta.link.title }}</a>
                             {% endfor %}
                         </div>
                     {% endif %}

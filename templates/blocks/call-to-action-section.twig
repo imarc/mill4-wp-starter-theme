@@ -5,7 +5,7 @@
         {% if block.links %}
             <div class="o-cta-section__actions">
                 {% for cta in block.links %}
-                    <button class="a-button {{ cta.type == 'secondary' ? '-styleOutline' : '' }}" href="{{ cta.link.url }}">{{ cta.link.title }}</button>
+                    <a class="a-button {{ cta.type == 'secondary' ? '-styleOutline' : '' }}" href="{{ cta.link.url }}">{{ cta.link.title }}</a>
                 {% endfor %}
             </div>
         {% endif %}

@@ -1,1 +1,5 @@
-// No need to forward variables since they're imported directly in styles.scss
+// base typography
+
+body {
+    font-family: var(--font-family-primary);
+}

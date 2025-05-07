@@ -4,18 +4,7 @@
 
         <div class="o-feature-cards__cards">
             {% for card in block.cards %}
-                <div class="o-feature-cards__card">
-                    {% if card.image %}
-                        <img src="{{ card.image.url }}" alt="{{ card.image.alt }}" class="o-feature-cards__card-image">
-                    {% endif %}
-                    <div class="o-feature-cards__card-content">
-                        <h3 class="o-feature-cards__card-heading">{{ card.heading }}</h3>
-                        <div class="o-feature-cards__card-description">{{ card.description }}</div>
-                        {% if card.link %}
-                            <button href="{{ card.link.url }}" class="a-button">{{ card.link.title }}</button>
-                        {% endif %}
-                    </div>
-                </div>
+                {% include 'partials/card.twig' with { card: card } %}
             {% endfor %}
         </div>
     </div>

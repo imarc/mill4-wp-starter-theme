@@ -1,0 +1,12 @@
+<div class="m-card">
+    {% if card.image %}
+        <img src="{{ card.image.url }}" alt="{{ card.image.alt }}" class="m-card__image">
+    {% endif %}
+    <div class="m-card__content">
+        <h3 class="m-card__heading">{{ card.heading }}</h3>
+        <div class="m-card__description">{{ card.description }}</div>
+        {% if card.link %}
+            <a href="{{ card.link.url }}" class="a-button">{{ card.link.title }}</a>
+        {% endif %}
+    </div>
+</div>
