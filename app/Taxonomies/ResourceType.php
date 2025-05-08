@@ -3,24 +3,24 @@
 namespace App\Taxonomies;
 
 use App\Attributes\RegistersTaxonomy;
-use App\PostTypes\Movie;
+use App\PostTypes\Resource;
 
 #[RegistersTaxonomy]
-class Genre extends Taxonomy
+class ResourceType extends Taxonomy
 {
-    public const SLUG = 'genre';
+    public const SLUG = 'resource_type';
 
-    public string $pluralLabel = 'Genres';
+    public string $pluralLabel = 'Resource Types';
 
-    public string $singularLabel = 'Genre';
+    public string $singularLabel = 'Resource Type';
 
     protected array $postTypes = [
-        Movie::SLUG,
+        Resource::SLUG,
     ];
 
     protected bool $registersTopLevelMenuItem = false;
 
-    // protected ?string $menuItemName = 'Genres';
+    // protected ?string $menuItemName = 'Resource Types';
 
     // protected ?string $menuItemIcon = 'dashicons-admin-generic';
 

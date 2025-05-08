@@ -12,6 +12,8 @@ abstract class PostType
 
     public string $pluralLabel = 'Posts';
 
+    public string $path = 'posts';
+
     protected array $args = [];
 
     protected array $labels = [];
@@ -29,10 +31,10 @@ abstract class PostType
             'show_in_menu' => true,
             'query_var' => true,
             'capability_type' => 'post',
-            'rewrite' => ['slug' => static::SLUG],
+            'rewrite' => ['slug' => $this->path],
             'menu_icon' => 'dashicons-admin-post',
             'show_in_rest' => true,
-            'rest_base' => static::SLUG,
+            'rest_base' => $this->path,
             'rest_controller_class' => 'WP_REST_Posts_Controller',
             'labels' => $this->getLabels(),
             'taxonomies' => [],

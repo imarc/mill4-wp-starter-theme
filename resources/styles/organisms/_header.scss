@@ -97,9 +97,11 @@
 }
 
 // Add padding to main content to prevent overlap with fixed header
-.content-wrapper {
+section#content.content-wrapper {
+    padding-top: 80px; // Add padding for fixed header (adjust this value based on your header height)
+    
     // When admin bar is present
     .admin-bar & {
-        padding-top: 32px // Add admin bar height
+        padding-top: 112px; // Add admin bar height (32px) + header padding
     }
 } 

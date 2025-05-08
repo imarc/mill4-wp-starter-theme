@@ -10,11 +10,17 @@ namespace App\PostTypes;
 use App\Attributes\RegistersPostType;
 
 #[RegistersPostType]
-class Movie extends PostType
+class Resource extends PostType
 {
-    public const SLUG = 'movie';
+    public const SLUG = 'resources';
 
-    public string $singularLabel = 'Movie';
+    public string $singularLabel = 'Resource';
 
-    public string $pluralLabel = 'Movies';
+    public string $pluralLabel = 'Resources';
+
+    public string $path = 'resources';
+
+    public array $args = [
+        'menu_icon' => 'dashicons-format-aside',
+    ];
 }

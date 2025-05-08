@@ -1,0 +1,28 @@
+{# This file demonstrates using most of the index.twig template and modifying 
+   just a small part. See `search.twig` for an example of another approach #}
+{% extends "index.twig" %}
+
+{% block content %}
+  {% include 'partials/generic-hero.twig' with {
+    title: 'Resources',
+  } %}
+  <div class="resource-archive-wrapper">
+    <aside class="resource-filter">
+      <form method="get" action="">
+        <h4>Filter by Type</h4>
+        {% for term in resource_types %}
+          {% set checked = term.slug in current_filters %}
+          <label>
+            <input type="checkbox" name="resource_type[]" value="{{ term.slug }}" {{ checked ? 'checked' }}>
+            {{ term.name }}
+          </label>
+        {% endfor %}
+        <button type="submit" class="a-button">Apply</button>
+      </form>
+    </aside>
+
+    <div class="resource-results">
+      {{ parent() }}
+    </div>
+  </div>
+{% endblock %}
