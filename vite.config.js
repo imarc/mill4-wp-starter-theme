@@ -8,6 +8,7 @@
 import fs from 'fs';
 import { defineConfig } from "vite";
 import { resolve } from 'path';
+import vue from '@vitejs/plugin-vue';
 
 // Get the relative path of the vite.config.js file for the alias
 const fullPath = import.meta.url.slice(0, import.meta.url.lastIndexOf('/'));
@@ -32,6 +33,7 @@ export default defineConfig(({ mode }) => {
         base: './',
 
         plugins: [
+            vue(),
             {
                 handleHotUpdate({ file, server }) {
                     if (file.endsWith('.php')) {
