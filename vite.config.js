@@ -30,10 +30,16 @@ export default defineConfig(({ mode }) => {
     }
 
     return {
-        base: './',
+        base: '/wp-content/themes/mill4/',
 
         plugins: [
-            vue(),
+            vue({
+                template: {
+                    transformAssetUrls: {
+                        includeAbsolute: true,
+                    }
+                }
+            }),
             {
                 handleHotUpdate({ file, server }) {
                     if (file.endsWith('.php')) {
@@ -56,10 +62,13 @@ export default defineConfig(({ mode }) => {
             // don't base64 images
             assetsInlineLimit: 0,
 
+            assetsDir: '',
+
             rollupOptions: {
                 input: [
-                'resources/scripts/scripts.js',
-                'resources/styles/styles.scss',
+                'resources/js/index.js',
+                'resources/styles/index.scss',
+                'resources/images/main-icons-sprite.svg',
                 ],
                 output: {
                 entryFileNames: '[hash].js',

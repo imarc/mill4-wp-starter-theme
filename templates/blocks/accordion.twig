@@ -6,15 +6,10 @@
 
         {% if block.panels %}
             {% for panel in block.panels %}
-                <div class="m-accordion__panel">
-                    <input type="checkbox" id="accordion-{{ loop.index }}" class="m-accordion__radio">
-                    <label for="accordion-{{ loop.index }}" class="m-accordion__heading">
-                        {{ panel.heading }}
-                    </label>
-                    <div class="m-accordion__content">
-                        {{ panel.content }}
-                    </div>
-                </div>
+                {% include 'partials/accordion-panel.twig' with {
+                    heading: panel.heading,
+                    content: panel.content,
+                } %}
             {% endfor %}
         {% endif %}
     </div>

@@ -23,8 +23,8 @@ class AssetHooks implements HooksInterface
         }
 
         $this->addAction('wp_enqueue_scripts', function () {
-            wp_enqueue_script('mill4', $this->assetResolver->resolve('resources/scripts/scripts.js'));
-            wp_enqueue_style('mill4', $this->assetResolver->resolve('resources/styles/styles.scss'));
+            wp_enqueue_script('mill4', $this->assetResolver->resolve('resources/js/index.js'));
+            wp_enqueue_style('mill4', $this->assetResolver->resolve('resources/styles/index.scss'));
         });
     }
 
