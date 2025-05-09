@@ -7,13 +7,8 @@ use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 
 /**
- * AssetHooks handles the loading and management of theme assets in both development (HMR) and production environments.
- *
- * This class is responsible for:
- * - Loading Vite client in HMR mode
- * - Managing script and stylesheet loading in production
- * - Handling asset paths and manifest resolution
- * - Ensuring proper module type attributes for scripts
+ * Here's where we're handling the loading and management of theme
+ * assets in both development (HMR) and production environments.
  */
 class AssetHooks implements HooksInterface
 {
