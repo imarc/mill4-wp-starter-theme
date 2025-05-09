@@ -92,6 +92,7 @@ export default defineConfig(({ mode }) => {
             alias: {
                 '@': process.env.NODE_ENV === 'development' ? resolve(wpContentPath + '/static') : '/static',
                 '@styles': resolve(__dirname, 'resources/styles'),
+                'vue': 'vue/dist/vue.esm-bundler.js'
             }
         }
     };

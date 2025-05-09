@@ -21,7 +21,6 @@ class Container
         if (self::$instance === null) {
             self::$instance = new BaseContainer();
             self::$instance->delegate(new ReflectionContainer());
-            self::$instance->addServiceProvider(new AssetServiceProvider());
             self::$instance->addServiceProvider(new HttpServiceProvider());
             self::$instance->addServiceProvider(new RouteServiceProvider());
         }
