@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
     }
 
     return {
-        base: '/wp-content/themes/mill4/',
+        base: './',
 
         plugins: [
             vue({

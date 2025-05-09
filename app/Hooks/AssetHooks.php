@@ -21,15 +21,26 @@ class AssetHooks implements HooksInterface
         if (is_hmr()) {
             add_action('wp_head', [$this, 'hmrHeadHook']);
         }
+        $this->addFilter('script_loader_tag', [$this, 'addTypeToMill4Scripts'], 10, 3);
 
         $this->addAction('wp_enqueue_scripts', function () {
             wp_enqueue_script('mill4', $this->assetResolver->resolve('resources/js/index.js'));
-            wp_enqueue_style('mill4', $this->assetResolver->resolve('resources/styles/index.scss'));
         });
     }
 
     public function hmrHeadHook()
     {
         echo '<script type="module" crossorigin src="' . static::VITE_HOST . '/@vite/client"></script>';
+    }
+
+    public function addTypeToMill4Scripts($tag, $handle, $src)
+    {
+        // if not your script, do nothing and return original $tag
+        if ($handle !== 'mill4') {
+            return $tag;
+        }
+        // change the script tag by adding type="module" and return it.
+        $tag = '<script type="module" src="' . esc_url($src) . '"></script>';
+        return $tag;
     }
 }

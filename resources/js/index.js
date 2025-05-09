@@ -1,6 +1,7 @@
 import { createApp, defineAsyncComponent } from 'vue'
 import directionals from './directives/vDirectionals.js'
 import scrolllock from './directives/vScrolllock.js'
+import '../styles/index.scss'
 
 createApp({
   components: {
