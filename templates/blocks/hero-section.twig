@@ -1,20 +1,27 @@
-<div class="o-hero">
-    <div class="o-hero__content">
-        <h1 class="o-hero__title">{{ block.title }}</h1>
-        <div class="o-hero__text">
-            {{ block.text }}
+<section class="container hero accent-primary">
+    {% if block.background_image %}
+        <div class="hero__bg">
+            <picture><img src="{{ block.background_image.url }}" alt="{{ block.background_image.alt }}"></picture>
         </div>
-        {% if block.links %}
-            <div class="o-hero__actions">
-                {% for cta in block.links %}
-                    <a class="a-button {{ cta.type == 'secondary' ? '-styleOutline' : '' }}" href="{{ cta.link.url }}">{{ cta.link.title }}</a>
-                {% endfor %}
-            </div>
+    {% endif %}
+    <div class="hero__content">
+        <div class="hero__text">
+            <h1 class="hero__heading">{{ block.title }}</h1>
+            <p class="hero__intro">
+                {{ block.text }}
+            </p>
+            {% if block.links %}
+                <div class="actions">
+                    {% for cta in block.links %}
+                        <a class="button {{ cta.type == 'secondary' ? '-outline-fill' : '' }} accent-white" href="{{ cta.link.url }}">{{ cta.link.title }}</a>
+                    {% endfor %}
+                </div>
         {% endif %}
+        </div>
     </div>
     {% if block.image %}
-        <div class="o-hero__image">
+        <div class="hero__image">
             <img src="{{ block.image.url }}" alt="{{ block.image.alt }}">
         </div>
     {% endif %}
-</div>
+</section>
