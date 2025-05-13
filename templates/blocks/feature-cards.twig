@@ -1,11 +1,7 @@
-<div class="o-feature-cards">
-    <div class="o-feature-cards__container">
-        <h2 class="o-feature-cards__title">{{ block.title }}</h2>
-
-        <div class="o-feature-cards__cards">
-            {% for card in block.cards %}
-                {% include 'partials/card.twig' with { card: card } %}
-            {% endfor %}
-        </div>
+<div class="featureCards">
+    <div class="featureCards__cards">
+        {% for card in block.cards %}
+            {% include 'partials/card.twig' with { card: card } %}
+        {% endfor %}
     </div>
 </div>

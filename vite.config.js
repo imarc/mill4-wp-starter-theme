@@ -68,6 +68,7 @@ export default defineConfig(({ mode }) => {
                 input: [
                 'resources/js/index.js',
                 'resources/styles/index.scss',
+                'resources/styles/editor.scss',
                 'resources/images/main-icons-sprite.svg',
                 ],
                 output: {

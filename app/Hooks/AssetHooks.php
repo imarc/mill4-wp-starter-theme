@@ -44,6 +44,12 @@ class AssetHooks implements HooksInterface
                 $this->loadScriptsForEntryPoint('resources/js/index.js');
             });
         }
+        if (is_admin()) {
+
+            $this->addAction('admin_head', function () {
+                echo $this->buildStylesheetTag($this->manifest->getFileForEntryPoint('resources/styles/editor.scss'));
+            });
+        }
     }
 
     /**

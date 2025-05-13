@@ -1,0 +1,9 @@
+.container--editor {
+    border: 2px dashed #ccc;
+    padding: 1rem;
+    margin: 1rem 0;
+    
+    &:hover {
+        border-color: #999;
+    }
+} 

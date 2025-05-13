@@ -1,23 +1,22 @@
-<div class="o-cta-section">
-    <div class="o-cta-section__content">
-        <h1>{{ block.title }}</h1>
-        <div class="o-cta-section__text">{{ block.content }}</div>
+<div class="section container ctaSection accent-{{ block.accent_color }}">
+    {% if block.background_image %}
+        <div class="section__bg">
+            <picture><img src="{{ block.background_image.url }}" alt="{{ block.background_image.alt }}"></picture>
+        </div>
+    {% endif %}
+    <div class="section__header">
+        <h2>{{ block.title }}</h2>
+    </div>
+    <div class="section__content">
+        {{ block.content }}
+    </div>
+    <div class="section__footer">
         {% if block.links %}
-            <div class="o-cta-section__actions">
+            <div class="actions">
                 {% for cta in block.links %}
-                    <a class="a-button {{ cta.type == 'secondary' ? '-styleOutline' : '' }}" href="{{ cta.link.url }}">{{ cta.link.title }}</a>
+                    <a class="button {{ cta.type == 'secondary' ? '-styleOutline' : '' }}" href="{{ cta.link.url }}">{{ cta.link.title }}</a>
                 {% endfor %}
             </div>
         {% endif %}
     </div>
-    {% if block.image %}
-        <div class="o-cta-section__image">
-            <img src="{{ block.image.url }}" alt="{{ block.image.alt }}">
-        </div>
-    {% endif %}
-    {% if block.background_image %}
-        <div class="o-cta-section__background-image">
-            <img src="{{ block.background_image.url }}" alt="{{ block.background_image.alt }}">
-        </div>
-    {% endif %}
 </div>

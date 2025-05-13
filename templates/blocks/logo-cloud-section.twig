@@ -1,14 +1,4 @@
 <div class="logoCloud">
-    {% if block.title %}
-        <h2 class="logoCloud__title">
-            {{ block.title }}
-        </h2>
-    {% endif %}
-    {% if block.intro_text %}
-        <div class="logoCloud__introText">
-            {{ block.intro_text }}
-        </div>
-    {% endif %}
     <div class="logoCloud__logos">
         {% for logo in block.logos %}
             <div class="logoCloud__logo">

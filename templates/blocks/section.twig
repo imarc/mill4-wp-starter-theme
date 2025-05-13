@@ -1,0 +1,15 @@
+<div class="section {{ is_preview ? 'section--preview' : '' }}">
+    <div class="container">
+        <InnerBlocks />
+    </div>
+</div>
+
+{% if is_preview %}
+    <style>
+        .section--preview {
+            border: 2px dashed #ccc;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+{% endif %}

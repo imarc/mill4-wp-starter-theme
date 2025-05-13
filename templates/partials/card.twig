@@ -1,12 +1,14 @@
-<div class="m-card">
-    {% if card.image %}
-        <img src="{{ card.image.url }}" alt="{{ card.image.alt }}" class="m-card__image">
-    {% endif %}
-    <div class="m-card__content">
-        <h3 class="m-card__heading">{{ card.heading }}</h3>
-        <div class="m-card__description">{{ card.description }}</div>
+<div class="card" style="max-width: 25.75rem;">
+    <div class="card__content">
+        <span class="card__title h3">{{ card.heading }}</span>
+        <p class="card__description">{{ card.description }}</p>
         {% if card.link %}
-            <a href="{{ card.link.url }}" class="a-button">{{ card.link.title }}</a>
+            <a href="{{ card.link.url }}" class="card__cta link -wide">{{ card.link.title }}</a>
         {% endif %}
     </div>
+    {% if card.image %}
+        <div class="card__imageWrapper">
+            <img src="{{ card.image.url }}" alt="{{ card.image.alt }}" class="card__image">
+        </div>
+    {% endif %}
 </div>

@@ -1,0 +1,19 @@
+@use "sass:meta";
+
+@forward "@imarc/pronto/resources/styles/imported";
+@forward "@imarc/pronto/resources/styles/imported/dev";
+@forward "config";
+
+.acf-block-preview {
+    @include meta.load-css("atoms/button");
+    @include meta.load-css("molecules/accordion");
+    @include meta.load-css("molecules/card");
+    @include meta.load-css("molecules/logoCloud");
+    @include meta.load-css("molecules/testimonial");
+    @include meta.load-css("organisms/basicSection");
+    @include meta.load-css("organisms/featureCards");
+    @include meta.load-css("organisms/hero");
+    @include meta.load-css("organisms/section");
+    @include meta.load-css("organisms/stats");
+    @include meta.load-css("utilities/colors");
+}
