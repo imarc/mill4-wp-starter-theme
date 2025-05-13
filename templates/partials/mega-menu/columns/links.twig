@@ -1,14 +1,13 @@
-
-    {% if column.heading %}
-        <span class="h5">{{ column.heading }}</span>
-    {% endif %}
-    {% if column.description and false %}
-        <p>{{ column.description }}</p>
-    {% endif %}
-    <ul class="dropdown__list">
-        {% for link in column.links %}
-            <li class="dropdown__item">
-                <a href="{{ link.link.url }}" class="dropdown__link">{{ link.link.title }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+{% if column.heading %}
+    <span class="h5">{{ column.heading }}</span>
+{% endif %}
+{% if column.description and false %}
+    <p>{{ column.description }}</p>
+{% endif %}
+<ul class="dropdown__list">
+    {% for link in column.links %}
+        <li class="dropdown__item">
+            <a href="{{ link.link.url }}" class="dropdown__link">{{ link.link.title }}</a>
+        </li>
+    {% endfor %}
+</ul>

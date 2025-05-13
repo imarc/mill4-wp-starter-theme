@@ -1,9 +1,9 @@
-<nav class="navigation" v-directionals>
+<nav class="siteHeader__primaryNav navigation" v-directionals>
     <ul class="navigation__list">
     {% for item in menu.items %}
         <li class="navigation__item -wide" v-directionals>
             {% if item.type == 'link' %}
-                <a href="{{ item.link.url }}" class="link">{{ item.link.title }}</a>
+                <a href="{{ item.link.url }}" class="navigation__link">{{ item.link.title }}</a>
             {% elseif item.type == 'menu' %}
                 {% set column_count = item.columns|length %}
                 <p-openable class="navigation__button" label="{{ item.label }}" :close-on-blur="false">

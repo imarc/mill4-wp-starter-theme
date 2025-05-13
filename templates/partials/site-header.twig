@@ -1,0 +1,17 @@
+<header class="siteHeader container">
+	<div class="siteHeader__content">
+		<a class="siteHeader__logo" href="">
+			<img src="{{ theme.link }}/resources/images/millyard.png" alt="{{ site.name }}" class="siteHeader__logoImage" width="180">
+		</a>
+        {% if utility_navigation %}
+            <nav class="siteHeader__utilityNav navigation">
+                {% include "partials/navigation/menu.twig" with {'menu': utility_navigation} %}
+            </nav>
+        {% endif %}
+        {% if mega_menu['enabled'] ?? false %}
+            {% include "partials/mega-menu/menu.twig" with {'menu': mega_menu} %}
+        {% else %}
+            {% include "partials/navigation/menu.twig" with {'menu': primary_navigation} %}
+        {% endif %}
+	</div>
+</header>

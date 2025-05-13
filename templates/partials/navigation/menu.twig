@@ -1,21 +1,22 @@
 {% if menu %}
-    <ul class="o-header__nav-list">
+    <ul class="navigation__list">
         {% for item in menu.get_items %}
-            <li class="o-header__nav-item-wrapper">
+            <li class="navigation__item">
                 {% set has_children = item.children %}
                 {% if has_children %}
-                    <div class="o-header__nav-dropdown">
-                        <a href="{{ item.link }}" class="o-header__nav-item">{{ item.title }}</a>
-                        <ul class="o-header__nav-dropdown-list">
+                    <p-openable class="navigation__button" label="{{ item.title}}" :close-on-blur="false">
+                    <div class="navigation__dropdown dropdown">
+                        <ul class"dropdown__list">
                             {% for child in item.children %}
-                                <li class="o-header__nav-dropdown-item">
-                                    <a href="{{ child.link }}" class="o-header__nav-item">{{ child.title }}</a>
+                                <li class="dropdown__item">
+                                    <a href="{{ child.link }}" class="dropdown__link">{{ child.title }}</a>
                                 </li>
                             {% endfor %}
                         </ul>
                     </div>
+                    </p-openable>
                 {% else %}
-                    <a href="{{ item.link }}" class="o-header__nav-item">{{ item.title }}</a>
+                    <a href="{{ item.link }}" class="navigation__link">{{ item.title }}</a>
                 {% endif %}
             </li>
         {% endfor %}
