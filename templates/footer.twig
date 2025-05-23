@@ -1,12 +1,27 @@
-<footer class="o-footer">
-    <div class="o-footer__container">
-        <div class="o-footer__copyright">
-            Copyright {{"now"|date('Y')}}
-        </div>
+<footer class="siteFooter container">
+    <div class="siteFooter__content">
+        <aside class="siteFooter__info">
+        </aside>
         {% if footer_navigation %}
-            <nav class="o-footer__nav">
-                {% for item in footer_navigation.get_items %}
-                    <a href="{{ item.link }}" class="o-footer__nav-item">{{ item.title }}</a>
+            <div class="siteFooter__navigation sitemap">
+                <ul class="sitemap__list">
+                    <li class="sitemap__item">
+                        <ul class="sitemap__sublist">
+                            {% for item in footer_navigation.get_items %}
+                                <a href="{{ item.link }}" class="o-footer__nav-item">{{ item.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+        {% if social_links %}
+            <nav class="siteFooter__social actions">
+                {% for link in social_links %}
+                    <a class="button -square -ghost" href="{{ link.url }}">
+                        <span class="srOnly">On {{ link.platform }}</span>
+                        <svg class="button__icon -large"><use href="{{ theme.path }}/resources/images/main-icons-sprite.svg#{{ link.platform }}" /></svg>
+                    </a>
                 {% endfor %}
             </nav>
         {% endif %}

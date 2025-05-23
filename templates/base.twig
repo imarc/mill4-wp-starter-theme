@@ -27,7 +27,7 @@
 
 		{% block footer %}
 			<footer id="footer">
-				{% include 'footer.twig' %}
+				{% render_partial 'footer.twig' %}
 			</footer>
 			{{ function('wp_footer') }}
 		{% endblock %}

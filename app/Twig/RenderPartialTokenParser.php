@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use Twig\Node\Expression\ArrayExpression;
 use Twig\TokenParser\AbstractTokenParser;
 use Twig\Token;
 use Twig\Node\Node;
@@ -29,7 +30,7 @@ class RenderPartialTokenParser extends AbstractTokenParser
 
         $templateExpr = $this->parser->getExpressionParser()->parseExpression();
 
-        $withContextExpr = null;
+        $withContextExpr = new ArrayExpression([], $lineno);
 
         // Check for "with"
         if ($stream->nextIf(Token::NAME_TYPE, 'with')) {

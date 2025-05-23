@@ -32,24 +32,17 @@ class RenderPartialNode extends Node
         $compiler
             ->addDebugInfo($this)
 
-            // Compile template name
             ->write('$template_name = ')
             ->subcompile($this->getNode('template'))
             ->raw(";\n")
 
-            // Compile optional "with" context
             ->write('$with_context = ')
-            ->raw($this->hasNode('with_context') && $this->getNode('with_context') !== null
-                ? ''
-                : '[]')
-            ->subcompile($this->getNode('with_context') ?? new \Twig\Node\Expression\ArrayExpression([], 0))
+            ->subcompile($this->getNode('with_context'))
             ->raw(";\n")
 
-            // Apply filters with template name
             ->write('$base_context = apply_filters("timber/render/data", \\Timber\\Timber::context(), $template_name);' . "\n")
             ->write('$merged_context = array_merge($base_context, $with_context);' . "\n")
 
-            // Final compile call
             ->write('echo \\Timber\\Timber::compile($template_name, $merged_context);' . "\n");
 
     }
