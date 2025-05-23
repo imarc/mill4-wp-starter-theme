@@ -33,7 +33,13 @@ export default defineConfig(({ mode }) => {
         base: './',
 
         plugins: [
-            vue(),
+            vue({
+                template: {
+                    transformAssetUrls: {
+                        includeAbsolute: true,
+                    }
+                }
+            }),
             {
                 handleHotUpdate({ file, server }) {
                     if (file.endsWith('.php')) {
@@ -56,10 +62,14 @@ export default defineConfig(({ mode }) => {
             // don't base64 images
             assetsInlineLimit: 0,
 
+            assetsDir: '',
+
             rollupOptions: {
                 input: [
-                'resources/scripts/scripts.js',
-                'resources/styles/styles.scss',
+                'resources/js/index.js',
+                'resources/styles/index.scss',
+                'resources/styles/editor.scss',
+                'resources/images/main-icons-sprite.svg',
                 ],
                 output: {
                 entryFileNames: '[hash].js',
@@ -83,6 +93,7 @@ export default defineConfig(({ mode }) => {
             alias: {
                 '@': process.env.NODE_ENV === 'development' ? resolve(wpContentPath + '/static') : '/static',
                 '@styles': resolve(__dirname, 'resources/styles'),
+                'vue': 'vue/dist/vue.esm-bundler.js'
             }
         }
     };

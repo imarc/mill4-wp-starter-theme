@@ -1,0 +1,23 @@
+{
+    "key": "ui_options_page_68308e8b1fdf9",
+    "title": "Social Media",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Social Media",
+    "menu_slug": "social-media",
+    "parent_slug": "options-general.php",
+    "advanced_configuration": 0,
+    "icon_url": "",
+    "menu_title": "",
+    "position": "",
+    "redirect": false,
+    "description": "",
+    "menu_icon": [],
+    "update_button": "Update",
+    "updated_message": "Options Updated",
+    "capability": "edit_posts",
+    "data_storage": "options",
+    "post_id": "",
+    "autoload": 0,
+    "modified": 1748012718
+}

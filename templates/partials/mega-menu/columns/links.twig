@@ -1,16 +1,13 @@
-
-<div class="o-mega-menu__links">
-    {% if column.heading %}
-        <h3 class="o-mega-menu__heading">{{ column.heading }}</h3>
-    {% endif %}
-    {% if column.description %}
-        <p class="o-mega-menu__description">{{ column.description }}</p>
-    {% endif %}
-    <ul>
-        {% for link in column.links %}
-            <li class="o-mega-menu__link">
-                <a href="{{ link.link.url }}">{{ link.link.title }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
+{% if column.heading %}
+    <span class="h5">{{ column.heading }}</span>
+{% endif %}
+{% if column.description and false %}
+    <p>{{ column.description }}</p>
+{% endif %}
+<ul class="dropdown__list">
+    {% for link in column.links %}
+        <li class="dropdown__item">
+            <a href="{{ link.link.url }}" class="dropdown__link">{{ link.link.title }}</a>
+        </li>
+    {% endfor %}
+</ul>

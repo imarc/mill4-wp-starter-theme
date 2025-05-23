@@ -2,34 +2,141 @@
 
 namespace App\Hooks;
 
-use App\Assets\Contracts\AssetResolver;
+use App\Assets\Manifest;
 use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 
+/**
+ * Here's where we're handling the loading and management of theme
+ * assets in both development (HMR) and production environments.
+ */
 class AssetHooks implements HooksInterface
 {
     use RegistersHooks;
 
+    private Manifest $manifest;
+
     private const VITE_HOST = 'http://localhost:5173';
 
-    public function __construct(private AssetResolver $assetResolver)
+    private const MANIFEST_PATH = 'dist/.vite/manifest.json';
+
+    private const DIST_PATH = 'dist';
+
+    /**
+     * Initialize the AssetHooks with a new Manifest instance.
+     */
+    public function __construct()
     {
+        $this->manifest = new Manifest(get_theme_file_path(self::MANIFEST_PATH));
     }
 
+    /**
+     * Initialize asset loading based on environment.
+     * In HMR mode, loads Vite client and entry point.
+     * In production, loads bundled assets from manifest.
+     */
     public function initialize(): void
     {
         if (is_hmr()) {
-            add_action('wp_head', [$this, 'hmrHeadHook']);
+            $this->addAction('wp_head', [$this, 'hmrHeadHook']);
+        } else {
+            $this->addAction('wp_head', function () {
+                $this->loadScriptsForEntryPoint('resources/js/index.js');
+            });
         }
+        if (is_admin()) {
 
-        $this->addAction('wp_enqueue_scripts', function () {
-            wp_enqueue_script('mill4', $this->assetResolver->resolve('resources/scripts/scripts.js'));
-            wp_enqueue_style('mill4', $this->assetResolver->resolve('resources/styles/styles.scss'));
-        });
+            $this->addAction('admin_head', function () {
+                echo $this->buildStylesheetTag($this->manifest->getFileForEntryPoint('resources/styles/editor.scss'));
+            });
+        }
     }
 
+    /**
+     * Loads necessary scripts for HMR development mode.
+     * Includes Vite client and main entry point.
+     */
     public function hmrHeadHook()
     {
         echo '<script type="module" crossorigin src="' . static::VITE_HOST . '/@vite/client"></script>';
+        echo '<script type="module" crossorigin src="' . static::VITE_HOST . '/resources/js/index.js"></script>';
+    }
+
+    /**
+     * Loads all assets for a given entry point.
+     * This includes the main script, stylesheets, and imported modules.
+     */
+    public function loadScriptsForEntryPoint(string $script): void
+    {
+        $this->loadFileForEntryPoint($script);
+        $this->loadStylesheetsForEntryPoint($script);
+        $this->loadImportsForEntryPoint($script);
+    }
+
+    /**
+     * Loads the main script file for an entry point in the
+     * manifest.
+     */
+    private function loadFileForEntryPoint(string $entryPoint): void
+    {
+        $file = $this->manifest->getFileForEntryPoint($entryPoint);
+
+        if (! $file) {
+            return;
+        }
+
+        echo $this->buildScriptTag($file);
+    }
+
+    /**
+     * Loads all stylesheets associated with an entry point in the
+     * manifest.
+     */
+    private function loadStylesheetsForEntryPoint(string $entryPoint): void
+    {
+        $stylesheets = $this->manifest->getStylesheetsForEntryPoint($entryPoint);
+
+        foreach ($stylesheets as $css) {
+            echo $this->buildStylesheetTag($css);
+        }
+    }
+
+    /**
+     * Loads all imported modules for an entry point in the
+     * manifest.
+     */
+    private function loadImportsForEntryPoint(string $entryPoint): void
+    {
+        $imports = $this->manifest->getImportsForEntryPoint($entryPoint);
+
+        foreach ($imports as $import) {
+            echo $this->buildScriptTag($import);
+        }
+    }
+
+    /**
+     * Builds a script tag with module type and crossorigin attributes.
+     */
+    private function buildScriptTag(string $file): string
+    {
+        return '<script type="module" crossorigin src="' . $this->getWebDistPath($file) . '"></script>';
+    }
+
+    /**
+     * Builds a stylesheet link tag.
+     */
+    private function buildStylesheetTag(string $file): string
+    {
+        return '<link rel="stylesheet" href="' . $this->getWebDistPath($file) . '">';
+    }
+
+    /**
+     * Gets the web-accessible URL for an asset in the dist directory.
+     */
+    private function getWebDistPath(?string $assetPath = null): string
+    {
+        $path = $assetPath ? self::DIST_PATH . '/' . $assetPath : self::DIST_PATH;
+
+        return get_theme_file_uri($path);
     }
 }

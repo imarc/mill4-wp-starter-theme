@@ -1,21 +1,11 @@
-<div class="o-logoCloud">
-    {% if block.title %}
-        <h2 class="o-logoCloud__title">
-            {{ block.title }}
-        </h2>
-    {% endif %}
-    {% if block.intro_text %}
-        <div class="o-logoCloud__introText">
-            {{ block.intro_text }}
-        </div>
-    {% endif %}
-    <div class="o-logoCloud__logos">
+<div class="logoCloud">
+    <div class="logoCloud__logos">
         {% for logo in block.logos %}
-            <div class="o-logoCloud__logo">
+            <div class="logoCloud__logo">
                 {% if logo.link %}
                     <a href="{{ logo.link.url }}" target="{{ logo.link.target }}">
                 {% endif %}
-                <img class="o-logoCloud__img" alt="{{ logo.image.alt }}" src="{{ logo.image.url }}" />
+                <img class="logoCloud__img" alt="{{ logo.image.alt }}" src="{{ logo.image.url }}" />
                 {% if logo.link %}
                     </a>
                 {% endif %}

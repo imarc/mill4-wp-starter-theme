@@ -7,6 +7,7 @@ use App\Hooks\Concerns\DiscoversClasses;
 use App\Hooks\Concerns\RegistersHooks;
 use App\Hooks\Contracts\HooksInterface;
 use App\Services\Container;
+use App\Twig\RenderPartialTokenParser;
 use App\ViewComposers\ViewComposerRegistry;
 use Twig;
 use Timber\Site;
@@ -27,7 +28,7 @@ class TemplateHooks implements HooksInterface
     public function initialize(): void
     {
         $this->addFilter('timber/context', array( $this, 'addToContext' ));
-        $this->addFilter('timber/twig', array( $this, 'addToTwig' ));
+        $this->addFilter('timber/twig', array( $this, 'extendTwig' ));
         $this->addFilter('timber/twig/environment/options', [ $this, 'updateTwigEnvironmentOptions' ]);
         $this->addAction('init', [$this, 'registerViewComposers']);
     }
@@ -49,30 +50,18 @@ class TemplateHooks implements HooksInterface
     }
 
     /**
-     * This would return 'foo bar!'.
-     *
-     * @param string $text being 'foo', then returned 'foo bar!'.
-     */
-    public function myfoo($text)
-    {
-        $text .= ' bar!';
-        return $text;
-    }
-
-    /**
      * This is where you can add your own functions to twig.
      *
      * @param Twig\Environment $twig get extension.
      */
-    public function addToTwig($twig)
+    public function extendTwig($twig)
     {
         /**
-         * Required when you want to use Twig's template_from_string.
-         * @link https://twig.symfony.com/doc/3.x/functions/template_from_string.html
+         * This is a custom parser that allows you to render a partial template.
+         * Why? Because {% include %} will not work with the view composers, since
+         * composers rely on the "timber/render/data" filter to update the context.
          */
-        // $twig->addExtension( new Twig\Extension\StringLoaderExtension() );
-
-        $twig->addFilter(new Twig\TwigFilter('myfoo', [ $this, 'myfoo' ]));
+        $twig->addTokenParser(new RenderPartialTokenParser());
 
         return $twig;
     }

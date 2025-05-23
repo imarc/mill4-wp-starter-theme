@@ -1,18 +1,24 @@
-<div class="o-mega-menu">
+<nav class="siteHeader__primaryNav navigation" v-directionals>
+    <ul class="navigation__list">
     {% for item in menu.items %}
-        <div class="o-mega-menu__item">
+        <li class="navigation__item -wide" v-directionals>
             {% if item.type == 'link' %}
-                <a href="{{ item.link.url }}" class="o-mega-menu__link">{{ item.link.title }}</a>
+                <a href="{{ item.link.url }}" class="navigation__link">{{ item.link.title }}</a>
             {% elseif item.type == 'menu' %}
-                <a href="#" class="o-mega-menu__link">{{ item.label }}</a>
-                <div class="o-mega-menu__sub-menu">
-                    {% for column in item.columns %}
-                        <div class="o-mega-menu__column o-mega-menu__column--{{ column.column.type }}">
-                            {% include 'partials/mega-menu/columns/' ~ column.column.type ~ '.twig' with {'column': column.column} %}
+                {% set column_count = item.columns|length %}
+                <p-openable class="navigation__button" label="{{ item.label }}" :close-on-blur="false">
+                    <div class="navigation__dropdown dropdown container">
+                        <div class="grid -columns-{{ column_count }}">
+                            {% for column in item.columns %}
+                                <div class="cell">
+                                    {% include 'partials/mega-menu/columns/' ~ column.column.type ~ '.twig' with {'column': column.column} %}
+                                </div>
+                            {% endfor %}
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                </p-openable>
             {% endif %}
-        </div>
+        </li>
     {% endfor %}
-</div>
+    </ul>
+</nav>

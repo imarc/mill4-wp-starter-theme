@@ -1,13 +1,17 @@
-<div class="testimonialCarouselSection">
-    <div class="testimonialCarouselSection__container">
-        <div class="testimonialCarouselSection__title">
-            {{ block.title }}
-        </div>
-        <div class="testimonialCarouselSection__carousel">
+<div class="slider container -withCallout">
+    <svg class="slider__calloutIcon icon accent-primary" role="presentation">
+        <use href="/main-icons-sprite.svg#quote" />
+    </svg>
+    <div class="slider__callout">
+        <span class="h3">{{ block.title }}</span>
+    </div>
+    <div class="slider__content">
+        <p-slider slides-per-view="auto" space-between="32" navigation="true" pagination-clickable="true" loop="true">
             {% for testimonial in block.testimonials %}
-                {% include 'blocks/testimonial-block.twig' with { block: testimonial } %}
+                <swiper-slide loading="lazy">
+                    {% include 'blocks/testimonial-block.twig' with { block: testimonial } %}
+                </swiper-slide>
             {% endfor %}
-        </div>
+        </p-slider>
     </div>
 </div>
-
