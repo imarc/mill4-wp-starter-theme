@@ -468,6 +468,8 @@ class FooComposer extends ViewComposer
     // The context data to add to the view.
     public function withContext(): array
     {
+        $currentContextData = $this->getContextData();
+        
         return [
             'foo' => 'bar',
         ];

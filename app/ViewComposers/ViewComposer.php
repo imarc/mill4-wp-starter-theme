@@ -10,6 +10,11 @@ abstract class ViewComposer
 
     abstract public function withContext(): array;
 
+    public function getContextData(): array
+    {
+        return $this->contextData;
+    }
+
     public function setContextData(array $data): void
     {
         $this->contextData = $data;
