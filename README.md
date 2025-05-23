@@ -479,6 +479,20 @@ Adding the `RegistersViewComposer` attribute to the class will automatically reg
 
 Now your view composer will be applied to the specified views.
 
+**NOTE:** If you'd like to render a partial template, you can use Mill4's `{% render_partial %}` tag. This is necessary because the standard `{% include %}` tag does not trigger the `timber/render/data` filter that view composers rely on. For example:
+
+```twig
+{% render_partial 'footer.twig' %}
+```
+
+`{% render_partial %}` also supports passing additional context data to the partial just like `{% include %}` does. For example:
+
+```twig
+{% render_partial 'footer.twig' with {
+    'foo': 'bar',
+} %}
+```
+
 ## Commands
 
 Mill 4 includes a basic command system for running custom commands.
