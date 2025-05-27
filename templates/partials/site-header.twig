@@ -1,11 +1,16 @@
 <header class="siteHeader container">
 	<div class="siteHeader__content">
-		<a class="siteHeader__logo" href="">
+		<a class="siteHeader__logo" href="/">
 			<img src="{{ theme.link }}/resources/images/millyard.png" alt="{{ site.name }}" class="siteHeader__logoImage" width="180">
 		</a>
         {% if utility_navigation %}
             <nav class="siteHeader__utilityNav navigation">
                 {% include "partials/navigation/menu.twig" with {'menu': utility_navigation} %}
+            </nav>
+        {% endif %}
+        {% if mobile_navigation %}
+            <nav class="siteHeader__mobileNav navigation">
+                {% include "partials/navigation/mobile-menu.twig" with {'menu': mobile_navigation} %}
             </nav>
         {% endif %}
         {% if mega_menu['enabled'] ?? false %}
