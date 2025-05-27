@@ -1,0 +1,22 @@
+<p-openable class="mobileNavigation__menu button -circle -ghost" label="menu">
+    <template #toggle>
+        <svg class="button__icon icon"><use href="{{ theme.path }}/resources/images/main-icons-sprite.svg#bars" /></svg>
+    </template>
+    <template v-slot="{ click }">
+        <div class="mobileNavigation__pane" v-scrolllock>
+            <div class="mobileNavigation__title">
+                Menu
+            </div>
+            <ul class="mobileNavigation__list" v-directionals>
+                {% for item in menu.get_items %}
+                    {% include "partials/navigation/mobile-item.twig" with {'item': item} %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="mobileNavigation__closeButton">
+        <button class="button -circle -ghost" @click="click">
+            <svg class="icon"><use href="{{ theme.path }}/resources/images/main-icons-sprite.svg#close" /></svg>
+        </button>
+        </div>
+    </template>
+</p-openable>

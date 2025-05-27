@@ -1,0 +1,29 @@
+{% if item.children %}
+    <li class="dropdown__item">
+        <p-openable class="mobileNavigation__button" name="submenu">
+            <template #toggle>
+                {{ item.title }}
+                <svg class="icon"><use href="{{ theme.path }}/resources/images/main-icons-sprite.svg#chevron-right" /></svg>
+            </template>
+            <template v-slot="{ click }">
+                <div class="mobileNavigation__pane">
+                    <div class="mobileNavigation__actions">
+                        <button class="button -circle -ghost" @click.stopPropagation="click" tabindex="-1">
+                        <svg class="icon"><use href="{{ theme.path }}/resources/images/main-icons-sprite.svg#chevron-left" /></svg>
+                        </button>
+                    </div>
+                    <div class="mobileNavigation__title">
+                        {{ item.title }}
+                    </div>
+                    <ul class="mobileNavigation__list" v-directionals>
+                        {% for child in item.children %}
+                            {% include "partials/navigation/mobile-item.twig" with {'item': child} %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </template>
+        </p-openable>
+    </li>
+{% else %}
+    <li class="mobileNavigation__item"><a href="{{ item.link }}" class="mobileNavigation__link">{{ item.title }}</a></li>
+{% endif %}
