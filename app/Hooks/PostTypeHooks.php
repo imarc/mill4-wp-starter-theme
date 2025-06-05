@@ -2,15 +2,17 @@
 
 namespace App\Hooks;
 
-use Imarc\Millyard\Attributes\RegistersPostType;
-use Imarc\Millyard\Concerns\DiscoversClasses;
 use Imarc\Millyard\Concerns\RegistersHooks;
 use Imarc\Millyard\Contracts\HooksInterface;
+use Imarc\Millyard\PostTypes\Registrar;
 
 class PostTypeHooks implements HooksInterface
 {
-    use DiscoversClasses;
     use RegistersHooks;
+
+    public function __construct(private Registrar $registrar)
+    {
+    }
 
     public function initialize(): void
     {
@@ -19,18 +21,6 @@ class PostTypeHooks implements HooksInterface
 
     public function registerPostTypes(): void
     {
-        $classes = $this->discoverClassesForAttribute(RegistersPostType::class, 'PostTypes');
-
-        foreach ($classes as $postTypeClass) {
-            $postType = new $postTypeClass();
-
-            if (! method_exists($postType, 'register')) {
-                throw new \RuntimeException(sprintf('Could not register class %s. register() does not exist', $postTypeClass));
-            }
-
-            $postType->register();
-
-            do_action('mill4_post_type_registered', $postTypeClass);
-        }
+        $this->registrar->registerPostTypes();
     }
 }

@@ -2,30 +2,25 @@
 
 namespace App\Hooks;
 
-use Imarc\Millyard\Attributes\RegistersAdminPage;
+use Imarc\Millyard\AdminPages\Registrar;
 use Imarc\Millyard\Contracts\HooksInterface;
-use Imarc\Millyard\Concerns\DiscoversClasses;
 use Imarc\Millyard\Concerns\RegistersHooks;
 
 class AdminPageHooks implements HooksInterface
 {
-    use DiscoversClasses;
     use RegistersHooks;
+
+    public function __construct(private Registrar $registrar)
+    {
+    }
 
     public function initialize(): void
     {
-        $this->registerAdminPages();
+        $this->addAction('init', [$this, 'registerAdminPages']);
     }
 
-    private function registerAdminPages(): void
+    public function registerAdminPages(): void
     {
-        $adminPageClasses = $this->discoverClassesForAttribute(RegistersAdminPage::class, 'AdminPages');
-
-        $this->addAction('admin_menu', function () use ($adminPageClasses) {
-            foreach ($adminPageClasses as $adminPage) {
-                $adminPage = new $adminPage();
-                $adminPage->register();
-            }
-        });
+        $this->registrar->registerAdminPages();
     }
 }

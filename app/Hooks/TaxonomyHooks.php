@@ -2,15 +2,17 @@
 
 namespace App\Hooks;
 
-use Imarc\Millyard\Attributes\RegistersTaxonomy;
-use Imarc\Millyard\Concerns\DiscoversClasses;
 use Imarc\Millyard\Concerns\RegistersHooks;
 use Imarc\Millyard\Contracts\HooksInterface;
+use Imarc\Millyard\Taxonomies\Registrar;
 
 class TaxonomyHooks implements HooksInterface
 {
-    use DiscoversClasses;
     use RegistersHooks;
+
+    public function __construct(private Registrar $registrar)
+    {
+    }
 
     public function initialize(): void
     {
@@ -19,18 +21,6 @@ class TaxonomyHooks implements HooksInterface
 
     public function registerTaxonomies(): void
     {
-        $classes = $this->discoverClassesForAttribute(RegistersTaxonomy::class, 'Taxonomies');
-
-        foreach ($classes as $taxonomyClass) {
-            $taxonomy = new $taxonomyClass();
-
-            if (! method_exists($taxonomy, 'register')) {
-                throw new \RuntimeException(sprintf('Could not register class %s. register() does not exist', $taxonomyClass));
-            }
-
-            $taxonomy->register();
-
-            do_action('mill4_taxonomy_registered', $taxonomyClass);
-        }
+        $this->registrar->registerTaxonomies();
     }
 }
