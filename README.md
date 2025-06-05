@@ -19,6 +19,7 @@ Let's get into it.
 ## Table of Contents
 
 - [Installation](#installation)
+- [Frontend Build](#frontend-build)
 - [Hooks](#hooks)
 - [Configuration](#configuration)
 - [Custom Routes](#custom-routes)
