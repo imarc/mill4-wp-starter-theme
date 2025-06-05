@@ -19,6 +19,7 @@ Let's get into it.
 ## Table of Contents
 
 - [Installation](#installation)
+- [Frontend Build](#frontend-build)
 - [Hooks](#hooks)
 - [Configuration](#configuration)
 - [Custom Routes](#custom-routes)
@@ -48,19 +49,47 @@ This will install the dependencies and compile the assets.
 
 Finally, you'll want to activate the theme in the WordPress admin.
 
+## Frontend Build
+
+Mill 4 includes a basic frontend build process for compiling Sass and JavaScript using Vite. To compile the assets, run the following command:
+
+```bash
+% npm run build
+```
+
+This will compile the Sass and JavaScript files and place them in the `dist` directory.
+
+### Hot Module Replacement
+
+Mill 4 includes a basic hot module replacement (HMR) setup for the frontend build. To enable HMR, run the following command:
+
+```bash
+% npm run dev
+```
+
+Your browser will automatically refresh when you make changes to the Sass or JavaScript files. **Note:** HMR is only available when running the development mode. This can be controlled by setting the `WP_ENVIRONMENT_TYPE` constant in your `wp-config-local.php` file or equivalent:
+
+```php
+// wp-config-local.php
+
+define('WP_ENVIRONMENT_TYPE', 'development');
+```
+
+HRM is configured by default to use `http://localhost:5173` as the Vite server. This can be changed by setting the `VITE_HOST` var in your theme's `.env` file. Also available are `VITE_MANIFEST_PATH` and `VITE_DIST_PATH` vars for customizing the manifest and dist paths, respectively. Consult `app/config.php` to view the default values.
+
 ## Hooks
 
 Mill 4 includes a basic hooks system for registering actions and filters. While it's not strictly necessary to use it (there's nothing stopping you from registering your own actions and filters in the theme's `functions.php` file), it's a handy way to organize your code.
 
-Take a look at the `app/Hooks` directory to see the included hooks classes. To create your own Hooks class, create a new class that implements `App\Hooks\Contracts\HooksInterface` and register it in the `app/bootstrap.php` file. Here's an example:
+Take a look at the `app/Hooks` directory to see the included hooks classes. To create your own Hooks class, create a new class that implements `Imarc\Millyard\Contracts\HooksInterface` and register it in the `app/bootstrap.php` file. Here's an example:
 
 ```php
 // app/Hooks/MyHooks.php
 
 namespace App\Hooks;
 
-use App\Hooks\Concerns\RegistersHooks;
-use App\Hooks\Contracts\HooksInterface;
+use Imarc\Millyard\Concerns\RegistersHooks;
+use Imarc\Millyard\Contracts\HooksInterface;
 
 class MyHooks implements HooksInterface
 {
@@ -93,7 +122,7 @@ Then, you'll want to register the hooks in the `app/bootstrap.php` file.
 // app/bootstrap.php
 
 use App\Hooks;
-use App\Services\Container;
+use Imarc\Millyard\Services\Container;
 
 $container = new Container();
 $hooks = $container->get(Hooks\Registrar::class);
@@ -204,7 +233,7 @@ Mill 4 includes a basic middleware system for injecting custom logic into the re
 
 namespace App\Middleware; 
 
-use App\Services\Router\MiddlewareInterface;
+use Imarc\Millyard\Contracts\MiddlewareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -294,7 +323,7 @@ Mill 4's base controller class includes a `render()` method that renders a Twig 
 ```php
 // app/Http/Controllers/FooController.php
 
-use App\Http\Controllers\Controller;
+use Imarc\Millyard\Http\Controller;
 
 class FooController extends Controller
 {
@@ -318,7 +347,7 @@ class FooController extends Controller
 
 ## Custom Post Types
 
-To register a custom post type in your theme, create a new class for your custom post type in the `app/PostTypes` directory. This class should extend the `PostType` class provided by the theme and use the `RegistersPostType` attribute. For example:
+To register a custom post type in your theme, create a new class for your custom post type in the `app/PostTypes` directory. This class should extend the `PostType` class provided by Millyard and use the `RegistersPostType` attribute. For example:
 
 ```php
 <?php
@@ -327,7 +356,8 @@ To register a custom post type in your theme, create a new class for your custom
 
 namespace App\PostTypes;
 
-use App\Attributes\RegistersPostType;
+use Imarc\Millyard\Attributes\RegistersPostType;
+use Imarc\Millyard\PostTypes\PostType;
 
 #[RegistersPostType]
 class Movie extends PostType
@@ -348,7 +378,7 @@ class Movie extends PostType
 
 ## Custom Taxonomies
 
-To register a custom taxonomy in your theme, create a new class for your custom taxonomy in the `app/Taxonomies` directory. Your class should extend the `Taxonomy` class provided by the theme and use the `RegistersTaxonomy` attribute. For example:
+To register a custom taxonomy in your theme, create a new class for your custom taxonomy in the `app/Taxonomies` directory. Your class should extend the `Taxonomy` class provided by Millyard and use the `RegistersTaxonomy` attribute. For example:
 
 ```php
 <?php
@@ -357,7 +387,8 @@ To register a custom taxonomy in your theme, create a new class for your custom 
 
 namespace App\Taxonomies;
 
-use App\Attributes\RegistersTaxonomy;
+use Imarc\Millyard\Attributes\RegistersTaxonomy;
+use Imarc\Millyard\Taxonomies\Taxonomy;
 use App\PostTypes\Movie;
 
 #[RegistersTaxonomy]
@@ -382,7 +413,7 @@ Adding the `RegistersTaxonomy` attribute to the class will automatically registe
 To register a Gutenberg block in your theme, follow these steps:
 
 1. **Create a Gutenberg Block Class**:
-   Create a new class for your Gutenberg block. This class should extend the `Block` class provided by the theme. It should live in the `app/Blocks` directory and use the `RegistersBlock` attribute. For example:
+   Create a new class for your Gutenberg block. This class should extend the `Block` class provided by Millyard. It should live in the `app/Blocks` directory and use the `RegistersBlock` attribute. For example:
 
    ```php
     <?php
@@ -391,7 +422,8 @@ To register a Gutenberg block in your theme, follow these steps:
 
     namespace App\Blocks;
 
-    use App\Attributes\RegistersBlock;
+    use Imarc\Millyard\Attributes\RegistersBlock;
+    use Imarc\Millyard\Blocks\Block;
 
     #[RegistersBlock]
     class GenericCtaBlock extends Block
@@ -446,7 +478,7 @@ To register a Gutenberg block in your theme, follow these steps:
 
 ## View Composers
 
-Mill 4 includes a basic view composer system for adding custom context data to your Twig templates. To create a new view composer, create a new class for it in the `app/ViewComposers` directory. Your class should extend the `ViewComposer` class provided by the theme and use the `RegistersViewComposer` PHP attribute. For example:
+Mill 4 includes a basic view composer system for adding custom context data to your Twig templates. To create a new view composer, create a new class for it in the `app/ViewComposers` directory. Your class should extend the `Composer` class provided by Millyard and use the `RegistersViewComposer` PHP attribute. For example:
 
 ```php
 <?php
@@ -455,10 +487,11 @@ Mill 4 includes a basic view composer system for adding custom context data to y
 
 namespace App\ViewComposers;
 
-use App\Attributes\RegistersViewComposer;
+use Imarc\Millyard\Attributes\RegistersViewComposer;
+use Imarc\Millyard\Views\Composer;
 
 #[RegistersViewComposer]
-class FooComposer extends ViewComposer
+class FooComposer extends Composer
 {
     // The views that the composer should be applied to.
     public array $views = [
@@ -499,7 +532,7 @@ Now your view composer will be applied to the specified views.
 
 Mill 4 includes a basic command system for running custom commands.
 
-To create a new command, create a new class for it. This class should extend the `Command` class provided by the theme. Make sure you add a `__invoke()` method to your command class for standalone commands. For example:
+To create a new command, create a new class for it. This class should extend the `Command` class provided by Millyard. Make sure you add a `__invoke()` method to your command class for standalone commands. For example:
 
 ```php
 <?php
@@ -507,7 +540,8 @@ To create a new command, create a new class for it. This class should extend the
 
 namespace App\Commands;
 
-use App\Attributes\RegistersCommand;
+use Imarc\Millyard\Attributes\RegistersCommand;
+use Imarc\Millyard\Commands\Command;
 
 #[RegistersCommand]
 class FooCommand extends Command
@@ -574,7 +608,7 @@ These commands align with those available in [WP-CLI's API](https://make.wordpre
 
 Mill 4 includes a basic job system for running custom jobs. These jobs can be scheduled to run at a specific time or immediately, and can be configured to use the WordPress cron system.
 
-To create a new job, create a new class for your job in the `app/Jobs` directory. This class should extend the `Job` class provided by the theme and use the `RegistersJob` attribute. For example:
+To create a new job, create a new class for your job in the `app/Jobs` directory. This class should extend the `Job` class provided by Millyard and use the `RegistersJob` attribute. For example:
 
 ```php
 <?php
@@ -582,7 +616,8 @@ To create a new job, create a new class for your job in the `app/Jobs` directory
 
 namespace App\Jobs;
 
-use App\Attributes\RegistersJob;
+use Imarc\Millyard\Attributes\RegistersJob;
+use Imarc\Millyard\Jobs\Job;
 
 #[RegistersJob]
 class MyGreatJob extends Job
@@ -619,7 +654,7 @@ As with other parts of Mill 4, Jobs support dependency injection, so feel free t
 
 namespace App\Jobs;
 
-use App\Attributes\RegistersJob;
+use Imarc\Millyard\Attributes\RegistersJob;
 use App\Services\Logger;
 
 #[RegistersJob]
@@ -694,7 +729,7 @@ class CronHooks implements HooksInterface
 
 Mill 4 includes a basic system for creating custom admin pages.
 
-To create an admin page, create a new class for it in the `app/AdminPages` directory. Your class should extend the `AdminPage` class provided by the theme, and use the `RegistersAdminPage` attribute.
+To create an admin page, create a new class for it in the `app/AdminPages` directory. Your class should extend the `AdminPage` class provided by Millyard, and use the `RegistersAdminPage` attribute.
 
 There are quite a few properties that you can set on the class to customize the page's location, appearance and behavior. For example:
 
@@ -704,7 +739,8 @@ There are quite a few properties that you can set on the class to customize the 
 
 namespace App\AdminPages;
 
-use App\Attributes\RegistersAdminPage;
+use Imarc\Millyard\Attributes\RegistersAdminPage;
+use Imarc\Millyard\AdminPages\AdminPage;
 
 #[RegistersAdminPage]
 class LogViewerPage extends AdminPage
@@ -748,7 +784,7 @@ Mill 4 includes a developer-friendly caching service that acts as a wrapper arou
 <?php
 // app/Http/Controllers/MyController.php
 
-use App\Services\Cache;
+use Imarc\Millyard\Services\Cache;
 
 class MyController extends Controller
 {

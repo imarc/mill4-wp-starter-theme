@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'vite' => [
+        'host' => env('VITE_HOST', 'http://localhost:5173'),
+        'manifest_path' => env('VITE_MANIFEST_PATH', 'dist/.vite/manifest.json'),
+        'dist_path' => env('VITE_DIST_PATH', 'dist'),
+    ],
+
     'sessions' => [
         'enabled' => env('SESSIONS_ENABLED', false),
         'cookie' => env('SESSIONS_COOKIE', 'session'),

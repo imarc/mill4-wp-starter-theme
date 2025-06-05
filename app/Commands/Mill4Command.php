@@ -2,7 +2,8 @@
 
 namespace App\Commands;
 
-use App\Attributes\RegistersCommand;
+use Imarc\Millyard\Attributes\RegistersCommand;
+use Imarc\Millyard\Commands\Command;
 
 #[RegistersCommand]
 class Mill4Command extends Command

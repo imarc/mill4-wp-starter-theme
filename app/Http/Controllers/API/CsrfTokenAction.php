@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
+use Imarc\Millyard\Http\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CsrfTokenAction extends Controller

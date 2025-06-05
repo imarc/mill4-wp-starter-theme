@@ -2,7 +2,7 @@
 
 namespace App\Hooks;
 
-use App\Services\Container;
+use Imarc\Millyard\Services\Container;
 
 class Registrar
 {

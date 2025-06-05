@@ -2,10 +2,11 @@
 
 namespace App\ViewComposers;
 
-use App\Attributes\RegistersViewComposer;
+use Imarc\Millyard\Attributes\RegistersViewComposer;
+use Imarc\Millyard\Views\Composer;
 
 #[RegistersViewComposer]
-class FooterComposer extends ViewComposer
+class FooterComposer extends Composer
 {
     public array $views = [
         'footer.twig',

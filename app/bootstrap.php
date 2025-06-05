@@ -1,7 +1,7 @@
 <?php
 
 use App\Hooks;
-use App\Services\Container;
+use Imarc\Millyard\Services\Container;
 
 $container = new Container();
 

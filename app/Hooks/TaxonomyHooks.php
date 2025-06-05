@@ -2,10 +2,10 @@
 
 namespace App\Hooks;
 
-use App\Attributes\RegistersTaxonomy;
-use App\Hooks\Concerns\DiscoversClasses;
-use App\Hooks\Concerns\RegistersHooks;
-use App\Hooks\Contracts\HooksInterface;
+use Imarc\Millyard\Attributes\RegistersTaxonomy;
+use Imarc\Millyard\Concerns\DiscoversClasses;
+use Imarc\Millyard\Concerns\RegistersHooks;
+use Imarc\Millyard\Contracts\HooksInterface;
 
 class TaxonomyHooks implements HooksInterface
 {

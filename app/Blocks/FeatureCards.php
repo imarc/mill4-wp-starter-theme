@@ -2,7 +2,8 @@
 
 namespace App\Blocks;
 
-use App\Attributes\RegistersBlock;
+use Imarc\Millyard\Attributes\RegistersBlock;
+use Imarc\Millyard\Blocks\Block;
 
 #[RegistersBlock]
 class FeatureCards extends Block

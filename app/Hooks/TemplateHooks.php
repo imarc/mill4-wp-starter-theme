@@ -2,13 +2,13 @@
 
 namespace App\Hooks;
 
-use App\Attributes\RegistersViewComposer;
-use App\Hooks\Concerns\DiscoversClasses;
-use App\Hooks\Concerns\RegistersHooks;
-use App\Hooks\Contracts\HooksInterface;
-use App\Services\Container;
-use App\Twig\RenderPartialTokenParser;
-use App\ViewComposers\ViewComposerRegistry;
+use Imarc\Millyard\Attributes\RegistersViewComposer;
+use Imarc\Millyard\Concerns\DiscoversClasses;
+use Imarc\Millyard\Concerns\RegistersHooks;
+use Imarc\Millyard\Contracts\HooksInterface;
+use Imarc\Millyard\Services\Container;
+use Imarc\Millyard\Twig\RenderPartialTokenParser;
+use Imarc\Millyard\Views\ComposerRegistry;
 use Twig;
 use Timber\Site;
 use Timber\Timber;
@@ -21,7 +21,7 @@ class TemplateHooks implements HooksInterface
     public function __construct(
         protected Site $site,
         private Container $container,
-        private ViewComposerRegistry $viewComposerRegistry
+        private ComposerRegistry $viewComposerRegistry
     ) {
     }
 

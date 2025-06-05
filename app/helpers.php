@@ -1,7 +1,7 @@
 <?php
 
-use App\Services\Cache;
-use App\Services\Container;
+use Imarc\Millyard\Services\Cache;
+use Imarc\Millyard\Services\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 

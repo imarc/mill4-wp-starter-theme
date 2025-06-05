@@ -2,7 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Attributes\RegistersJob;
+use Imarc\Millyard\Attributes\RegistersJob;
+use Imarc\Millyard\Jobs\Job;
 
 #[RegistersJob]
 class MyGreatJob extends Job

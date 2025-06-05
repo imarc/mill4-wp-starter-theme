@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Imarc\Millyard\Http\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

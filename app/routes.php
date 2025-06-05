@@ -1,8 +1,7 @@
 <?php
 
-use App\Services\Router;
+use Imarc\Millyard\Routing\Router;
 use App\Http\Controllers;
-use App\Http\Controllers\FooController;
 use App\Http\Middleware\VerifyCsrfToken;
 
 $router = Router::getInstance();
