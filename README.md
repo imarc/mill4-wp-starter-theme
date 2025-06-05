@@ -48,6 +48,34 @@ This will install the dependencies and compile the assets.
 
 Finally, you'll want to activate the theme in the WordPress admin.
 
+## Frontend Build
+
+Mill 4 includes a basic frontend build process for compiling Sass and JavaScript using Vite. To compile the assets, run the following command:
+
+```bash
+% npm run build
+```
+
+This will compile the Sass and JavaScript files and place them in the `dist` directory.
+
+### Hot Module Replacement
+
+Mill 4 includes a basic hot module replacement (HMR) setup for the frontend build. To enable HMR, run the following command:
+
+```bash
+% npm run dev
+```
+
+Your browser will automatically refresh when you make changes to the Sass or JavaScript files. **Note:** HMR is only available when running the development mode. This can be controlled by setting the `WP_ENVIRONMENT_TYPE` constant in your `wp-config-local.php` file or equivalent:
+
+```php
+// wp-config-local.php
+
+define('WP_ENVIRONMENT_TYPE', 'development');
+```
+
+HRM is configured by default to use `http://localhost:5173` as the Vite server. This can be changed by setting the `VITE_HOST` var in your theme's `.env` file. Also available are `VITE_MANIFEST_PATH` and `VITE_DIST_PATH` vars for customizing the manifest and dist paths, respectively. Consult `app/config.php` to view the default values.
+
 ## Hooks
 
 Mill 4 includes a basic hooks system for registering actions and filters. While it's not strictly necessary to use it (there's nothing stopping you from registering your own actions and filters in the theme's `functions.php` file), it's a handy way to organize your code.

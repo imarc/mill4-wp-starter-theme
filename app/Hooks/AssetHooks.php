@@ -16,18 +16,14 @@ class AssetHooks implements HooksInterface
 
     private Manifest $manifest;
 
-    private const VITE_HOST = 'http://localhost:5173';
-
-    private const MANIFEST_PATH = 'dist/.vite/manifest.json';
-
-    private const DIST_PATH = 'dist';
-
     /**
      * Initialize the AssetHooks with a new Manifest instance.
      */
     public function __construct()
     {
-        $this->manifest = new Manifest(get_theme_file_path(self::MANIFEST_PATH));
+        $manifestPath = config('vite.manifest_path');
+
+        $this->manifest = new Manifest(get_theme_file_path($manifestPath));
     }
 
     /**
@@ -58,8 +54,10 @@ class AssetHooks implements HooksInterface
      */
     public function hmrHeadHook()
     {
-        echo '<script type="module" crossorigin src="' . static::VITE_HOST . '/@vite/client"></script>';
-        echo '<script type="module" crossorigin src="' . static::VITE_HOST . '/resources/js/index.js"></script>';
+        $viteHost = config('vite.host');
+
+        echo '<script type="module" crossorigin src="' . $viteHost . '/@vite/client"></script>';
+        echo '<script type="module" crossorigin src="' . $viteHost . '/resources/js/index.js"></script>';
     }
 
     /**
@@ -135,7 +133,9 @@ class AssetHooks implements HooksInterface
      */
     private function getWebDistPath(?string $assetPath = null): string
     {
-        $path = $assetPath ? self::DIST_PATH . '/' . $assetPath : self::DIST_PATH;
+        $distPath = config('vite.dist_path', 'dist');
+
+        $path = $assetPath ? $distPath . '/' . $assetPath : $distPath;
 
         return get_theme_file_uri($path);
     }
