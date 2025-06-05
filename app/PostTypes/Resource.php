@@ -7,7 +7,8 @@
 
 namespace App\PostTypes;
 
-use App\Attributes\RegistersPostType;
+use Imarc\Millyard\Attributes\RegistersPostType;
+use Imarc\Millyard\PostTypes\PostType;
 
 #[RegistersPostType]
 class Resource extends PostType

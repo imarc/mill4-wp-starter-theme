@@ -2,8 +2,9 @@
 
 namespace App\Taxonomies;
 
-use App\Attributes\RegistersTaxonomy;
 use App\PostTypes\Resource;
+use Imarc\Millyard\Attributes\RegistersTaxonomy;
+use Imarc\Millyard\Taxonomies\Taxonomy;
 
 #[RegistersTaxonomy]
 class ResourceType extends Taxonomy

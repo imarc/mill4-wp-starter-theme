@@ -2,10 +2,10 @@
 
 namespace App\Hooks;
 
-use App\Attributes\RegistersAdminPage;
-use App\Hooks\Contracts\HooksInterface;
-use App\Hooks\Concerns\DiscoversClasses;
-use App\Hooks\Concerns\RegistersHooks;
+use Imarc\Millyard\Attributes\RegistersAdminPage;
+use Imarc\Millyard\Contracts\HooksInterface;
+use Imarc\Millyard\Concerns\DiscoversClasses;
+use Imarc\Millyard\Concerns\RegistersHooks;
 
 class AdminPageHooks implements HooksInterface
 {

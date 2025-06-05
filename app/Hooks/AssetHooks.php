@@ -2,9 +2,9 @@
 
 namespace App\Hooks;
 
-use App\Assets\Manifest;
-use App\Hooks\Concerns\RegistersHooks;
-use App\Hooks\Contracts\HooksInterface;
+use Imarc\Millyard\Assets\Manifest;
+use Imarc\Millyard\Concerns\RegistersHooks;
+use Imarc\Millyard\Contracts\HooksInterface;
 
 /**
  * Here's where we're handling the loading and management of theme

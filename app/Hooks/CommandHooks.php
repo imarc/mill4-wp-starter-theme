@@ -2,11 +2,10 @@
 
 namespace App\Hooks;
 
-use App\Attributes\RegistersCommand;
-use App\Commands\Mill4Command;
-use App\Hooks\Concerns\DiscoversClasses;
-use App\Hooks\Concerns\RegistersHooks;
-use App\Hooks\Contracts\HooksInterface;
+use Imarc\Millyard\Attributes\RegistersCommand;
+use Imarc\Millyard\Concerns\DiscoversClasses;
+use Imarc\Millyard\Concerns\RegistersHooks;
+use Imarc\Millyard\Contracts\HooksInterface;
 
 class CommandHooks implements HooksInterface
 {

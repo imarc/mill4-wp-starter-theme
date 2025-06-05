@@ -2,7 +2,8 @@
 
 namespace App\AdminPages;
 
-use App\Attributes\RegistersAdminPage;
+use Imarc\Millyard\Attributes\RegistersAdminPage;
+use Imarc\Millyard\AdminPages\AdminPage;
 
 #[RegistersAdminPage]
 class LogViewer extends AdminPage

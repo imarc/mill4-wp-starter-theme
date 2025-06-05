@@ -2,11 +2,11 @@
 
 namespace App\ViewComposers;
 
-use App\Attributes\RegistersViewComposer;
-use App\ViewComposers\ViewComposer;
+use Imarc\Millyard\Attributes\RegistersViewComposer;
+use Imarc\Millyard\Views\Composer;
 
 #[RegistersViewComposer]
-class ResourcesArchiveComposer extends ViewComposer
+class ResourcesArchiveComposer extends Composer
 {
     public array $views = [
         'archive-resources.twig',

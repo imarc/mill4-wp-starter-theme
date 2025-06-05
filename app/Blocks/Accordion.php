@@ -2,8 +2,8 @@
 
 namespace App\Blocks;
 
-use App\Attributes\RegistersBlock;
-use App\Blocks\Block;
+use Imarc\Millyard\Attributes\RegistersBlock;
+use Imarc\Millyard\Blocks\Block;
 
 #[RegistersBlock]
 class Accordion extends Block

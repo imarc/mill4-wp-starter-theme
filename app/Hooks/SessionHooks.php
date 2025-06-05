@@ -2,8 +2,8 @@
 
 namespace App\Hooks;
 
-use App\Hooks\Concerns\RegistersHooks;
-use App\Hooks\Contracts\HooksInterface;
+use Imarc\Millyard\Concerns\RegistersHooks;
+use Imarc\Millyard\Contracts\HooksInterface;
 
 class SessionHooks implements HooksInterface
 {

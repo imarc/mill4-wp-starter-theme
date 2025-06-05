@@ -2,11 +2,11 @@
 
 namespace App\Hooks;
 
-use App\Attributes\RegistersJob;
-use App\Hooks\Concerns\DiscoversClasses;
-use App\Hooks\Concerns\RegistersHooks;
-use App\Hooks\Contracts\HooksInterface;
-use App\Services\Container;
+use Imarc\Millyard\Attributes\RegistersJob;
+use Imarc\Millyard\Concerns\DiscoversClasses;
+use Imarc\Millyard\Concerns\RegistersHooks;
+use Imarc\Millyard\Contracts\HooksInterface;
+use Imarc\Millyard\Services\Container;
 
 class JobHooks implements HooksInterface
 {

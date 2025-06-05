@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cbf6d972c2e2b82bbd2738a15b50a207",
+    "content-hash": "94a91be51dec991c0c0327ca84531364",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -67,6 +67,50 @@
                 }
             ],
             "time": "2024-07-20T21:45:45+00:00"
+        },
+        {
+            "name": "imarc/millyard",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/imarc/millyard.git",
+                "reference": "a2ec799cd81232524581b2ade475eb0458458e13"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/imarc/millyard/zipball/a2ec799cd81232524581b2ade475eb0458458e13",
+                "reference": "a2ec799cd81232524581b2ade475eb0458458e13",
+                "shasum": ""
+            },
+            "require": {
+                "league/container": "^4.2",
+                "symfony/http-foundation": "^7.2",
+                "timber/timber": "2.x-dev",
+                "vlucas/phpdotenv": "^5.6"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.64",
+                "yoast/wp-test-utils": "^1.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Imarc\\Millyard\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Dave Anastasi",
+                    "email": "daveanastasi@imarc.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/imarc/millyard/issues",
+                "source": "https://github.com/imarc/millyard/tree/main"
+            },
+            "time": "2025-06-05T14:55:49+00:00"
         },
         {
             "name": "league/container",
@@ -5558,7 +5602,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "timber/timber": 20
+        "timber/timber": 20,
+        "imarc/millyard": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
