@@ -45,7 +45,7 @@ Next, `cd` to the theme folder and run the following:
 % npm run build
 ```
 
-This will install the dependencies and compile the assets.
+This will install the dependencies and compile the assets. The primary dependency is [Millyard](https://github.com/imarc/millyard), which provides most ofthis theme's core functionality.
 
 Finally, you'll want to activate the theme in the WordPress admin.
 
