@@ -32,6 +32,7 @@ Let's get into it.
 - [Recurring Events](#scheduling-recurring-events-via-wp-cron)
 - [Admin Pages](#admin-pages)
 - [Cache](#cache)
+- [Pantheon + GitHub Actions Workflow](#pantheon--github-actions-workflow)
 
 ## Installation
 
@@ -831,3 +832,78 @@ Mill 4 also includes a helper function for each of the cache methods, so you can
  * `cache_get($key)`: Get a value from the cache.
  * `cache_set($key, $value, $ttl = null)`: Set a value in the cache.
     
+## Pantheon + GitHub Actions Workflow
+
+Mill 4 works pretty well on Pantheon using their composer-based upstream, but there are a few gotchas to be aware of. Here's how to get it working:
+
+1. Create a new site on Pantheon using the wordpress composer upstream. You'll need to get [Terminus](https://docs.pantheon.io/terminus) set up beforehand. To create the site, run the following command:
+
+    ```bash
+    % terminus site:create --org imarc --region us -- [site-slug] "[site-title]" wordpress-composer-managed
+    ```
+
+1. Clone the site from the Pantheon repository to your local machine. The repository address is available in the Pantheon dashboard.
+
+1. Create a new GitHub repository for the site.
+
+1. Update the origin remote to point to the new GitHub repository.
+
+    ```bash
+    % git remote set-url origin [github-repository-url]
+    ```
+    Alternatively, you could just remove the `.git` directory and run `git init` to create a new repository.
+
+1. Download the zip for this theme and unpack it into `wp/app/themes/`. Rename the theme directory and update the information in the `style.css` file.
+
+1. Pantheon will only run `composer install` for the `composer.json` file in the project root. So, you'll need to move the dependencies in the theme's `composer.json` over to the top-level one. As a result, your `composer.json` will look something like this:
+    ```json
+    "require": {
+        "php": ">=7.4",
+        "composer/installers": "^2.2",
+        "vlucas/phpdotenv": "^5.5",
+        "oscarotero/env": "^2.1",
+        "roots/bedrock-autoloader": "*",
+        "roots/bedrock-disallow-indexing": "*",
+        "roots/wordpress": "*",
+        "roots/wp-config": "*",
+        "roots/wp-password-bcrypt": "*",
+        "wpackagist-theme/twentytwentytwo": "^1.2",
+        "pantheon-systems/pantheon-mu-plugin": "*",
+        "pantheon-upstreams/upstream-configuration": "dev-main",
+        "wpackagist-plugin/pantheon-advanced-page-cache": "*",
+        "wpackagist-plugin/wp-native-php-sessions": "*",
+        "cweagans/composer-patches": "^1.7",
+        "imarc/millyard": "dev-main" // <--- add millyard dependency
+    },
+
+    ...
+
+    "autoload": {
+        "classmap": ["upstream-configuration/scripts/ComposerScripts.php"],
+        "psr-4": {
+            "App\\": "web/app/themes/<your-theme>/app/"
+        },
+        "files": ["web/app/themes/<your-theme>/app/helpers.php"]
+    },
+    ```
+
+    Feel free to remove your theme's `composer.json` file entirely, since you'll be instead using the one in the project root.
+
+1. Run `composer install` to install the dependencies.
+
+1. Run `npm install && npm run build` from the theme directory to install the dependencies and compile the assets for your theme.
+
+1. Update the `.gitignore` file accordingly:
+    * Remove the entry for `pantheon.upstream.yml`. It's critical that this file is committed to the repository, or else the site will not be able to deploy.
+    * Add the following entries for your theme:
+        ```
+        /web/app/themes/<your-theme>/.hot
+        /web/app/themes/<your-theme>/node_modules/
+        /web/app/themes/<your-theme>/dist/*
+        ```
+
+1. Push the changes to GitHub.
+    ```bash
+    % git push origin master
+    ```
+
