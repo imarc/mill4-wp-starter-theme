@@ -14,5 +14,9 @@
     "@imarc/pronto": "^2.0.0-rc.12",
     "@vitejs/plugin-vue": "^5.2.3",
     "vue": "^3.5.13"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-darwin-x64": "^4.44.0",
+    "@rollup/rollup-linux-x64-gnu": "^4.44.0"
   }
 }
