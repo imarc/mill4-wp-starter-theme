@@ -935,6 +935,8 @@ Mill 4 works pretty well on Pantheon using their composer-based upstream, but th
         /web/app/themes/<your-theme>/dist/*
         ```
 
+1. Remove the `.gitignore` from the theme, since that's now being handled in the project root's `.gitignore` file.
+
 1. Push the changes to GitHub.
     ```bash
     % git push origin master
