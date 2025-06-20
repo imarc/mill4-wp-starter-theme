@@ -843,6 +843,8 @@ Mill 4 works pretty well on Pantheon using their composer-based upstream, but th
     % terminus site:create --org imarc --region us -- [site-slug] "[site-title]" wordpress-composer-managed
     ```
 
+1. After the site is created, you'll want to hit the dev url (you'll find it in the Pantheon dashboard) to complete the initial WordPress installation. You'll be prompted to create a user.
+
 1. Clone the site from the Pantheon repository to your local machine. The repository address is available in the Pantheon dashboard.
 
 1. Create a new GitHub repository for the site.
@@ -855,6 +857,18 @@ Mill 4 works pretty well on Pantheon using their composer-based upstream, but th
     Alternatively, you could just remove the `.git` directory and run `git init` to create a new repository.
 
 1. Download the zip for this theme and unpack it into `wp/app/themes/`. Rename the theme directory and update the information in the `style.css` file.
+
+1. ACF Pro is required for the theme to work and is not available to install via Composer. You'll need to download the plugin from the [Advanced Custom Fields website](https://www.advancedcustomfields.com/pro/) and upload it to the `wp/app/mu-plugins` directory.
+
+    Then, create an autoloader for the plugin by adding a file named `acf-pro-autoloader.php` to the `wp/app/mu-plugins` directory:
+    ```php
+    <?php
+
+    // wp/app/mu-plugins/acf-pro-autoloader.php
+
+    require_once __DIR__ . '/advanced-custom-fields-pro/acf.php';
+
+    ```
 
 1. Pantheon will only run `composer install` for the `composer.json` file in the project root. So, you'll need to move the dependencies in the theme's `composer.json` over to the top-level one. As a result, your `composer.json` will look something like this:
     ```json
@@ -890,6 +904,19 @@ Mill 4 works pretty well on Pantheon using their composer-based upstream, but th
 
     Feel free to remove your theme's `composer.json` file entirely, since you'll be instead using the one in the project root.
 
+    Also, you'll need to update the `functions.php` file for the theme to remove the Composer vendor autoloading. Since the theme's `composer.json` file is not being used on Pantheon, the autoloader will not be available.
+
+    ```php
+    // wp/app/themes/<your-theme>/functions.php
+
+    require_once __DIR__ . '/vendor/autoload.php'; // <--- remove this line
+    ```
+
+1. Add the following line to the `.gitignore` under `web/app/mu-plugins/*/` to ensure that ACF Pro is not ignored:
+    ```
+    !/web/app/mu-plugins/advanced-custom-fields-pro/
+    ```
+
 1. Duplicate the `.gitignore` file in the project root and name it `.gitignore.pantheon`. We do this to distinguish between files that should be ignored on Pantheon and those that should be ignored on GitHub.
     ```
     % cp .gitignore .gitignore.pantheon
@@ -901,7 +928,7 @@ Mill 4 works pretty well on Pantheon using their composer-based upstream, but th
 
 1. Update the `.gitignore` file accordingly:
     * Remove the entry for `pantheon.upstream.yml`. It's critical that this file is committed to the repository, or else the site will not be able to deploy.
-    * Add the following entries for your theme:
+    * Add the following entries for your theme and ACF Pro:
         ```
         /web/app/themes/<your-theme>/.hot
         /web/app/themes/<your-theme>/node_modules/
