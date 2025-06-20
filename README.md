@@ -12,6 +12,7 @@ In addition to the Twig templating that Timber provides, **Mill 4** includes the
 * An object-oriented interfaces for registering custom post types, taxonomies, Gutenberg blocks, admin pages and more!
 * A system for creating jobs and scheduling them and other recurring events via WP-Cron.
 * View composers for adding custom context data to your Twig templates.
+* [Imarc's Pronto component library](https://github.com/imarc/pronto) for consistent UI across the site.
 * A basic front-end build process for compiling Sass and JavaScript using Vite.
 
 Let's get into it.
@@ -889,6 +890,11 @@ Mill 4 works pretty well on Pantheon using their composer-based upstream, but th
 
     Feel free to remove your theme's `composer.json` file entirely, since you'll be instead using the one in the project root.
 
+1. Duplicate the `.gitignore` file in the project root and name it `.gitignore.pantheon`. We do this to distinguish between files that should be ignored on Pantheon and those that should be ignored on GitHub.
+    ```
+    % cp .gitignore .gitignore.pantheon
+    ```
+
 1. Run `composer install` to install the dependencies.
 
 1. Run `npm install && npm run build` from the theme directory to install the dependencies and compile the assets for your theme.
@@ -906,4 +912,42 @@ Mill 4 works pretty well on Pantheon using their composer-based upstream, but th
     ```bash
     % git push origin master
     ```
+
+1. Set up the GitHub Actions Workflow. Create a new file in the `.github/workflows` directory called `deploy.yml`. Add the following content to the file:
+    ```yaml
+    name: Deploy master
+
+    on:
+      workflow_dispatch:
+      push:
+        branches:
+        - 'master'
+        - 'main'
+
+    concurrency:
+      group: ${{ github.workflow }}-master
+      cancel-in-progress: false
+
+    jobs:
+      push:
+        permissions:
+          deployments: write
+          contents: read
+          pull-requests: read
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+        - run: |
+            cp -f .gitignore.pantheon .gitignore
+            cd web/app/themes/<your-theme>
+            npm ci && npm run build
+        - name: Push to Pantheon
+          uses: pantheon-systems/push-to-pantheon@0.6.0
+          with:
+            ssh_key: ${{ secrets.PANTHEON_SSH_KEY }}
+            machine_token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
+            site: ${{ vars.PANTHEON_SITE }}
+    ```
+
+    The `PANTHEON_SSH_KEY` and `PANTHEON_MACHINE_TOKEN` secrets are already configured for repositories in the Imarc GitHub organization, but you'll need to add the `PANTHEON_SITE` variable to the repository. This can be done by going to the repository's **Settings > Secrets and Variables > Actions > Variables > New repository variable**. The value will be in UUID format and should be accessible within the Pantheon dashboard.
 
