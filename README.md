@@ -913,7 +913,7 @@ Mill 4 works pretty well on Pantheon using their composer-based upstream, but th
     % git push origin master
     ```
 
-1. Set up the GitHub Actions Workflow. Create a new file in the `.github/workflows` directory called `deploy.yml`. Add the following content to the file:
+1. Set up the GitHub Actions Workflow. Create a new file in the `.github/workflows` directory called `deploy.yml`. Add the following content to the file, swapping out the `<your-theme>` placeholder with the name of your theme.
     ```yaml
     name: Deploy master
 
