@@ -179,7 +179,7 @@ $router->post('/contact/submit', SubmitContactFormAction::class);
 
 *Note: The logic for custom routes depends on WordPress's native rewrite rules, which are cached. If you add, edit, or remove routes, you may need to flush the rewrite rules. You can do this by visiting the **Permalinks Settings** page in the WordPress admin and clicking the "Save Changes" button.*
 
-*There's a handy command in the theme to flush the rewrite rules, so you can just run `wp mill4 flush-rewrite-rules` to flush the rules when needed.*
+*There's a handy command in the theme to flush the rewrite rules, so you can just run `wp millyard flush-rewrite-rules` to flush the rules when needed.*
 
 ### Dependency Injection
 

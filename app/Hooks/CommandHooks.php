@@ -2,6 +2,7 @@
 
 namespace App\Hooks;
 
+use Imarc\Millyard\Commands\MillyardCommand;
 use Imarc\Millyard\Commands\Registrar;
 use Imarc\Millyard\Concerns\RegistersHooks;
 use Imarc\Millyard\Contracts\HooksInterface;
@@ -21,6 +22,7 @@ class CommandHooks implements HooksInterface
 
     public function registerCommands(): void
     {
+        $this->registrar->registerCommand(MillyardCommand::class);
         $this->registrar->registerCommands();
     }
 }
