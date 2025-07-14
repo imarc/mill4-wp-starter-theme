@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/imarc/millyard.git",
-                "reference": "a5a4ec8b5d8549e2285a278e7b8a7f7379280a66"
+                "reference": "5395097bbd2bf1f3c6ff050f6b129b8f6ab7d5a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/imarc/millyard/zipball/a5a4ec8b5d8549e2285a278e7b8a7f7379280a66",
-                "reference": "a5a4ec8b5d8549e2285a278e7b8a7f7379280a66",
+                "url": "https://api.github.com/repos/imarc/millyard/zipball/5395097bbd2bf1f3c6ff050f6b129b8f6ab7d5a4",
+                "reference": "5395097bbd2bf1f3c6ff050f6b129b8f6ab7d5a4",
                 "shasum": ""
             },
             "require": {
@@ -111,7 +111,7 @@
                 "issues": "https://github.com/imarc/millyard/issues",
                 "source": "https://github.com/imarc/millyard/tree/main"
             },
-            "time": "2025-07-14T18:17:01+00:00"
+            "time": "2025-07-14T19:52:28+00:00"
         },
         {
             "name": "league/container",
