@@ -383,10 +383,10 @@ class Movie extends PostType
 
 ### Scaffolding a Custom Post Type
 
-Millyard provides a scaffolding command for creating new post types. You can run `wp millyard make post-type` to create a new post type. This will create a new class in the `app/PostTypes` directory and register it with the theme.
+Millyard provides a scaffolding command for creating new post types. You can run `wp millyard make-post-type` to create a new post type. This will create a new class in the `app/PostTypes` directory and register it with the theme.
 
 ```bash
-wp millyard make post-type
+wp millyard make-post-type
 ```
 
 ## Custom Taxonomies
@@ -423,10 +423,10 @@ Adding the `RegistersTaxonomy` attribute to the class will automatically registe
 
 ### Scaffolding a Custom Taxonomy
 
-Millyard provides a scaffolding command for creating new taxonomies. You can run `wp millyard make taxonomy` to create a new taxonomy. This will create a new class in the `app/Taxonomies` directory and register it with the theme.
+Millyard provides a scaffolding command for creating new taxonomies. You can run `wp millyard make-taxonomy` to create a new taxonomy. This will create a new class in the `app/Taxonomies` directory and register it with the theme.
 
 ```bash
-wp millyard make taxonomy
+wp millyard make-taxonomy
 ```
 
 ## Gutenberg Blocks
@@ -499,10 +499,10 @@ To register a Gutenberg block in your theme, follow these steps:
 
 ### Scaffolding a Gutenberg Block
 
-Millyard provides a scaffolding command for creating new Gutenberg blocks. You can run `wp millyard make block` to create a new block. This will create a new class in the `app/Blocks` directory as well as a twig template in the `templates/blocks` directory and register it with the theme.
+Millyard provides a scaffolding command for creating new Gutenberg blocks. You can run `wp millyard make-block` to create a new block. This will create a new class in the `app/Blocks` directory as well as a twig template in the `templates/blocks` directory and register it with the theme.
 
 ```bash
-wp millyard make block
+wp millyard make-block
 ```
 
 ## View Composers
