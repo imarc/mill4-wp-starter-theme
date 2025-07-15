@@ -859,6 +859,14 @@ Mill 4 also includes a helper function for each of the cache methods, so you can
     
 ## Pantheon + GitHub Actions Workflow
 
+### Using Imarc's Custom Upstream
+
+The easiest way to get Mill 4 working on Pantheon is to use Imarc's custom upstream. This upstream is based off of Pantheon's composer-based upstream, and it includes Mill 4, ACF Pro, and a few other customizations.
+
+[View the upstream's repository for more information](https://github.com/imarc/pantheon-mill4-upstream/).
+
+### Using Pantheon's Composer Upstream (Don't Do This)
+
 Mill 4 works pretty well on Pantheon using their composer-based upstream, but there are a few gotchas to be aware of. Here's how to get it working:
 
 1. Create a new site on Pantheon using the wordpress composer upstream. You'll need to get [Terminus](https://docs.pantheon.io/terminus) set up beforehand. To create the site, run the following command:
