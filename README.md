@@ -716,16 +716,18 @@ The arguments will be passed to the job's `handle()` method as parameters:
 
 ## Scheduling Recurring Events via WP-Cron
 
-Mill 4 includes functionality for easily scheduling recurring events via WP-Cron. The scheduling of event is handled in the `registerCronJobs()` method of the `CronHooks` class:
+Millyard includes functionality for easily scheduling recurring events via WP-Cron. The scheduling of event is handled in the `registerCronJobs()` method of the theme's `CronHooks` class:
 
 ```php
 // app/Hooks/CronHooks.php
+...
+use Imarc\Millyard\Services\Cron;
 
 class CronHooks implements HooksInterface
 {
     public function registerCronJobs(): void
     {
-        $this->schedule('my_great_event', 'hourly', function () {
+        $this->cron->schedule('my_great_event', 'hourly', function () {
             echo 'Success!';
         });
     }
@@ -744,12 +746,15 @@ Alternatively, if your event's logic is already encapsulated in a job class, you
 // app/Hooks/CronHooks.php
 
 use App\Jobs\MyGreatJob;
+use Imarc\Millyard\Services\Cron;
 
 class CronHooks implements HooksInterface
 {
+    ...
+    
     public function registerCronJobs(): void
     {
-        $this->scheduleJob(MyGreatJob::class, 'daily');
+        $this->cron->scheduleJob(MyGreatJob::class, 'daily');
     }
 }
 ```
