@@ -1,9 +1,13 @@
 {
-  "name": "upstatement/timber-starter-theme",
-  "description": "Starter theme to build a Timber theme",
+  "name": "imarc/mill4-starter-theme",
+  "description": "Mill4 Starter Theme",
   "type":"wordpress-theme",
   "license": "MIT",
   "authors": [
+    {
+      "email": "daveanastasi@imarc.com",
+      "name": "Dave Anastasi"
+    },
     {
       "email": "jared@upstatement.com",
       "name": "jarednova"
