@@ -5,3 +5,9 @@
 /dist/*
 .DS_Store
 .env
+.phpunit.result.cache
+.php-cs-fixer.cache
+
+# Test results
+/tests/results/
+/coverage/
