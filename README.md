@@ -1,5 +1,8 @@
 # Mill 4 Starter Theme
 
+[![Tests](https://github.com/imarc/millyard/actions/workflows/tests.yml/badge.svg)](https://github.com/imarc/millyard/actions/workflows/tests.yml)
+[![Code Quality](https://github.com/imarc/millyard/actions/workflows/code-quality.yml/badge.svg)](https://github.com/imarc/millyard/actions/workflows/code-quality.yml)
+
 **Mill 4** is a WordPress starter theme built on top of the [Timber starter theme](https://timber.github.io/docs/v2/installation/installation/#use-the-starter-theme), which provides a no-frills starting point for building a WordPress theme with Timber.
 
 In addition to the Twig templating that Timber provides, **Mill 4** includes the following features:
