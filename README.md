@@ -24,6 +24,7 @@ Let's get into it.
 
 - [Installation](#installation)
 - [Frontend Build](#frontend-build)
+
 - [Hooks](#hooks)
 - [Configuration](#configuration)
 - [Custom Routes](#custom-routes)
@@ -84,6 +85,48 @@ define('WP_ENVIRONMENT_TYPE', 'development');
 HMR is configured by default to use `http://localhost:5173` for serving assets. If you alter the `vite.config.js` file to change this default, you'll also need to set the `VITE_HOST` var in your theme's `.env` file. Also available are `VITE_MANIFEST_PATH` and `VITE_DIST_PATH` vars for customizing the manifest and dist paths, respectively. Consult `app/config.php` to view the default values.
 
 When running `npm run dev`, you'll still be using the normal URL for your development environment when viewing the site in your browser, since vite is configured to only have assets served up by Node.
+
+## Testing & Code Quality
+
+Mill 4 includes a basic automated testing setup for running unit and integration tests. To run the tests, run the following command:
+
+```bash
+% composer test
+```
+
+This will run the tests and generate a coverage report. You can also run the tests in a specific test suite. For example:
+
+```bash
+% composer test:unit
+```
+
+```bash
+% composer test:integration
+```
+
+### Mocking
+
+Included as a dev dependency is [Brain Monkey](https://github.com/Brain-WP/Brain-Monkey), which provides a mocking framework for PHPUnit. You can use it to mock functions, classes, and methods in your tests.
+
+Also included is [WorDBless](https://github.com/Automattic/wordbless), which allows you to use WordPress core functions in your PHPUnit tests without having to set up a database and the whole WordPress environment.
+
+### Code Quality
+
+Mill 4 includes PHP-CS-Fixer for checking and fixing code style. The configuration is stored in the `.php-cs-fixer.php` file. You can run the following command to check the code style:
+
+```bash
+% composer cs-check
+```
+
+You can also run the following command to fix the code style:
+
+```bash
+% composer cs-fix
+```
+
+### Continuous Integration
+
+Mill 4 is configured by default to run tests and code quality checks on every push to GitHub. You can view the workflow in the `.github/workflows` directory.
 
 ## Hooks
 
