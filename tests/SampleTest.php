@@ -36,7 +36,7 @@ class SampleTest extends BaseTestCase
         // Test creating a post
         $post_id = $this->createTestPost([
             'post_title' => 'Test Post for Database',
-            'post_content' => 'This is test content for database operations.'
+            'post_content' => 'This is test content for database operations.',
         ]);
 
         $this->assertIsInt($post_id, 'Post creation should return an integer ID');
@@ -56,7 +56,7 @@ class SampleTest extends BaseTestCase
         // Test creating a user
         $user_id = $this->createTestUser([
             'user_login' => 'testuser123',
-            'user_email' => 'testuser123@example.com'
+            'user_email' => 'testuser123@example.com',
         ]);
 
         $this->assertIsInt($user_id, 'User creation should return an integer ID');

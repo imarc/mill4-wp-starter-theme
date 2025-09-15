@@ -48,7 +48,9 @@
     "test:unit": "phpunit --testsuite=Unit",
     "test:integration": "phpunit --testsuite=Integration",
     "test:coverage": "phpunit --coverage-html tests/results/coverage --coverage-clover tests/results/clover.xml",
-    "test:coverage-text": "phpunit --coverage-text"
+    "test:coverage-text": "phpunit --coverage-text",
+    "cs-check": "php-cs-fixer fix --dry-run --diff --verbose",
+    "cs-fix": "php-cs-fixer fix --diff --verbose"
   },
   "autoload": {
     "psr-4": {

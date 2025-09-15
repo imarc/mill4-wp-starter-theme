@@ -1,8 +1,8 @@
 <?php
 
-use Imarc\Millyard\Routing\Router;
 use App\Http\Controllers;
 use App\Http\Middleware\VerifyCsrfToken;
+use Imarc\Millyard\Routing\Router;
 
 $router = Router::getInstance();
 $router->setDefaultMiddleware([

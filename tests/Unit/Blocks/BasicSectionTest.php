@@ -45,9 +45,9 @@ class BasicSectionTest extends BaseTestCase
             'block' => [
                 'layout' => '1-column',
                 'primary_content' => [
-                    'width' => '1/2'
-                ]
-            ]
+                    'width' => '1/2',
+                ],
+            ],
         ]);
 
         $result = $this->basicSection->withContext();
@@ -69,9 +69,9 @@ class BasicSectionTest extends BaseTestCase
             'block' => [
                 'layout' => '2-column',
                 'primary_content' => [
-                    'width' => '1/3'
-                ]
-            ]
+                    'width' => '1/3',
+                ],
+            ],
         ]);
 
         $result = $this->basicSection->withContext();
@@ -101,9 +101,9 @@ class BasicSectionTest extends BaseTestCase
                 'block' => [
                     'layout' => '2-column',
                     'primary_content' => [
-                        'width' => $primaryWidth
-                    ]
-                ]
+                        'width' => $primaryWidth,
+                    ],
+                ],
             ]);
 
             $result = $this->basicSection->withContext();
@@ -132,8 +132,8 @@ class BasicSectionTest extends BaseTestCase
         $contextProperty->setAccessible(true);
         $contextProperty->setValue($this->basicSection, [
             'block' => [
-                'layout' => '1-column' // Provide a layout to avoid undefined key error
-            ]
+                'layout' => '1-column', // Provide a layout to avoid undefined key error
+            ],
         ]);
 
         $result = $this->basicSection->withContext();
@@ -156,8 +156,8 @@ class BasicSectionTest extends BaseTestCase
                 'layout' => '2-column',
                 'primary_content' => [
                     // No width specified
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $result = $this->basicSection->withContext();

@@ -73,6 +73,7 @@ class ResourceTest extends BaseTestCase
         foreach ($attributes as $attribute) {
             if ($attribute->getName() === 'Imarc\Millyard\Attributes\RegistersPostType') {
                 $hasRegisterAttribute = true;
+
                 break;
             }
         }

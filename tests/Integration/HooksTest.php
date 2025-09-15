@@ -49,7 +49,7 @@ class HooksTest extends BaseTestCase
         // Test registering a custom post type
         $result = register_post_type('test_post_type', [
             'public' => true,
-            'label' => 'Test Posts'
+            'label' => 'Test Posts',
         ]);
 
         $this->assertInstanceOf('WP_Post_Type', $result, 'Post type should be registered successfully');

@@ -56,12 +56,12 @@ class ThemeHooks implements HooksInterface
          */
         add_theme_support(
             'html5',
-            array(
+            [
                 'comment-form',
                 'comment-list',
                 'gallery',
                 'caption',
-            )
+            ]
         );
     }
 
@@ -74,7 +74,7 @@ class ThemeHooks implements HooksInterface
          */
         add_theme_support(
             'post-formats',
-            array(
+            [
                 'aside',
                 'image',
                 'video',
@@ -82,7 +82,7 @@ class ThemeHooks implements HooksInterface
                 'link',
                 'gallery',
                 'audio',
-            )
+            ]
         );
     }
 
@@ -109,7 +109,7 @@ class ThemeHooks implements HooksInterface
     {
         $menuExists = wp_get_nav_menu_object($menuName);
 
-        if (!$menuExists) {
+        if (! $menuExists) {
             $menuId = wp_create_nav_menu($menuName);
 
             // Set the menu location
@@ -188,6 +188,7 @@ class ThemeHooks implements HooksInterface
         // Disable pingbacks and trackbacks
         $this->addFilter('xmlrpc_methods', function ($methods) {
             unset($methods['pingback.ping']);
+
             return $methods;
         });
         $this->addFilter('pre_option_default_ping_status', '__return_false');

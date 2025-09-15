@@ -3,8 +3,8 @@
 namespace App\Hooks;
 
 use Imarc\Millyard\AdminPages\Registrar;
-use Imarc\Millyard\Contracts\HooksInterface;
 use Imarc\Millyard\Concerns\RegistersHooks;
+use Imarc\Millyard\Contracts\HooksInterface;
 
 class AdminPageHooks implements HooksInterface
 {

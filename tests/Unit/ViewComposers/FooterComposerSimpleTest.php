@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\ViewComposers;
 
-use App\ViewComposers\FooterComposer;
 use App\Tests\BaseTestCase;
+use App\ViewComposers\FooterComposer;
 
 /**
  * Simple unit tests for FooterComposer view composer structure
@@ -47,6 +47,7 @@ class FooterComposerSimpleTest extends BaseTestCase
         foreach ($attributes as $attribute) {
             if ($attribute->getName() === 'Imarc\Millyard\Attributes\RegistersViewComposer') {
                 $hasRegisterAttribute = true;
+
                 break;
             }
         }

@@ -20,5 +20,5 @@ return [
 
     'cache' => [
         'ttl' => env('CACHE_TTL', 60 * 60 * 24),
-    ]
+    ],
 ];

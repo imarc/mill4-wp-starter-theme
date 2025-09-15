@@ -142,6 +142,7 @@ class VerifyCsrfTokenSimpleTest extends BaseTestCase
 
         $next = function ($request) use (&$nextCalled) {
             $nextCalled = true;
+
             return new Response('Next called', 200);
         };
 

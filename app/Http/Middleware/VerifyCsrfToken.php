@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Imarc\Millyard\Contracts\MiddlewareInterface;
 use Closure;
+use Imarc\Millyard\Contracts\MiddlewareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

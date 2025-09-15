@@ -29,5 +29,4 @@ class CronHooks implements HooksInterface
         //     echo 'Hello, world!';
         // });
     }
-
 }

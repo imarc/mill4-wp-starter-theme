@@ -9,9 +9,9 @@ use Imarc\Millyard\Contracts\HooksInterface;
 use Imarc\Millyard\Services\Container;
 use Imarc\Millyard\Twig\RenderPartialTokenParser;
 use Imarc\Millyard\Views\ComposerRegistry;
-use Twig;
 use Timber\Site;
 use Timber\Timber;
+use Twig;
 
 class TemplateHooks implements HooksInterface
 {
@@ -27,8 +27,8 @@ class TemplateHooks implements HooksInterface
 
     public function initialize(): void
     {
-        $this->addFilter('timber/context', array( $this, 'addToContext' ));
-        $this->addFilter('timber/twig', array( $this, 'extendTwig' ));
+        $this->addFilter('timber/context', [ $this, 'addToContext' ]);
+        $this->addFilter('timber/twig', [ $this, 'extendTwig' ]);
         $this->addFilter('timber/twig/environment/options', [ $this, 'updateTwigEnvironmentOptions' ]);
         $this->addAction('init', [$this, 'registerViewComposers']);
     }
@@ -40,12 +40,12 @@ class TemplateHooks implements HooksInterface
      */
     public function addToContext($context)
     {
-        $context['primary_navigation']  = Timber::get_menu('primary-navigation');
-        $context['footer_navigation']  = Timber::get_menu('footer-navigation');
+        $context['primary_navigation'] = Timber::get_menu('primary-navigation');
+        $context['footer_navigation'] = Timber::get_menu('footer-navigation');
         $context['utility_navigation'] = Timber::get_menu('utility-navigation');
         $context['mobile_navigation'] = Timber::get_menu('mobile-navigation');
         $context['mega_menu'] = get_field('mega_menu', 'option');
-        $context['site']  = $this->site;
+        $context['site'] = $this->site;
 
         return $context;
     }

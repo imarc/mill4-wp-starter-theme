@@ -173,7 +173,6 @@ class SecurityHooks implements HooksInterface
         }
     }
 
-
     private function generateCsp(): string
     {
         if (! function_exists('get_field')) {
