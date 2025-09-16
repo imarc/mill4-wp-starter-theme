@@ -108,7 +108,7 @@ This will run the tests and generate a coverage report. You can also run the tes
 
 Included as a dev dependency is [Brain Monkey](https://github.com/Brain-WP/Brain-Monkey), which provides a mocking framework for PHPUnit. You can use it to mock functions, classes, and methods in your tests.
 
-Also included is [WorDBless](https://github.com/Automattic/wordbless), which allows you to use WordPress core functions in your PHPUnit tests without having to set up a database and the whole WordPress environment.
+Also included is [WorDBless](https://github.com/Automattic/wordbless), which allows you to use WordPress core functions in your PHPUnit tests without having to set up a database and the whole WordPress environment. Check out the tests in the `tests/Unit/Database` directory for an example of how to use it.
 
 ### Code Quality
 
