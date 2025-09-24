@@ -101,4 +101,3 @@ class FooterComposerSimpleTest extends BaseTestCase
         }
     }
 }
-

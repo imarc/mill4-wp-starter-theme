@@ -52,4 +52,3 @@ class CsrfTokenActionSimpleTest extends BaseTestCase
         $this->assertEquals('Symfony\Component\HttpFoundation\JsonResponse', $returnType->getName());
     }
 }
-

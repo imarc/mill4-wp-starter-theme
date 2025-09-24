@@ -230,7 +230,6 @@ class WordblessTest extends BaseTestCase
         $this->assertFalse($retrieved_deleted, 'Deleted option should not be retrievable');
     }
 
-
     /**
      * Test WordPress taxonomy operations with Wordbless
      */
