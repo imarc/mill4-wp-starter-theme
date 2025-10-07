@@ -48,6 +48,7 @@ Next, `cd` to the theme folder and run the following:
 ```bash
 % composer install
 % npm install
+% npm run pronto-install
 % npm run build
 ```
 
