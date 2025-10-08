@@ -1,7 +1,8 @@
 {
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "pronto-install": "npx @imarc/pronto@latest --non-interactive y ./resources y n y ./resources/images"
   },
   "devDependencies": {
     "dotenv": "^16.4.7",
@@ -11,7 +12,7 @@
     "vite-plugin-restart": "^0.4.2"
   },
   "dependencies": {
-    "@imarc/pronto": "^2.0.0-rc.12",
+    "@imarc/pronto": "^2.0.3",
     "@vitejs/plugin-vue": "^5.2.3",
     "vue": "^3.5.13"
   },

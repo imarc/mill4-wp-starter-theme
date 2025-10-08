@@ -1,6 +1,10 @@
 import { createApp, defineAsyncComponent } from 'vue'
 import directionals from './directives/vDirectionals.js'
 import scrolllock from './directives/vScrolllock.js'
+
+/**
+ * Vite heavily recommends importing your CSS from your JS.
+ */
 import '../styles/index.scss'
 
 createApp({

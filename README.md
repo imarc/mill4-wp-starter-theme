@@ -48,10 +48,13 @@ Next, `cd` to the theme folder and run the following:
 ```bash
 % composer install
 % npm install
+% npm run pronto-install
 % npm run build
 ```
 
-This will install the dependencies and compile the assets. The primary dependency is [Millyard](https://github.com/imarc/millyard), which provides most ofthis theme's core functionality.
+This will install the dependencies, bring Pronto's components into the theme, and compile the assets.
+
+The primary PHP dependency is [Millyard](https://github.com/imarc/millyard), which provides most of this theme's core functionality.
 
 Finally, you'll want to activate the theme in the WordPress admin.
 

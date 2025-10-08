@@ -46,6 +46,7 @@
     <div class="tabs__tablist" role="tablist" aria-label="Sample Tabs">
       <button class="tabs__prev button -circle" @click="prev">
         <span class="srOnly">previous</span>
+        <svg class="button__icon"><use href="/main-icons-sprite.svg#chevron-left" /></svg>
       </button>
       <button
         class="tabs__button"
@@ -61,6 +62,7 @@
       ></button>
       <button class="tabs__next button -circle" @click="next">
         <span class="srOnly">next</span>
+        <svg class="button__icon"><use href="/main-icons-sprite.svg#chevron-right" /></svg>
       </button>
     </div>
 
