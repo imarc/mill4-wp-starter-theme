@@ -1,5 +1,11 @@
-<div class="grid -columns-{{ block.cards|length }}">
-    {% for card in block.cards %}
-        {% include 'partials/card.twig' with { card: card } %}
-    {% endfor %}
+<div class="featureCards">
+    {% if block.title %}
+        <h2>{{ block.title }}</h2>
+    {% endif %}
+
+    <div class="grid -columns-{{ block.cards|length }}">
+        {% for card in block.cards %}
+            {% include 'partials/card.twig' with { card: card } %}
+        {% endfor %}
+    </div>
 </div>
