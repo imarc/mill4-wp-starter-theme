@@ -2,32 +2,20 @@
 {% set layout = block.layout %}
 {% set sections = layout == 'wide' ? [block.primary_content] : [block.primary_content, block.secondary_content] %}
 
-<div class="o-basic-section">
-    <div class="o-basic-section__content o-basic-section__content--{{ layout }}">
+<div class="section container basicSection accent-{{ block.accent }}">
+    {% if block.heading or block.sub_heading %}
+        <header class="section__header">
+            {% if block.sub_heading %}
+                <h2 class="h6 accent-primary">{{ block.sub_heading }}</h2>
+            {% endif %}
+            {% if block.section__heading %}
+                <h3>{{ block.section__heading }}</h3>
+            {% endif %}
+        </header>
+    {% endif %}
+    <div class="basicSection__content -center">
         {% for section in sections %}
-            <div class="o-basic-section__section o-basic-section__section--{{ section.width }}">
-                {% if section.content_type == 'text' %}
-                    <div class="o-basic-section__text">
-                        <div class="o-basic-section__heading">
-                            {{ section.heading }}
-                        </div>
-                        <div class="o-basic-section__content">
-                            {{ section.content }}
-                        </div>
-                        {% if section.link %}
-                            <a href="{{ section.link.url }}" class="a-button">{{ section.link.title }}</a>
-                        {% endif %}
-                    </div>
-                {% elseif section.content_type == 'image' %}
-                    <div class="o-basic-section__image">
-                        <img src="{{ section.image.url }}" alt="{{ section.image.alt }}">
-                    </div>
-                {% elseif section.content_type == 'card' %}
-                    <div class="o-basic-section__card">
-                        {% include "partials/card.twig" with {'card': section.card} %}
-                    </div>
-                {% endif %}
-            </div>
+            {% include "partials/basic-section/content-"~section.content_type~".twig" with {'section': section} %}
         {% endfor %}
     </div>
 </div>
