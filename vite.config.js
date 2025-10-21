@@ -9,6 +9,7 @@ import fs from 'fs';
 import { defineConfig } from "vite";
 import { resolve } from 'path';
 import vue from '@vitejs/plugin-vue';
+import vitrine from '@imarc/vitrine'
 
 // Get the relative path of the vite.config.js file for the alias
 const fullPath = import.meta.url.slice(0, import.meta.url.lastIndexOf('/'));
@@ -39,6 +40,22 @@ export default defineConfig(({ mode }) => {
                         includeAbsolute: true,
                     }
                 }
+            }),
+            vitrine({
+              basePaths: [
+        
+                /**
+                 * This should be set to the base directory for your front end files.
+                 */
+                'resources',
+              ],
+              includes: [
+                /**
+                 * These are the entry points to include. These will also need to get
+                 * included into your project.
+                 */
+                '/resources/js/index.js',
+              ],
             }),
             {
                 handleHotUpdate({ file, server }) {
