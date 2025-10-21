@@ -6,23 +6,27 @@
   {% include 'partials/generic-hero.twig' with {
     title: 'Resources',
   } %}
-  <div class="resource-archive-wrapper">
-    <aside class="resource-filter">
-      <form method="get" action="">
-        <h4>Filter by Type</h4>
-        {% for term in resource_types %}
-          {% set checked = term.slug in current_filters %}
-          <label>
-            <input type="checkbox" name="resource_type[]" value="{{ term.slug }}" {{ checked ? 'checked' }}>
-            {{ term.name }}
-          </label>
-        {% endfor %}
-        <button type="submit" class="a-button">Apply</button>
-      </form>
-    </aside>
+  <div class="container">
+    <div class="archive grid -columns-3">
+      <aside class="archive__sidebar cell -span-1">
+        <form method="get" action="">
+          <h4>Filter by Type</h4>
+          {% for term in resource_types %}
+            {% set checked = term.slug in current_filters %}
+            <div class="field">
+              <label>
+                <input type="checkbox" name="resource_type[]" value="{{ term.slug }}" {{ checked ? 'checked' }}>
+                {{ term.name }}
+              </label>
+            </div>
+          {% endfor %}
+          <button type="submit" class="button">Apply</button>
+        </form>
+      </aside>
 
-    <div class="resource-results">
-      {{ parent() }}
+      <div class="archive__content cell -span-2">
+        {{ parent() }}
+      </div>
     </div>
   </div>
 {% endblock %}
