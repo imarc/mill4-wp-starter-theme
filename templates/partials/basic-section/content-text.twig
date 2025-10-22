@@ -2,10 +2,6 @@
     <h3>{{ section.heading }}</h3>
     <p>{{ section.content }}</p>
     {% if section.links %}
-        <div class="actions">
-            {% for cta in section.links %}
-                <a class="button -{{ cta.style }}" href="{{ cta.link.url }}">{{ cta.link.title }}</a>
-            {% endfor %}
-        </div>
+        {% include 'partials/actions.twig' with { links: section.links, class: 'basicSection__actions' } %}
     {% endif %}
 </div>

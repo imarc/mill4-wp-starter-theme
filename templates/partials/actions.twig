@@ -1,12 +1,12 @@
 {#
     @param links array of objects with the following properties:
     - type: string (primary or secondary)
+    - style: string (accent-primary, accent-secondary or outline: this is an alternative to the type property)
     - link: object with the following properties:
         - url: string
         - title: string
     @param class string
 #}
-
 {% if links %}
     <div class="actions {{ class ? class : null }}">
         {% for cta in links %}
