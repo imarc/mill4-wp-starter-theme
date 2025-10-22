@@ -1,0 +1,16 @@
+{#
+    @param type string (info, success, warning, error)
+    @param content string
+    @param close boolean
+#}
+<p-dismissable class="message {{ type ? type : 'info' }}" v-slot="{ close }">
+    <svg class="message__icon icon -square" viewBox="0 0 32 32"><use href="{{ theme.path }}/resources/images/main-icons-sprite.svg#info" /></svg>
+    <div class="message__content">
+        {{ content }}
+    </div>
+    {% if close %}
+        <button class="message__close" @click="close">
+            <svg viewBox="0 0 18 18"><use href="{{ theme.path }}/resources/images/main-icons-sprite.svg#close" /></svg>
+        </button>
+    {% endif %}
+</p-dismissable>
