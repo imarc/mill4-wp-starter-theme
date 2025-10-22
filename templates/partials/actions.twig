@@ -1,0 +1,16 @@
+{#
+    @param links array of objects with the following properties:
+    - type: string (primary or secondary)
+    - link: object with the following properties:
+        - url: string
+        - title: string
+    @param class string
+#}
+
+{% if links %}
+    <div class="actions {{ class ? class : null }}">
+        {% for cta in links %}
+            <a class="button {{ cta.type == 'secondary' ? '-outline' : '' }} {{ cta.style ? '-' ~ cta.style : '' }}" href="{{ cta.link.url }}">{{ cta.link.title }}</a>
+        {% endfor %}
+    </div>
+{% endif %}

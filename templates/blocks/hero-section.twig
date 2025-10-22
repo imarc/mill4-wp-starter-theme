@@ -11,12 +11,8 @@
                 {{ block.text }}
             </p>
             {% if block.links %}
-                <div class="actions">
-                    {% for cta in block.links %}
-                        <a class="button {{ cta.type == 'secondary' ? '-outline-fill' : '' }} accent-white" href="{{ cta.link.url }}">{{ cta.link.title }}</a>
-                    {% endfor %}
-                </div>
-        {% endif %}
+                {% include 'partials/actions.twig' with { links: block.links, class: 'hero__actions' } %}
+            {% endif %}
         </div>
     </div>
     {% if block.image %}

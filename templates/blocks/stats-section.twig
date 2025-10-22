@@ -7,11 +7,9 @@
             {% if block.callout.content %}
                 <div class="h3">{{ block.callout.content }}</div>
             {% endif %}
-            <div class="actions">
-            {% if block.callout.link %}
-                <a href="{{ block.callout.link.url }}" class="button">{{ block.callout.link.title }}</a>
+            {% if block.callout.links %}
+                {% include 'partials/actions.twig' with { links: block.callout.links, class: 'stats__calloutActions' } %}
             {% endif %}
-            </div>
         </div>
     {% endif %}
     <div class="stats__content">

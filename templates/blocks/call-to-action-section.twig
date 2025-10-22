@@ -12,11 +12,7 @@
     </div>
     <div class="section__footer">
         {% if block.links %}
-            <div class="actions">
-                {% for cta in block.links %}
-                    <a class="button {{ cta.type == 'secondary' ? '-styleOutline' : '' }}" href="{{ cta.link.url }}">{{ cta.link.title }}</a>
-                {% endfor %}
-            </div>
+            {% include 'partials/actions.twig' with { links: block.links, class: 'ctaSection__actions' } %}
         {% endif %}
     </div>
 </div>
