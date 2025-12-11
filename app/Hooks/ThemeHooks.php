@@ -19,6 +19,7 @@ class ThemeHooks implements HooksInterface
         $this->addBasicThemeSupports();
         $this->addPostThumbnailSupport();
         $this->addHtml5Support();
+        $this->addSvgSupport();
         $this->addPostFormatSupport();
         $this->addMenuSupport();
         $this->disableCommenting();
@@ -197,6 +198,14 @@ class ThemeHooks implements HooksInterface
         // Remove comment-related widgets
         $this->addAction('widgets_init', function () {
             unregister_widget('WP_Widget_Recent_Comments');
+        });
+    }
+
+    private function addSvgSupport(): void
+    {
+        add_filter('upload_mimes', function ($mimes) {
+            $mimes['svg'] = 'image/svg+xml';
+            return $mimes;
         });
     }
 }
