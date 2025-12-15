@@ -23,8 +23,8 @@ Let's get into it.
 ## Table of Contents
 
 - [Installation](#installation)
+- [Development Standards](#development-standards)
 - [Frontend Build](#frontend-build)
-
 - [Hooks](#hooks)
 - [Configuration](#configuration)
 - [Custom Routes](#custom-routes)
@@ -57,6 +57,10 @@ This will install the dependencies, bring Pronto's components into the theme, an
 The primary PHP dependency is [Millyard](https://github.com/imarc/millyard), which provides most of this theme's core functionality.
 
 Finally, you'll want to activate the theme in the WordPress admin.
+
+## Development Standards
+
+For detailed development standards and best practices, including how to register post types, taxonomies, blocks, view composers, and hooks, please see [DEVELOPMENT_STANDARDS.md](DEVELOPMENT_STANDARDS.md).
 
 ## Frontend Build
 
