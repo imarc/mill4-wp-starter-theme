@@ -7,8 +7,8 @@ This document provides essential information for AI coding assistants and other 
 **Theme Type:** WordPress Starter Theme  
 **Framework:** Built on [Millyard](https://github.com/imarc/millyard) framework  
 **Templating:** Twig (via Timber)  
-**PHP Version:** 7.2+  
-**WordPress Version:** 4.6+  
+**PHP Version:** 8.1+  
+**WordPress Version:** 6.0+  
 
 ## Key Documentation Files
 
