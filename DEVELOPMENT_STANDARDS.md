@@ -756,5 +756,5 @@ With an object caching plugin installed, the theme's cache helpers will automati
 
 ## Questions?
 
-If you have questions about these standards or need clarification, please reach out to the project maintainer.
+If you have questions about these standards or need clarification, please reach out to the project's tech lead.
 
