@@ -20,6 +20,9 @@ This document outlines the development standards and best practices for working 
 - [Configuration](#configuration)
 - [Environment Variables](#environment-variables)
 - [Cache Usage](#cache-usage)
+- [Front-end Workflow](#front-end)
+- [Additional Resources](#additional-resources)
+- [Questions](#questions)
 
 ---
 
@@ -742,6 +745,16 @@ With an object caching plugin installed, the theme's cache helpers will automati
 - Use descriptive cache keys
 - Clear cache when data changes
 - Consider cache invalidation strategies
+
+---
+
+## Front-end
+
+Mill4 includes [Pronto](https://github.com/imarc/pronto) by default. Pronto is Imarc's front-end framework and pattern library for websites and applications. It uses [Vite](https://vite.dev/) and [Vitrine](https://github.com/imarc/vitrine) (another custom tool) to provide a library of its components, that becomes part of your project. See [Pronto's own site](https://imarc-pronto.netlify.app/components/) to see the latest components. 
+
+Pronto uses ATOMIC design to organize code, ABEM-style class naminig conventions, and SCSS for styling. It also includes some custom Vue components. 
+
+For more information on how to use Pronto, [visit the docs](https://imarc-pronto.netlify.app/components/overview/). 
 
 ---
 
