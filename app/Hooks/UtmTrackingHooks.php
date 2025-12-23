@@ -2,9 +2,9 @@
 
 namespace App\Hooks;
 
-use Imarc\Millyard\Services\UtmTracker;
 use Imarc\Millyard\Concerns\RegistersHooks;
 use Imarc\Millyard\Contracts\HooksInterface;
+use Imarc\Millyard\Services\UtmTracker;
 
 class UtmTrackingHooks implements HooksInterface
 {
