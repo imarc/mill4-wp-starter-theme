@@ -8,6 +8,7 @@ $container = new Container();
 $hooks = $container->get(Hooks\Registrar::class);
 
 $hooks->register(Hooks\SessionHooks::class);
+$hooks->register(Hooks\UtmTrackingHooks::class);
 $hooks->register(Hooks\ThemeHooks::class);
 $hooks->register(Hooks\TemplateHooks::class);
 $hooks->register(Hooks\SecurityHooks::class);
