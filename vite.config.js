@@ -5,35 +5,23 @@
  * http://localhost:5173 is serving Vite on development. Access this URL will show empty page.
  *
  */
-import fs from 'fs';
 import { defineConfig } from "vite";
 import { resolve } from 'path';
 import vue from '@vitejs/plugin-vue';
 import vitrine from '@imarc/vitrine'
+import { hotFilePlugin } from './hotFilePlugin.js';
 
 // Get the relative path of the vite.config.js file for the alias
 const fullPath = import.meta.url.slice(0, import.meta.url.lastIndexOf('/'));
 const getWpContentIndex = fullPath.indexOf('wp-content');
 const wpContentPath = fullPath.slice(getWpContentIndex);
 
-export default defineConfig(({ mode }) => {
-    // Path to the .hot file
-    const hotFilePath = resolve(__dirname, '.hot');
-  
-    if (mode === 'development') {
-      // Create the .hot file in development mode
-      fs.writeFileSync(hotFilePath, 'HMR is active');
-    } else {
-      // Ensure the .hot file is removed in production mode
-      if (fs.existsSync(hotFilePath)) {
-        fs.unlinkSync(hotFilePath);
-      }
-    }
-
+export default defineConfig(() => {
     return {
         base: './',
 
         plugins: [
+            ...hotFilePlugin(resolve(__dirname, '.hot')),
             vue({
                 template: {
                     transformAssetUrls: {
@@ -59,7 +47,7 @@ export default defineConfig(({ mode }) => {
             }),
             {
                 handleHotUpdate({ file, server }) {
-                    if (file.endsWith('.php')) {
+                    if (file.endsWith('.php') || file.endsWith('.twig')) {
                         server.ws.send({ type: 'full-reload', path: '*' });
                     }
                 }
