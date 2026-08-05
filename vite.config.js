@@ -96,8 +96,7 @@ export default defineConfig(() => {
 
         resolve: {
             alias: {
-                '@': process.env.NODE_ENV === 'development' ? resolve(wpContentPath + '/static') : '/static',
-                '@styles': resolve(__dirname, 'resources/styles'),
+                '@': resolve(__dirname, 'resources/styles'),
                 'vue': 'vue/dist/vue.esm-bundler.js',
                 '/main-icons-sprite.svg': resolve(__dirname, 'resources/images/main-icons-sprite.svg')
             }

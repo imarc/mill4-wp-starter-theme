@@ -3,7 +3,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "pronto-install": "npx @imarc/pronto@latest --non-interactive y ./resources y n y ./resources/images"
+    "pronto-install": "npx @imarc/pronto@latest --non-interactive y ./resources y n y ./resources/images y"
   },
   "devDependencies": {
     "dotenv": "^16.4.7",
