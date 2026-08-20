@@ -3,7 +3,6 @@
 namespace App\Blocks;
 
 use Imarc\Millyard\Attributes\RegistersBlock;
-use Imarc\Millyard\Blocks\Block;
 
 #[RegistersBlock]
 class Section extends Block
@@ -15,9 +14,9 @@ class Section extends Block
     public const POST_TYPES = [];
     public const KEYWORDS = ['section', 'container'];
 
-    public function getConfig(): array
+    protected function getConfig(): array
     {
-        return [
+        return array_merge(parent::getConfig(), [
             'supports' => [
                 'align' => false,
                 'anchor' => true,
@@ -26,7 +25,6 @@ class Section extends Block
             'acf' => [
                 'mode' => 'preview',
             ],
-            'acf_block_version' => 2,
-        ];
+        ]);
     }
 }
