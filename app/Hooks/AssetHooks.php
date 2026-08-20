@@ -40,12 +40,42 @@ class AssetHooks implements HooksInterface
                 $this->loadScriptsForEntryPoint('resources/js/index.js');
             });
         }
-        if (is_admin()) {
 
-            $this->addAction('admin_head', function () {
-                echo $this->buildStylesheetTag($this->manifest->getFileForEntryPoint('resources/styles/editor.scss'));
-            });
+        $this->addAction('enqueue_block_assets', [$this, 'enqueueEditorStyles']);
+    }
+
+    /**
+     * Enqueue the primary front-end stylesheet into the iframed block canvas.
+     */
+    public function enqueueEditorStyles(): void
+    {
+        if (! is_admin()) {
+            return;
         }
+
+        if (is_hmr()) {
+            wp_enqueue_style(
+                'mill4-editor',
+                config('vite.host') . '/resources/styles/index.scss',
+                [],
+                null
+            );
+
+            return;
+        }
+
+        $file = $this->manifest->getFileForEntryPoint('resources/styles/index.scss');
+
+        if (! $file) {
+            return;
+        }
+
+        wp_enqueue_style(
+            'mill4-editor',
+            $this->getWebDistPath($file),
+            [],
+            null
+        );
     }
 
     /**
