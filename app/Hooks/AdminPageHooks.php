@@ -16,7 +16,7 @@ class AdminPageHooks implements HooksInterface
 
     public function initialize(): void
     {
-        $this->addAction('init', [$this, 'registerAdminPages']);
+        $this->addAction('admin_menu', [$this, 'registerAdminPages']);
     }
 
     public function registerAdminPages(): void
