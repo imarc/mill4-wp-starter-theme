@@ -1,23 +1,27 @@
-<section class="container hero accent-primary">
-    {% if block.background_image %}
-        <div class="hero__bg">
-            <picture><img src="{{ block.background_image.url }}" alt="{{ block.background_image.alt }}"></picture>
-        </div>
-    {% endif %}
-    <div class="hero__content">
-        <div class="hero__text">
-            <h1 class="hero__heading">{{ block.title }}</h1>
-            <p class="hero__intro">
-                {{ block.text }}
-            </p>
-            {% if block.links %}
-                {% include 'partials/actions.twig' with { links: block.links, class: 'hero__actions' } %}
-            {% endif %}
+<section class="hero accent-primary">
+    <div class="hero__grid">
+        {% if block.background_image %}
+            <div class="hero__bg">
+                <picture><img src="{{ block.background_image.url }}" alt="{{ block.background_image.alt }}"></picture>
+            </div>
+        {% endif %}
+        <div class="container">
+            <div class="hero__content">
+                <div class="hero__text">
+                    <h1 class="hero__heading">{{ block.title }}</h1>
+                    <p class="hero__intro">
+                        {{ block.text }}
+                    </p>
+                    {% if block.links %}
+                        {% include 'partials/actions.twig' with { links: block.links, class: 'hero__actions' } %}
+                    {% endif %}
+                </div>
+                {% if block.image %}
+                    <div class="hero__image">
+                        <img src="{{ block.image.url }}" alt="{{ block.image.alt }}">
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
-    {% if block.image %}
-        <div class="hero__image">
-            <img src="{{ block.image.url }}" alt="{{ block.image.alt }}">
-        </div>
-    {% endif %}
 </section>
