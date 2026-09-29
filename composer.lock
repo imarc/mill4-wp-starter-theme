@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d74089ec999683359afc21604513582b",
+    "content-hash": "4c61ede31ba605c5e9a1c80c3e8d1a17",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -70,16 +70,16 @@
         },
         {
             "name": "imarc/millyard",
-            "version": "dev-main",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/imarc/millyard.git",
-                "reference": "6e9451b12b09eea6c1d81911596e8ac10a2721cc"
+                "reference": "648a27b6f06a22f05accf6014c4ec76b1b7a0624"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/imarc/millyard/zipball/6e9451b12b09eea6c1d81911596e8ac10a2721cc",
-                "reference": "6e9451b12b09eea6c1d81911596e8ac10a2721cc",
+                "url": "https://api.github.com/repos/imarc/millyard/zipball/648a27b6f06a22f05accf6014c4ec76b1b7a0624",
+                "reference": "648a27b6f06a22f05accf6014c4ec76b1b7a0624",
                 "shasum": ""
             },
             "require": {
@@ -93,7 +93,6 @@
                 "friendsofphp/php-cs-fixer": "^3.64",
                 "yoast/wp-test-utils": "^1.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -112,9 +111,9 @@
             ],
             "support": {
                 "issues": "https://github.com/imarc/millyard/issues",
-                "source": "https://github.com/imarc/millyard/tree/main"
+                "source": "https://github.com/imarc/millyard/tree/1.0.0"
             },
-            "time": "2025-12-23T16:28:35+00:00"
+            "time": "2026-09-29T15:05:19+00:00"
         },
         {
             "name": "league/container",
@@ -5541,12 +5540,10 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "imarc/millyard": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }
