@@ -23,6 +23,13 @@ class ThemeHooks implements HooksInterface
         $this->addPostFormatSupport();
         $this->addMenuSupport();
         $this->disableCommenting();
+        $this->disablePermalinkGuessing();
+    }
+
+    private function disablePermalinkGuessing(): void
+    {
+        // Keep unknown URLs on the 404 template instead of redirecting to a similar permalink.
+        $this->addFilter('do_redirect_guess_404_permalink', '__return_false');
     }
 
     private function addBasicThemeSupports(): void
